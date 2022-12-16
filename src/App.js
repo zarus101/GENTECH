@@ -1,13 +1,22 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SideNavbar from "./Components/sideNavbar";
+import Home from "./Pages/Home";
+import "./Assests/index.scss"
+import { useState } from "react";
 
-import './App.css';
 
 function App() {
+  const [theme, setTheme]= useState("light");
   return (
-    <div className="App">
-      <h1>welcome everybody</h1>
-      
+    <BrowserRouter >
+    <SideNavbar theme={theme} setTheme={setTheme}/>
+      <Routes>
+        <Route path="/" element={<Home theme={theme} setTheme={setTheme} />} />
+     
+      </Routes>
+ 
+  </BrowserRouter>
 
-    </div>
   );
 }
 
