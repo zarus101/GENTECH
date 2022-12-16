@@ -83,20 +83,20 @@
     }
   
     .content-part {
-      width: 75%;
+      width: 100%;
       height: 200vh;
       display: flex;
-  
-     
+
+      .left-section{
+        width: 25%;
+        height: 100%;
+      }
+
       .right-section {
-        width: 70%;
+        width: 75%;
         height: 100%;
         transition: 0.5s ease;
-       
-  
-        .nav-top {
-          width: -webkit-fill-available;
-        }
+      
       }
     }
   }

@@ -3,10 +3,13 @@ import React from 'react'
 const Home = ({theme, setTheme}) => {
   return (
     <>
-     <section className="home">
+     <div className="home">
+
+     <button onClick={()=> setTheme(theme==="light"? "dark": "light")}>dark mode</button>
 
 
-    </section>
+
+    </div>
 
     </>
   )

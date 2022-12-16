@@ -14,24 +14,24 @@ const sideNavbar={
             icon:<HomeOutlinedIcon/>
           },
           {
-            // path:'/playlists',
+            path:'/browse',
             name:'Browse',
             icon:<ListAltOutlinedIcon/>
       
           },
           {
-            // path:'/library',
+            path:'/album',
             name:'Album',
             icon:<LibraryMusicOutlinedIcon/>
           },
           {
-            // path:'/favourites',
+            path:'/artists',
             name:'Artists',
             icon:<PersonOutlineOutlinedIcon/>
       
           },
           {
-            // path:'/favourites',
+            path:'/videos',
             name:'Videos',
             icon:<MusicVideoOutlinedIcon/>
       

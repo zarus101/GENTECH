@@ -14,14 +14,12 @@ const SideNavbar = ({ children, setTheme, theme }) => {
   return (
     <section className="main-section" id={theme}>
       <div className=" main-navbar"  id="background">
-      <button onClick={()=> setTheme(theme==="light"? "dark": "light")}>dark mode</button>
-
         <div className="top-navbar">
           <ul>
             {sideNavbarData.topNav.map((item, index) => (
               <>
-                <a
-               
+                <NavLink
+                to={item.path}
                   style={{ textDecoration: "none" }}
                   key={index}
                   activeclassName="active"
@@ -30,7 +28,7 @@ const SideNavbar = ({ children, setTheme, theme }) => {
                     <div className="icon">{item.icon}</div>
                     <div className="nav-item">{item.name}</div>
                   </li>
-                </a>
+                </NavLink>
               </>
             ))}
           </ul>
@@ -81,10 +79,11 @@ const SideNavbar = ({ children, setTheme, theme }) => {
         </div>
       </div>
 
-      <div className="content-part" id="content">
-        <div className="right-section">
-          <div className="content" >{children}</div>
-        </div>
+      <div className="content-part" id="content" >
+      
+        <div className="content" >{children}</div>
+      
+         
       </div>
     </section>
   );
