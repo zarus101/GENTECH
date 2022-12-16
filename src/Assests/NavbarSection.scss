@@ -1,4 +1,5 @@
 
+@use "./Commons.scss" as *;
 .main-section {
     height: 100%;
     width: 100%;
@@ -20,7 +21,7 @@
         padding-left: 7vh;
         h2{
           color: rgb(116, 115, 115);
-          font-size: 1rem;
+          font-size: $h2;
         }
       }
 
@@ -39,10 +40,8 @@
           }
 
           :hover{
-          
-            .nav-list{
-              color: red;
-            }
+        
+            
             .icon{
               color: red;
             }
@@ -54,10 +53,14 @@
             width: 100%;
             list-style: none;
             color: black;
-          
+            cursor: pointer;
             display: flex;
             background-color: transparent;
             transition: 0.5s ease-in;
+
+            :hover{
+              background-color: red;
+            }
     
             .icon {
               background-color: transparent;
@@ -70,7 +73,7 @@
             }
             .nav-item {
               background-color: transparent;
-              font-size: 15px;
+              font-size: $li;
               font-weight: 500;
               text-decoration: none;
             }
