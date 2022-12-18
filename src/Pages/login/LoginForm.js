@@ -1,21 +1,19 @@
 import React from "react";
-import {
-  Grid,
-  Paper,
-  Avatar,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  Typography,
-  Link,
-} from "@material-ui/core";
+import Grid from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import logo from "../../Assets/Images/logo.jpg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../schema/loginFormSchema";
 import { useNavigate } from "react-router-dom";
+import { Paper } from "@mui/material";
 
 const defaultValues = {
   email: "",

@@ -1,20 +1,20 @@
 import React from "react";
 import logo from "../../Assets/Images/logo.jpg";
-import {
-  Grid,
-  Paper,
-  Avatar,
-  TextField,
-  Button,
-  Typography,
-  Link,
-} from "@material-ui/core";
+import Grid from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../schema/formSchema";
 import { ErrorRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { Paper } from "@mui/material";
 
 
 const defaultValues = {

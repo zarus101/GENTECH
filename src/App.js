@@ -5,8 +5,9 @@ import "./Assests/index.scss"
 import { useState } from "react";
 import Browse from "./Pages/Browse";
 import Artists from "./Pages/Artists";
-// import Login from "./pages/login/LoginForm";
-// import Register from "./Pages/register/RegisterForm";
+import Login from "./Pages/login/LoginForm";
+import Register from "./Pages/register/RegisterForm";
+
 
 
 function App() {
@@ -22,8 +23,8 @@ function App() {
         <Route path="/album" element={<Home theme={theme} setTheme={setTheme} />} />
         <Route path="/artists" element={<Artists theme={theme} setTheme={setTheme} />} />
         <Route path="/videos" element={<Home theme={theme} setTheme={setTheme} />} /> 
-         {/* <Route path="/login" element={<Login/>}/>
-      <Route path="/register" element={<Register/>}/>      */}
+         <Route path="/login" element={<Login/>}/>
+      <Route path="/register" element={<Register/>}/>     
       </Routes>
     </SideNavbar>
 
