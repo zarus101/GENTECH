@@ -16,6 +16,7 @@ import { registerSchema } from "../../schema/formSchema";
 import { ErrorRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
+
 const defaultValues = {
   name: "",
   password: "",
