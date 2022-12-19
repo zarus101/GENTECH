@@ -4,7 +4,7 @@ import "./assets/index.scss";
 
 function App() {
   return (
-    <div className="app">
+    <div className="">
       <Routes />
     </div>
   );

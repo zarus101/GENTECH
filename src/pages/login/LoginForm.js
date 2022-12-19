@@ -1,5 +1,5 @@
 import React from "react";
-import Grid from "@mui/material/AppBar";
+import "../../assets/login.scss";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
@@ -41,31 +41,17 @@ const Login = () => {
     setChecked(event.target.checked);
   };
 
-  const paperStyle = {
-    padding: 20,
-    height: "70vh",
-    width: 350,
-    margin: "20px auto",
-  };
-  const textFieldStyle = { margin: "10px 0" };
-  const loginBtnStyle = {
-    margin: "8px 0",
-    backgroundColor: "#DC4D2E",
-    color: "#fff",
-  };
-
   return (
     <form onSubmit={handleSubmit(formSubmitHandler)}>
-      <Paper elevation={10} style={paperStyle}>
-        <Grid align="center">
-          <Avatar src={logo} />
-          <h2>Sign In</h2>
-        </Grid>
+      <Paper elevation={10} className="login_wrapper">
+        <Avatar src={logo} className="form_logo"/>
+        <h2>Sign In</h2>
+
         <Typography>Email Address</Typography>
         <TextField
           {...register("email")}
           variant="outlined"
-          style={textFieldStyle}
+          className="login_textfield"
           error={!!errors["email"]}
           helperText={errors["email"]?.message}
           fullWidth
@@ -75,7 +61,7 @@ const Login = () => {
         <TextField
           {...register("password")}
           variant="outlined"
-          style={textFieldStyle}
+          className="login_textfield"
           error={!!errors["password"]}
           helperText={errors["password"]?.message}
           fullWidth
@@ -98,9 +84,8 @@ const Login = () => {
         <Button
           type="submit"
           variant="contained"
-          style={loginBtnStyle}
-          fullWidth
-        >
+          className="login_button"
+          fullWidth>
           Login
         </Button>
         <Typography>
