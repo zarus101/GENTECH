@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import sideNavbarData from "../Data/sideNavbarData";
-import "../Assests/NavbarSection.scss";
-import "../Assests/Theme.scss"
+import sideNavbarData from "./sideNavbarData";
+import "../../assets/NavbarSection.scss";
+import "../../assets/Theme.scss"
 
 const SideNavbar = ({ children, setTheme, theme }) => {
   const [isOpen, setIsOpen] = useState(false);
