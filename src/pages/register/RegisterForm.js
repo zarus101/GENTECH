@@ -1,44 +1,38 @@
 import React from "react";
+import logo from "../../assets/Images/logo.jpg";
 import Grid from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import logo from "../../Assets/Images/logo.jpg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "../../schema/loginFormSchema";
+import { registerSchema } from "./registerFormSchema";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@mui/material";
 
 const defaultValues = {
-  email: "",
+  name: "",
   password: "",
+  email: "",
+  confirmPassword: "",
 };
 
-const Login = () => {
-  const navigate=  useNavigate()
+const Register = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues,
-    resolver: yupResolver(loginSchema ),
+    resolver: yupResolver(registerSchema),
   });
 
   const formSubmitHandler = (data) => {
+    navigate("/");
     console.log(data);
-    navigate('/')
-  };
-
-  const [checked, setChecked] = React.useState(true);
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
   };
 
   const paperStyle = {
@@ -48,7 +42,7 @@ const Login = () => {
     margin: "20px auto",
   };
   const textFieldStyle = { margin: "10px 0" };
-  const loginBtnStyle = {
+  const BtnStyle = {
     margin: "8px 0",
     backgroundColor: "#DC4D2E",
     color: "#fff",
@@ -59,59 +53,54 @@ const Login = () => {
       <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar src={logo} />
-          <h2>Sign In</h2>
+          <h2>Sign Up</h2>
         </Grid>
-        <Typography>Email Address</Typography>
+        <Typography>Full Name</Typography>
+        <TextField
+          {...register("name")}
+          variant="outlined"
+          style={textFieldStyle}
+          error={!!errors["name"]}
+          helperText={errors["name"]?.message}
+          fullWidth
+        />
+        <Typography>Email </Typography>
         <TextField
           {...register("email")}
+          type="email"
           variant="outlined"
           style={textFieldStyle}
           error={!!errors["email"]}
           helperText={errors["email"]?.message}
           fullWidth
         />
-
         <Typography>Password</Typography>
         <TextField
           {...register("password")}
+          type="password"
           variant="outlined"
           style={textFieldStyle}
           error={!!errors["password"]}
           helperText={errors["password"]?.message}
           fullWidth
         />
-
-        <FormControlLabel
-          control={<Checkbox checked={checked} onChange={handleChange} />}
-          label="Remember me"
-        />
-        <Typography>Enter Captcha:</Typography>
+        <Typography>Confirm Password</Typography>
         <TextField
+          {...register("confirmPassword")}
+          type="password"
           variant="outlined"
-          style={{ width: "42%", margin: "5px" }}
-        ></TextField>
-        <TextField
-          variant="outlined"
-          style={{ width: "42%", margin: "5px" }}
-        ></TextField>
-        <AutorenewIcon style={{ marginTop: "25px" }} />
-        <Button
-          type="submit"
-          variant="contained"
-          style={loginBtnStyle}
+          style={textFieldStyle}
+          error={!!errors["confirmPassword"]}
+          helperText={errors["confirmPassword"]?.message}
           fullWidth
-        >
-          Login
+        />
+        <Button type="submit" variant="contained" style={BtnStyle} fullWidth>
+          Register
         </Button>
-        <Typography>
-          <Link href="#" underline="none">
-            Forgot Password?
-          </Link>
-        </Typography>
         <Typography>
           Do you Have an Account?
           <Link href="#" underline="none">
-            Register
+            Login
           </Link>
         </Typography>
       </Paper>
@@ -119,4 +108,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
