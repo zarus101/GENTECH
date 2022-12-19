@@ -1,0 +1,23 @@
+.register_wrapper{
+  padding: 20px;
+  height: 80vh;
+  width: 350px;
+  margin: 20px auto;
+  .register_textfield{
+    margin: 10px 0;
+   }
+   .register_button{
+    margin: 8px 0;
+    background-color: #DC4D2E;
+    color: #fff;
+  }
+  .form_logo{
+    position: relative;
+    left: 40%;
+  }
+  h2{
+    position: relative;
+    left: 32%;
+    color: rgb(116, 115, 115);
+  }
+}

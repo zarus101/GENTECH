@@ -1,6 +1,5 @@
 import React from "react";
 import logo from "../../assets/Images/logo.jpg";
-import Grid from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -11,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "./registerFormSchema";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@mui/material";
+import "../../assets/register.scss";
 
 const defaultValues = {
   name: "",
@@ -35,31 +35,17 @@ const Register = () => {
     console.log(data);
   };
 
-  const paperStyle = {
-    padding: 20,
-    height: "70vh",
-    width: 350,
-    margin: "20px auto",
-  };
-  const textFieldStyle = { margin: "10px 0" };
-  const BtnStyle = {
-    margin: "8px 0",
-    backgroundColor: "#DC4D2E",
-    color: "#fff",
-  };
-
   return (
     <form onSubmit={handleSubmit(formSubmitHandler)}>
-      <Paper elevation={10} style={paperStyle}>
-        <Grid align="center">
-          <Avatar src={logo} />
-          <h2>Sign Up</h2>
-        </Grid>
+      <Paper elevation={10} className="register_wrapper">
+        <Avatar src={logo} className="form_logo" />
+        <h2>Sign Up</h2>
+
         <Typography>Full Name</Typography>
         <TextField
           {...register("name")}
+          className="register_textfield"
           variant="outlined"
-          style={textFieldStyle}
           error={!!errors["name"]}
           helperText={errors["name"]?.message}
           fullWidth
@@ -67,9 +53,9 @@ const Register = () => {
         <Typography>Email </Typography>
         <TextField
           {...register("email")}
+          className="register_textfield"
           type="email"
           variant="outlined"
-          style={textFieldStyle}
           error={!!errors["email"]}
           helperText={errors["email"]?.message}
           fullWidth
@@ -77,9 +63,9 @@ const Register = () => {
         <Typography>Password</Typography>
         <TextField
           {...register("password")}
+          className="register_textfield"
           type="password"
           variant="outlined"
-          style={textFieldStyle}
           error={!!errors["password"]}
           helperText={errors["password"]?.message}
           fullWidth
@@ -87,14 +73,17 @@ const Register = () => {
         <Typography>Confirm Password</Typography>
         <TextField
           {...register("confirmPassword")}
+          className="register_textfield"
           type="password"
           variant="outlined"
-          style={textFieldStyle}
           error={!!errors["confirmPassword"]}
           helperText={errors["confirmPassword"]?.message}
           fullWidth
         />
-        <Button type="submit" variant="contained" style={BtnStyle} fullWidth>
+        <Button type="submit" 
+        className="register_button"
+        variant="contained" 
+        fullWidth>
           Register
         </Button>
         <Typography>
