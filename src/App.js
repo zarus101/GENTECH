@@ -46,7 +46,6 @@ function App() {
   </BrowserRouter>
   </div>
 
->>>>>>> parent of 92eba3d (login and register error resolved)
   );
 }
 
