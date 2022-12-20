@@ -1,18 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-<<<<<<< Updated upstream:src/components/sidebar/SideNavbar.js
 import sideNavbarData from "./sideNavbarData";
 import "../../assets/NavbarSection.scss";
 import "../../assets/Theme.scss"
-=======
-import sideNavbarData from "../Data/sideNavbarData";
-import "../Assests/NavbarSection.scss";
-import "../Assests/Theme.scss"
-import Navbar from "../Commons/Navbar";
-
-
->>>>>>> Stashed changes:src/Components/sideNavbar.js
 
 const SideNavbar = ({ children, setTheme, theme }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,6 +69,7 @@ const SideNavbar = ({ children, setTheme, theme }) => {
                   activeclassName="active"
                 >
                   <li className="nav-list" id="text">
+                    
                     <div className="nav-item">{item.name}</div>
                   </li>
                 </a>
@@ -88,15 +80,10 @@ const SideNavbar = ({ children, setTheme, theme }) => {
       </div>
 
       <div className="content-part" id="content" >
-
-        <div className="left-part">
-
-        </div>
-        <div className="right-part">
-        <Navbar/>
-        {children}
-
-        </div>
+      
+        <div className="content" >{children}</div>
+      
+         
       </div>
     </section>
   );
