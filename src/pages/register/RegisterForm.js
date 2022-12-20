@@ -29,8 +29,16 @@ import { Paper } from "@mui/material";
 import "../../assets/register.scss";
 ========
 
+<<<<<<< HEAD
 >>>>>>>> parent of 92eba3d (login and register error resolved):src/pages/RegisterForm.js
 
+=======
+<<<<<<<< HEAD:src/pages/RegisterForm.js
+>>>>>>>> parent of 92eba3d (login and register error resolved):src/pages/RegisterForm.js
+
+========
+>>>>>>>> parent of 2243c02 (ssss):src/pages/register/RegisterForm.js
+>>>>>>> parent of 2243c02 (ssss)
 const defaultValues = {
   name: "",
   password: "",
