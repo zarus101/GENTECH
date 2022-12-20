@@ -22,6 +22,7 @@
     "react-scripts": "5.0.1",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "react-validation": "^3.0.7",
     "sass": "^1.57.0",
 =======
@@ -32,6 +33,10 @@
     "react-hot-toast": "^2.4.0",
     "react-scripts": "5.0.1",
     "react-validation": "^3.0.7",
+=======
+    "react-validation": "^3.0.7",
+    "sass": "^1.57.0",
+>>>>>>> parent of 58e77e3 (added demo navbar and artist page)
 =======
     "react-validation": "^3.0.7",
     "sass": "^1.57.0",
