@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<<< HEAD:src/pages/login/LoginForm.js
 import "../../assets/login.scss";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
@@ -8,19 +7,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-========
-import {
-  Grid,
-  Paper,
-  Avatar,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  Typography,
-  Link,
-} from "@material-ui/core";
->>>>>>>> parent of 92eba3d (login and register error resolved):src/pages/LoginForm.js
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import logo from "../../assets/Images/logo.jpg";
 import { useForm } from "react-hook-form";

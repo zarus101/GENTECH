@@ -19,6 +19,7 @@ import Register from './pages/register/RegisterForm';
 
 
 function App() {
+  const [theme, setTheme]= useState("light");
   return (
 
 
@@ -38,7 +39,7 @@ function App() {
   </BrowserRouter>
   </div>
 
-  );
+  );gi
 }
 
 export default App;
