@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<<< HEAD:src/pages/register/RegisterForm.js
 import logo from "../../assets/Images/logo.jpg";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
@@ -7,33 +6,23 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useForm } from "react-hook-form";
-========
-import logo from "../../Assets/Images/logo.jpg";
-import {
-  Grid,
-  Paper,
-  Avatar,
-  TextField,
-  Button,
-  Typography,
-  Link,
-} from "@material-ui/core";
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
->>>>>>>> parent of 92eba3d (login and register error resolved):src/pages/RegisterForm.js
+
+// import {
+//   Grid,
+//   Paper,
+//   Avatar,
+//   TextField,
+//   Button,
+//   Typography,
+//   Link,
+// } from "@material-ui/core";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "./registerFormSchema";
 import { useNavigate } from "react-router-dom";
-<<<<<<<< HEAD:src/pages/register/RegisterForm.js
 import { Paper } from "@mui/material";
 import "../../assets/register.scss";
-========
 
-<<<<<<<< HEAD:src/pages/RegisterForm.js
->>>>>>>> parent of 92eba3d (login and register error resolved):src/pages/RegisterForm.js
-
-========
->>>>>>>> parent of 2243c02 (ssss):src/pages/register/RegisterForm.js
 const defaultValues = {
   name: "",
   password: "",
@@ -102,10 +91,12 @@ const Register = () => {
           helperText={errors["confirmPassword"]?.message}
           fullWidth
         />
-        <Button type="submit" 
-        className="register_button"
-        variant="contained" 
-        fullWidth>
+        <Button
+          type="submit"
+          className="register_button"
+          variant="contained"
+          fullWidth
+        >
           Register
         </Button>
         <Typography>

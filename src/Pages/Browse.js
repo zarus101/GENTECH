@@ -1,12 +1,18 @@
-import React from 'react'
+import React from "react";
+import TopArtists from "../Components/TopArtists.js";
+import TopSongs from "../Components/TopSongs";
+import TopAlbums from "../Components/TopAlbums";
 
 const Browse = () => {
   return (
     <>
-    <div>this is browse section</div>
+      <div>
+        <TopSongs />
+        <TopArtists />
+        <TopAlbums />
+      </div>
     </>
+  );
+};
 
-  )
-}
-
-export default Browse
+export default Browse;

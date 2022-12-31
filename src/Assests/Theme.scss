@@ -1,38 +1,42 @@
 @use "./Commons.scss" as *;
 
-body{
-    padding: 0;
-    margin: 0;
+body {
+  padding: 0;
+  margin: 0;
 }
 
-#light{
-    #text{
-        color: $primary-text-color;
+#light {
+  #text {
+    color: $primary-text-color;
+  }
+  #background {
+    background: $primary-background;
+  }
 
-    }
-    #background{
-        background: $primary-background;
-
-    }
-
-    #content{
-        background: -webkit-linear-gradient(rgb(234, 203, 149),rgb(228, 224, 224), rgb(104, 86, 158));
-    }
-
+  #content {
+    // background: -webkit-linear-gradient(rgb(234, 203, 149),rgb(228, 224, 224), rgb(104, 86, 158));
+    background: rgb(246, 221, 216);
+    background: linear-gradient(
+      180deg,
+      rgba(246, 221, 216, 1) 0%,
+      rgba(208, 209, 223, 1) 100%
+    );
+  }
 }
 
-#dark{
-    #text{
-        color:$secondary-text-color;
+#dark {
+  #text {
+    color: $secondsry-text-color;
+  }
+  #background {
+    background-color: $secondary-background;
+  }
 
-    }
-    #background{
-        background-color: $secondary-background;
-
-    }
-
-    #content{
-        background: -webkit-linear-gradient(rgb(34, 33, 33),rgb(65, 63, 63), rgb(22, 21, 26));
-    }
-
+  #content {
+    background: -webkit-linear-gradient(
+      rgb(34, 33, 33),
+      rgb(65, 63, 63),
+      rgb(22, 21, 26)
+    );
+  }
 }
