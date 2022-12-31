@@ -80,8 +80,14 @@ const SideNavbar = ({ children, setTheme, theme }) => {
       </div>
 
       <div className="content-part" id="content" >
-        <div className="left"></div>
-        <div className="right">{children}</div>
+        <div className="left-section">
+
+        </div>
+        <div className="right-section">
+        {children}
+
+        </div>
+      
       
       
       
