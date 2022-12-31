@@ -1,0 +1,24 @@
+.double_column {
+  display: flex;
+  padding: 2rem;
+
+  .left_column {
+    width: 50%;
+  }
+
+  .right_column {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .double_column {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .double_column .left_column,
+  .double_column .right_column {
+    width: 100%;
+  }
+}

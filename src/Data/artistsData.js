@@ -1,0 +1,73 @@
+const bestArtists = [
+  {
+    id: 1,
+    title: "Bad in Love",
+    name: "Halsey",
+    src: "./images/artists/1.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 2,
+    title: "Summer of '69",
+    name: "Bryan Adams",
+    src: "./images/artists/2.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 3,
+    title: "Hold Back The River",
+    name: "James Bay",
+    src: "./images/artists/3.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 4,
+    title: "Need You Now",
+    name: "Lady Antebellum",
+    src: "./images/artists/4.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 5,
+    title: "Dancing On My Own",
+    name: "Calum Scott",
+    src: "./images/artists/5.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 6,
+    title: "Ain't It Fun",
+    name: "Paramore",
+    src: "./images/artists/6.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 7,
+    title: "This is America",
+    name: "Childish Gambino",
+    src: "./images/artists/7.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 8,
+    title: "Treat You Better",
+    name: "Shawn Mendes",
+    src: "./images/artists/8.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 9,
+    title: "My Heart Will Go On (cover)",
+    name: "Celine Tam",
+    src: "./images/artists/9.jpg",
+    duration: "5:00",
+  },
+  {
+    id: 10,
+    title: "Shallow",
+    name: "Bradley Cooper",
+    src: "./images/artists/10.jpg",
+    duration: "5:00",
+  },
+];
+export default bestArtists;

@@ -8,6 +8,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
 
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import logo from "../../assets/Images/logo.jpg";
@@ -45,7 +46,7 @@ const Login = () => {
   return (
     <form onSubmit={handleSubmit(formSubmitHandler)}>
       <Paper elevation={10} className="login_wrapper">
-        <Avatar src={logo} className="form_logo"/>
+        <Avatar src={logo} className="form_logo" />
         <h2>Sign In</h2>
 
         <Typography>Email Address</Typography>
@@ -86,7 +87,8 @@ const Login = () => {
           type="submit"
           variant="contained"
           className="login_button"
-          fullWidth>
+          fullWidth
+        >
           Login
         </Button>
         <Typography>

@@ -1,18 +1,33 @@
-import React from 'react'
+import React from "react";
 
-const Home = ({theme, setTheme}) => {
+import TopArtists from "../Components/TopArtists.js";
+import MostPlayed from "../Components/MostPlayed.js";
+
+import '../Assests/home.scss';
+
+const Home = ({ theme, setTheme }) => {
   return (
     <>
-     <div className="home">
+      <div className="home">
+        <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+          dark mode
+        </button>
+        <TopArtists />
 
-     <button onClick={()=> setTheme(theme==="light"? "dark": "light")}>dark mode</button>
-
-
-
-    </div>
-
+        <div
+          className="double_column"
+          
+        >
+          <div className="left_column">
+            Music
+          </div>
+          <div className="right_column">
+            <MostPlayed />
+          </div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

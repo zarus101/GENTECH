@@ -1,0 +1,131 @@
+// #app {
+//   height: 100%;
+// }
+// html,
+// body {
+//   position: relative;
+//   height: 100%;
+// }
+
+// body {
+//   background: #eee;
+//   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+//   font-size: 14px;
+//   color: #000;
+//   margin: 0;
+//   padding: 0;
+// }
+
+.wrapper {
+  padding: 0rem 0 0rem 2rem;
+
+  .carousel_header {
+    display: flex;
+    justify-content: space-between;
+    padding-inline-end: 2rem;
+
+    .carousal_title {
+      display: flex;
+
+      p {
+        transform: translateY(13px);
+        font-size: 0.7rem;
+        margin-left: 10px;
+        color: rgb(138, 131, 131);
+        font-weight: bolder;
+        display: flex;
+
+        .see_all_arrow {
+          transform: translateY(-4px);
+        }
+      }
+
+      h3 {
+        color: rgb(48, 45, 45);
+      }
+    }
+  }
+
+  .swiper_buttons {
+    float: right;
+    display: flex;
+    gap: 5px;
+    height: 30px;
+    transform: translateY(10px);
+
+    button {
+      cursor: pointer;
+    }
+  }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  //   background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  // -webkit-box-align: center;
+  // -ms-flex-align: center;
+  // -webkit-align-items: center;
+  // align-items: center;
+  margin-inline: 5px !important;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+    transition: 0.3s ease-in-out;
+  }
+}
+
+.swiper-slide {
+  .artist_info {
+    text-align: left;
+  }
+}
+
+h5 {
+  color: rgb(31, 30, 30);
+}
+
+h6 {
+  margin-top: -20px;
+  color: rgb(138, 131, 131);
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 25px;
+  box-shadow: 0px 10px 36px -13px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 10px 36px -13px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 10px 36px -13px rgba(0, 0, 0, 0.75);
+}
+
+@media screen and (max-width: 640px) {
+  .wrapper {
+    padding: 0.5rem;
+
+    .swiper_buttons {
+      display: none;
+    }
+  }
+}
