@@ -24,33 +24,7 @@ export default function MostPlayed({ theme }) {
           55 songs in the list <ArrowCircleDownIcon className="arrowdown" />
         </p>
       </div>
-
-      {/* {bestArtists.map((artist) => (
-        <div className="mostplayed_element" key={artist.id}>
-          <div className="element_left">
-            <div>
-              <span>{artist.id}</span>
-
-              <img src={artist.src} alt="artists" />
-            </div>
-            <div className="play_song">
-              <PlayArrowIcon className="grey_text" />
-
-              <span>{artist.title}</span>
-            </div>
-          </div>
-
-          <div className="mostplayed_element_info">
-            <span className="grey_text">{artist.name}</span>
-            <span className="grey_text">{artist.duration}</span>
-
-            <span>
-              <img src="./images/visualizer.gif" alt="" />
-            </span>
-          </div>
-        </div>
-      ))} */}
-
+ 
       {bestArtists.slice(0, 5).map((artist, index) => (
         <div
           className={

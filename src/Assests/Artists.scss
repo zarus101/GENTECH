@@ -1,0 +1,40 @@
+@use "./Commons.scss" as *;
+
+.artist-section{
+    .top-section{
+
+    }
+
+    
+  .middle-section{
+      .wrapper{
+        display: block;
+    
+        .carousel_header{
+            display: block;
+
+            .artist-card{
+                display: grid;
+                grid-template-rows: 1fr 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+
+                .card{
+                    height: 90%;
+                    width: 90%;
+                    .artist_image{
+                        
+
+                        img{
+                            height: 100%;
+                            width: 100%;
+                            border-radius: 20%;
+                        }
+                    }
+                }
+            }
+        }
+    
+    }
+}
+
+}

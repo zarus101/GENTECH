@@ -5,6 +5,9 @@ import "./Assests/index.scss"
 import { useState } from "react";
 import Browse from "./Pages/Browse";
 import Artists from "./Pages/Artists";
+import Topbar from "./Commons/Navbar";
+import Videos from "./Pages/Videos";
+import SingleArtist from "./Pages/SingleArtist";
 
 
 function App() {
@@ -12,6 +15,7 @@ function App() {
   return (
     <div className="app">
       <SideNavbar theme={theme} setTheme={setTheme}>
+      <Topbar theme={theme} setTheme={setTheme}/>
         <Routes>
           <Route
             path="/"
@@ -29,9 +33,14 @@ function App() {
             path="/artists"
             element={<Artists theme={theme} setTheme={setTheme} />}
           />
+
+<Route
+            path="/artist/:id"
+            element={<SingleArtist  theme={theme} setTheme={setTheme} />}
+          />
           <Route
             path="/videos"
-            element={<Home theme={theme} setTheme={setTheme} />}
+            element={<Videos theme={theme} setTheme={setTheme} />}
           />
           {/* <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} /> */}

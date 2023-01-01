@@ -4,14 +4,13 @@ import TopArtists from "../Components/TopArtists.js";
 import MostPlayed from "../Components/MostPlayed.js";
 
 import '../Assests/home.scss';
+import Topbar from "../Commons/Navbar.js";
 
 const Home = ({ theme, setTheme }) => {
   return (
     <>
       <div className="home">
-        <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-          dark mode
-        </button>
+      
         <TopArtists />
 
         <div

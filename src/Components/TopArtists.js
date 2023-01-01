@@ -52,8 +52,6 @@ function TopArtists({ theme }) {
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
-        // loop={true}
-        // loopFillGroupWithBlank={true}
         breakpoints={{
           0: {
             slidesPerView: 2,
