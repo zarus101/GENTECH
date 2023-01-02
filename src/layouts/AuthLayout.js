@@ -12,7 +12,7 @@ const AuthLayout = ({ children }) => {
   return (
     <div className="app" >
       <Sidebar theme={theme} setTheme={setTheme}>
-        <Navbar />
+        <Navbar theme={theme} setTheme={setTheme} />
         {children}
       </Sidebar>
     </div>

@@ -2,7 +2,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-
 import ReCAPTCHA from "react-google-recaptcha";
 import "../../assets/register.scss";
 import {
@@ -114,7 +113,7 @@ const Register = () => {
         </Button>
         <Typography>
           Do you Have an Account?
-          <Link href="http://localhost:3000/login" underline="none">
+          <Link href="../login" underline="none">
             Login
           </Link>
         </Typography>

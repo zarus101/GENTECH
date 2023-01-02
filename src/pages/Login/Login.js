@@ -10,7 +10,6 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useForm } from "react-hook-form";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -97,7 +96,7 @@ const Login = () => {
         </Typography>
         <Typography>
           Do you Have an Account?
-          <Link href="http://localhost:3000/register" underline="none">
+          <Link href="../register" underline="none">
             Register
           </Link>
         </Typography>
