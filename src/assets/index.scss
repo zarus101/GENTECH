@@ -38,3 +38,14 @@ code {
 .none_text_decoration {
   text-decoration: none;
 }
+
+.d-visibility{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(157, 157, 110);
+  opacity: .5;
+  z-index: -1;
+}
