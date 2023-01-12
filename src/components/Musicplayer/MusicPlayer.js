@@ -7,6 +7,10 @@ const MusicPlayer = () => {
   return (
     <>
       <div className="home-music-section">
+        <div className="mostplayed_header">
+          <h2 id="text">Music Player</h2>
+        </div>
+
         <div className="audio-player-lg">
           <div className="audio-cover-lg-img">
             <img />
