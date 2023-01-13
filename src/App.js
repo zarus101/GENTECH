@@ -13,7 +13,7 @@ const [theme , setTheme]= useState("light")
   return (
     <div className="app">
       <Toaster position="bottom-left" reverseOrder={false} />
-      <Routes theme={theme} setTheme={setTheme} />;
+      <Routes theme={theme} setTheme={setTheme} />
   </div>
   );
 };

@@ -3,7 +3,7 @@ import React from "react";
 const SimpleLayout = ({ children }) => {
   return (
     <>
-      <div>{children}</div>
+      <div className="full-div">{children}</div>
     </>
   );
 };
