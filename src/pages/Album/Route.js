@@ -1,9 +1,10 @@
 import AuthLayout from "../../layouts/AuthLayout";
 import Home from "../Home/Home";
+import Albums from "./Albums";
 
 export const albumRoute = {
   path: "/album",
-  element: Home,
+  element: Albums,
   layout: AuthLayout,
   exact: true,
   isPublic: false,
