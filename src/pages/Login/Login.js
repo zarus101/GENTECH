@@ -17,6 +17,7 @@ import { loginSchema } from "./loginSchema";
 import { useNavigate } from "react-router-dom";
 import "../../assets/login.scss";
 import { toast } from "react-hot-toast";
+import { useState } from "react";
 
 const defaultValues = {
   email: "",
@@ -24,6 +25,7 @@ const defaultValues = {
 };
 
 const Login = () => {
+  const [isLoggedIN, setIsLoggedIN]= useState(false)
   const auth = getAuth();
   const navigate = useNavigate();
   const {
@@ -39,6 +41,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
         toast.success("Logged In Successfully");
+        setIsLoggedIN(true)
         navigate("/");
       })
       .catch((error) => {
@@ -52,7 +55,7 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(formSubmitHandler)}>
+    <form className="form" onSubmit={handleSubmit(formSubmitHandler)}>
       <Paper elevation={10} className="login_wrapper">
         <Avatar src="../images/logo.jpg" className="form_logo" />
         <h2>Sign In</h2>

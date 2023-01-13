@@ -1,0 +1,126 @@
+@use "../Commons.scss" as *;
+.main-section {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  transition: all 0.5s;
+  .main-navbar {
+    background-color: rgb(244, 244, 244);
+    height: 100%;
+    position: fixed;
+    overflow: scroll;
+    transition: 0.5s ease;
+
+    .main-box {
+      background-color: white;
+
+      .pro-sidebar {
+        background-color: transparent;
+
+        .collapsed{
+            width: 91px;
+        }
+
+        .pro-sidebar-inner {
+          background: transparent;
+
+          .pro-menu {
+            padding-left: 7vh;
+
+            .pro-menu-item{
+                padding-bottom: 3vh;
+                  width: 100%;
+                  list-style: none;
+                  color: black;
+                  cursor: pointer;
+                  display: flex;
+                  background-color: transparent;
+                  transition: 0.5s ease-in;
+
+                  .pro-inner-item {
+                    .pro-icon-wrapper {
+                      background-color: transparent;
+                      .pro-icon {
+                        background-color: transparent;
+                        padding-right: 5vh;
+                        svg {
+                          background-color: transparent;
+                          height: 30px;
+                          width: 30px;
+                        }
+                      }
+                    }
+                  }
+                }
+
+            
+            ul {
+              padding-top: 3vh;
+              width: 100%;
+              background-color: transparent;
+              display: block;
+              color: black;
+
+              .nav-lists {
+                .active {
+                  .icon {
+                    color: red;
+                  }
+                }
+
+                .pro-menu-item {
+                  padding-bottom: 3vh;
+                  width: 100%;
+                  list-style: none;
+                  color: black;
+                  cursor: pointer;
+                  display: flex;
+                  background-color: transparent;
+                  transition: 0.5s ease-in;
+
+                  .pro-inner-item {
+                    .pro-icon-wrapper {
+                      background-color: transparent;
+                      .pro-icon {
+                        background-color: transparent;
+                        padding-right: 5vh;
+                        svg {
+                          background-color: transparent;
+                          height: 30px;
+                          width: 30px;
+                        }
+                      }
+
+                      .pro-item-content{
+
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .content-part {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    background: linear-gradient(
+        180deg,
+        rgba(246, 221, 216, 1) 0%,
+        rgba(208, 209, 223, 1) 100%
+      );
+    .left-section {  
+      height: 100%;
+    }
+
+    .right-section {
+      height: 100%;
+      transition: 0.5s ease;
+    }
+  }
+}

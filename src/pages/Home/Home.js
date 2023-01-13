@@ -28,6 +28,7 @@ const Home = ({ theme, setTheme }) => {
         </div>
 
         <br/>
+        <br/>
 
         <FixFooter/>
 

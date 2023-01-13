@@ -22,6 +22,12 @@ code {
 
 .app {
   background-color: white;
+  display: flex;
+  position: relative;
+}
+.content, .app{
+  height: 100%;
+  width: 100%;
 }
 .grey_text {
   color: grey;
@@ -48,4 +54,29 @@ code {
   background-color: rgb(157, 157, 110);
   opacity: .5;
   z-index: -1;
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.full-div{
+  height: 100%;
+  width: 100%;
 }
