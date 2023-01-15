@@ -25,7 +25,8 @@ code {
   display: flex;
   position: relative;
 }
-.content, .app{
+.content,
+.app {
   height: 100%;
   width: 100%;
 }
@@ -45,17 +46,16 @@ code {
   text-decoration: none;
 }
 
-.d-visibility{
+.d-visibility {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgb(157, 157, 110);
-  opacity: .5;
+  opacity: 0.5;
   z-index: -1;
 }
-
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -76,7 +76,14 @@ code {
   background: #555;
 }
 
-.full-div{
+.full-div {
   height: 100%;
   width: 100%;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
