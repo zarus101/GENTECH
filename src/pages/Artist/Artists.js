@@ -1,12 +1,16 @@
 import React from "react";
-import { SwiperSlide } from "swiper/react";
 import TopArtists from "../../components/Artist/TopArtists";
 import "../../assets/Artists.scss";
 import bestArtists from "../../services/artistsData";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Artists = ({ theme }) => {
   const navigate = useNavigate();
+
+  const handleClick = (id, e) => {
+    e.preventDefault();
+    navigate(`/artist/${id}`);
+  };
   return (
     <>
       <div className="artist-section">
@@ -21,17 +25,19 @@ const Artists = ({ theme }) => {
               </div>
               <div className="artist-card">
                 {bestArtists.map((item) => (
-                  <NavLink to={"/artist/{item.id}"}>
-                    <div className="card" key={item.id}>
-                      <div className="artist_image">
-                        <img src={item.src} alt="" />
-                      </div>
-                      <div className="artist_info">
-                        <h5 id="text">{item.name}</h5>
-                        <h6>{item.title}</h6>
-                      </div>
+                  <div
+                    className="card"
+                    key={item.id}
+                    onClick={(e) => handleClick(item.id, e)}
+                  >
+                    <div className="artist_image">
+                      <img src={item.src} alt="" />
                     </div>
-                  </NavLink>
+                    <div className="artist_info">
+                      <h5 id="text">{item.name}</h5>
+                      <h6>{item.title}</h6>
+                    </div>
+                  </div>
                 ))}
 
                 {/* <div className="card">

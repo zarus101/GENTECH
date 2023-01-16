@@ -24,7 +24,7 @@ export default function MostPlayed({ theme }) {
           55 songs in the list <ArrowCircleDownIcon className="arrowdown" />
         </p>
       </div>
- 
+
       {bestArtists.slice(0, 5).map((artist, index) => (
         <div
           className={
@@ -50,7 +50,7 @@ export default function MostPlayed({ theme }) {
             <span className="grey_text">{artist.duration}</span>
 
             <span>
-              <img src="./images/visualizer.gif" alt="" />
+              <img src="../images/visualizer.gif" alt="" />
             </span>
           </div>
         </div>
