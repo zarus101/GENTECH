@@ -1,0 +1,18 @@
+.artist-wrapper {
+  display: flex;
+
+  .artist-info {
+    width: 45%;
+  }
+
+  .player-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 2rem;
+    width: 55%;
+
+    & > div {
+      width: 100%;
+    }
+  }
+}

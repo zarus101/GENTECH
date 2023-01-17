@@ -1,14 +1,18 @@
 import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { isLoggedIN } from "./connection/UserService";
-import { addartistRoute, artistList } from "./pages/Admin/AdminPages/Artist/Route";
+import {
+  addartistRoute,
+  artistList,
+  updateArtistRoute,
+} from "./pages/Admin/AdminPages/Artist/Route";
 import { calenderRoute } from "./pages/Admin/AdminPages/Calender/Route";
 import { adminDashboard } from "./pages/Admin/AdminPages/Dashboard/Route";
 import { addSongs } from "./pages/Admin/AdminPages/Songs/Route";
 import { userList } from "./pages/Admin/AdminPages/Users/Route";
 import { adminRoute } from "./pages/Admin/Route";
 import { albumRoute } from "./pages/Album/Route";
-import { artistRoute } from "./pages/Artist/Route";
+import { artistRoute, singleArtistRoute } from "./pages/Artist/Route";
 import { browseRoute } from "./pages/Browse/Route";
 import { homeRoute } from "./pages/Home/Route";
 import { loginRoute } from "./pages/Login/Route";
@@ -19,6 +23,7 @@ const Routes = () => {
   const routes = [
     albumRoute,
     artistRoute,
+    singleArtistRoute,
     browseRoute,
     homeRoute,
     loginRoute,
@@ -26,6 +31,7 @@ const Routes = () => {
     videoRoute,
     adminRoute,
     addartistRoute,
+    updateArtistRoute,
     calenderRoute,
     addSongs,
     adminDashboard,
@@ -37,7 +43,7 @@ const Routes = () => {
     ({ element: Element, layout: Layout, path, subRoutes = [], isPublic }) => ({
       path,
       element: isPublic ? (
-        <Layout >
+        <Layout>
           <Element />
         </Layout>
       ) : isLoggedIN && !isPublic ? (

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+
 const ArtistList = () => {
   const [user, setUser] = useState([]);
+  const Navigate = useNavigate();
 
   const fetchData = () => {
     return axios
@@ -17,16 +20,18 @@ const ArtistList = () => {
 
   const handleDelete = (id, e) => {
     e.preventDefault();
-    if (window.confirm("Are you syre you want to delete?")) {
+    if (window.confirm("Are you sure you want to delete?")) {
       axios
-        .delete(`/v1/deleteArtist/:${id}`)
+        .delete(`/v1/deleteArtist/${id}`)
         .then((response) => console.log(response))
         .catch((error) => console.error(error));
     }
+    Navigate("/artistslist");
   };
 
   const handleUpdate = (id, e) => {
     e.preventDefault();
+    Navigate(`/UpdateArtist/${id}`);
   };
 
   return (
