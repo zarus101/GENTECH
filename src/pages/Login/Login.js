@@ -10,80 +10,82 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "./loginSchema";
+
 import { useNavigate } from "react-router-dom";
 import "../../assets/login.scss";
-import { toast } from "react-hot-toast";
 import { useState } from "react";
-
-const defaultValues = {
-  email: "",
-  password: "",
-};
+import { toast } from "react-hot-toast";
+import { doLogin, loginUser } from "../../connection/UserService";
 
 const Login = () => {
-  const [isLoggedIN, setIsLoggedIN]= useState(false)
-  const auth = getAuth();
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-    resolver: yupResolver(loginSchema),
+  const [loginDetail, setLoginDetail] = useState({
+    email: "",
+    password: "",
   });
 
-  const formSubmitHandler = (data) => {
-    signInWithEmailAndPassword(auth, data.email, data.password)
-      .then(() => {
-        toast.success("Logged In Successfully");
-        setIsLoggedIN(true)
-        navigate("/");
+  const handleChange = (event, field) => {
+    setLoginDetail({
+      ...loginDetail,
+      [field]: event.target.value,
+    });
+  };
+
+  const handleSubmitForm = (event) => {
+    event.preventDefault();
+    if (loginDetail.username === "" || loginDetail.password === "") {
+      toast.error("username and password is required");
+      return;
+    }
+
+    loginUser(loginDetail)
+      .then((data) => {
+        console.log(data);
+        doLogin(data, () => {
+          console.log(data);
+          if(data.user.role==="admin"){
+            navigate("/admin")
+          }else{
+            navigate('/')
+          } 
+  
+        });
       })
       .catch((error) => {
-        toast.error("Please enter valid username and password");
+        console.log("error");
+        toast.error("something went wrong in server");
       });
   };
 
-  const [checked, setChecked] = React.useState(true);
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
   return (
-    <form className="form" onSubmit={handleSubmit(formSubmitHandler)}>
+    <form className="form" onSubmit={handleSubmitForm}>
       <Paper elevation={10} className="login_wrapper">
         <Avatar src="../images/logo.jpg" className="form_logo" />
         <h2>Sign In</h2>
 
         <Typography>Email Address</Typography>
         <TextField
-          {...register("email")}
+          type="email"
+          name="email"
+          value={loginDetail.email}
+          onChange={(e) => handleChange(e, "email")}
           variant="outlined"
           className="login_textfield"
-          error={!!errors["email"]}
-          helperText={errors["email"]?.message}
           fullWidth
         />
 
         <Typography>Password</Typography>
         <TextField
-          {...register("password")}
+          type="password"
+          name="password"
+          onChange={(e) => handleChange(e, "password")}
+          value={loginDetail.password}
           variant="outlined"
           className="login_textfield"
-          error={!!errors["password"]}
-          helperText={errors["password"]?.message}
           fullWidth
         />
 
-        <FormControlLabel
-          control={<Checkbox checked={checked} onChange={handleChange} />}
-          label="Remember me"
-        />
+        <FormControlLabel control={<Checkbox />} label="Remember me" />
         <Button
           type="submit"
           variant="contained"

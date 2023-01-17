@@ -1,8 +1,5 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
+import React, { useState } from "react";
+
 import "../../assets/register.scss";
 import {
   Typography,
@@ -12,97 +9,98 @@ import {
   Button,
   Link,
 } from "@mui/material";
-import { registerSchema } from "./registerSchema";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  updateCurrentUser,
-  updateProfile,
-} from "firebase/auth";
-import { toast } from "react-hot-toast";
 
-const defaultValues = {
-  name: "",
-  password: "",
-  email: "",
-  confirmPassword: "",
-};
+import { toast } from "react-hot-toast";
+import { signUP } from "../../connection/UserService";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const auth = getAuth();
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-    resolver: yupResolver(registerSchema),
+  const navigate = useNavigate("");
+  const [error, setError] = useState({
+    isError: false,
   });
 
-  const formSubmitHandler = (data) => {
-    createUserWithEmailAndPassword(auth, data.email, data.password)
-      .then((user) => {
-      updateProfile(user, { displayName: data.name });
-      toast.success("User Registered Successfully");
-        navigate("/login");
-      })
-      .catch((error) => {
-        toast.error("user name or email is already taken");
-      });
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password_confirm: "",
+  });
+
+  const handleChange = (event, property) => {
+    setData({ ...data, [property]: event.target.value });
   };
- const handleVerify=()=>{
-  
- }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (error.isError) {
+      toast.error("form data is invalid");
+      return;
+    } else {
+      signUP(data)
+        .then((resp) => {
+          toast.success("registered Successfully");
+          setData({
+            name: "",
+            email: "",
+            password: "",
+            password_confirm: "",
+          });
+          navigate("/login");
+        })
+        .catch((error) => {
+          setError(true);
+          toast.error("error");
+        });
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(formSubmitHandler)}>
+    <form onSubmit={handleSubmit}>
       <Paper elevation={10} className="register_wrapper">
         <Avatar src="../images/logo.jpg" className="form_logo" />
         <h2>Sign Up</h2>
         <Typography>Full Name</Typography>
         <TextField
-          {...register("name")}
+          name="name"
+          type="text"
+          value={data.name}
+          onChange={(e) => handleChange(e, "name")}
           className="register_textfield"
           variant="outlined"
-          error={!!errors["name"]}
-          helperText={errors["name"]?.message}
           fullWidth
         />
         <Typography>Email </Typography>
         <TextField
-          {...register("email")}
+          name="email"
+          value={data.email}
+          onChange={(e) => handleChange(e, "email")}
           className="register_textfield"
           type="email"
           variant="outlined"
-          error={!!errors["email"]}
-          helperText={errors["email"]?.message}
           fullWidth
         />
         <Typography>Password</Typography>
         <TextField
-          {...register("password")}
+          name="password"
+          value={data.password}
+          onChange={(e) => handleChange(e, "password")}
           className="register_textfield"
           type="password"
           variant="outlined"
-          error={!!errors["password"]}
-          helperText={errors["password"]?.message}
           fullWidth
         />
         <Typography>Confirm Password</Typography>
         <TextField
-          {...register("confirmPassword")}
+          name="password_confirm"
+          value={data.password_confirm}
+          onChange={(e) => handleChange(e, "password_confirm")}
           className="register_textfield"
           type="password"
           variant="outlined"
-          error={!!errors["confirmPassword"]}
-          helperText={errors["confirmPassword"]?.message}
           fullWidth
-        />{" "}
-        <ReCAPTCHA
-          sitekey="6Lern8IjAAAAACM_AdPtdM0JPcg7qOynqIQjT5Gd"
-          onChange={handleVerify}
         />
+
         <Button
           type="submit"
           className="register_button"

@@ -9,6 +9,7 @@ export const addartistRoute = {
   layout: AdminLayout,
   exact: true,
   isPublic: false,
+  
 };
 
 export const artistList = {

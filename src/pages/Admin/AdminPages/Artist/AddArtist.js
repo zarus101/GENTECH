@@ -26,7 +26,7 @@ const AddArtist = () => {
     };
 
     axios
-      .post("/v1/createArtist", artistData)
+      .post("v1/createArtist", artistData)
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
 
