@@ -11,11 +11,9 @@
     position: fixed;
     overflow: scroll;
     transition: 0.5s ease;
-
     .top-navbar {
       
     }
-
     .nav-header {
       padding-left: 7vh;
       h2 {
@@ -30,20 +28,11 @@
       background-color: transparent;
       display: block;
       color: black;
-
-  
-
-
-
       .active {
         .icon{
           color: red;
-        }
-      
-
-      
+        }  
     }
-
       .nav-list {
         padding-bottom: 3vh;
         width: 100%;
@@ -57,8 +46,6 @@
         :hover {
           background-color: red;
         }
-   
-
         .icon {
           background-color: transparent;
           padding-right: 5vh;
@@ -103,7 +90,6 @@
   .icon{
     border-left:  1px solid rgba(0, 0, 0, 0.299);
     border-radius: 0;
-   
   }
   
 }

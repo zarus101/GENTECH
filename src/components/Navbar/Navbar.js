@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import "../../assets/NavbarSection.scss";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -7,13 +7,12 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-
 import { NavLink, useNavigate } from "react-router-dom";
-
 import { doLogout, isLoggedIN } from "../../connection/UserService";
-
+import { useState } from "react";
 
 const Navbar = ({ theme, setTheme }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const navigate = useNavigate("");
 
@@ -21,6 +20,14 @@ const Navbar = ({ theme, setTheme }) => {
     doLogout(() => {
       navigate("/");
     });
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
 
@@ -49,10 +56,10 @@ const Navbar = ({ theme, setTheme }) => {
       <Box display="flex">
         {isLoggedIN() === false && (
           <>
-            <NavLink to={"/login"}>
+            <NavLink className="link" to={"/login"}>
               <Button className="btn">Sign IN</Button>
             </NavLink>
-            <NavLink to={"/register"}>
+            <NavLink className="link" to={"/register"}>
               <Button className="btn">Sign UP</Button>
             </NavLink>
           </>
@@ -63,14 +70,35 @@ const Navbar = ({ theme, setTheme }) => {
               <PersonOutlinedIcon id="text" />
             </IconButton>
 
-            <IconButton className="icon">
+            <IconButton
+             onClick={handleMenu}
+             className="icon">
               <SettingsOutlinedIcon id="text" />
             </IconButton>
+            <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </Menu>
+
             <IconButton>
               <NotificationsOutlinedIcon id="text" />
             </IconButton>
 
-            <Button onClick={logout}>Logout</Button>
+            
           </>
         )}
 
