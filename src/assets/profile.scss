@@ -1,0 +1,54 @@
+$main-color: #dec050;
+$secondary-color: #cb5a41;
+
+.profile-container {
+  .profile-wrapper {
+    .top-portion {
+      width: 75vw;
+      height: 40vh;
+      background: whitesmoke;
+
+      .user-profile-bg-image {
+        height: 70%;
+        width: 100%;
+        background: white;
+        #bg-img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+      }
+      .user-profile-image {
+        position: absolute;
+        height: 20vh;
+        width: 15vh;
+        border-radius: 50%;
+        transform: translate(50%);
+        left: 25%;
+        top: 15rem;
+        background-color: whitesmoke;
+        #pp-img{
+        height: 100%;
+                 width: 100%;
+                 object-fit: cover;
+               border-radius: 50%;
+        }
+
+      }
+      .detail-portion {
+        .left-side {
+          position: absolute;
+          left: 47rem;
+          top: 20rem;
+        }
+        .right-side {
+          position: absolute;
+          right: 8rem;
+          top: 25rem;
+        }
+      }
+    }
+  }
+}
+

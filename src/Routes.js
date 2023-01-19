@@ -18,6 +18,7 @@ import { homeRoute } from "./pages/Home/Route";
 import { loginRoute } from "./pages/Login/Route";
 import { registerRoute } from "./pages/Register/Route";
 import { videoRoute } from "./pages/Video/Route";
+import { profileRoute } from "./pages/Profile/Route";
 
 const Routes = () => {
   const routes = [
@@ -37,6 +38,7 @@ const Routes = () => {
     adminDashboard,
     artistList,
     userList,
+
   ];
 
   const result = routes.map(

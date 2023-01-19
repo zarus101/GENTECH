@@ -76,10 +76,15 @@ const Login = () => {
 
         <Typography>Password</Typography>
         <TextField
+<<<<<<< Updated upstream
           type="password"
           name="password"
           onChange={(e) => handleChange(e, "password")}
           value={loginDetail.password}
+=======
+          {...register("password")}
+          type="password"
+>>>>>>> Stashed changes
           variant="outlined"
           className="login_textfield"
           fullWidth

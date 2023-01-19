@@ -1,5 +1,12 @@
+<<<<<<< Updated upstream
 import React, { useState } from "react";
 
+=======
+import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
+>>>>>>> Stashed changes
 import "../../assets/register.scss";
 import {
   Typography,
@@ -9,6 +16,18 @@ import {
   Button,
   Link,
 } from "@mui/material";
+<<<<<<< Updated upstream
+=======
+import { registerSchema } from "./registerSchema";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateCurrentUser,
+  updateProfile,
+} from "firebase/auth";
+import { toast } from "react-hot-toast";
+import Captcha from "./Captcha";
+>>>>>>> Stashed changes
 
 import { toast } from "react-hot-toast";
 import { signUP } from "../../connection/UserService";
@@ -27,6 +46,7 @@ const Register = () => {
     password_confirm: "",
   });
 
+<<<<<<< Updated upstream
   const handleChange = (event, property) => {
     setData({ ...data, [property]: event.target.value });
   };
@@ -54,6 +74,20 @@ const Register = () => {
         });
     }
   };
+=======
+  const formSubmitHandler = (data) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((user) => {
+        updateProfile(user, { displayName: data.name });
+        toast.success("User Registered Successfully");
+        navigate("/login");
+      })
+      .catch((error) => {
+        toast.error("user name or email is already taken");
+      });
+  };
+
+>>>>>>> Stashed changes
 
   return (
     <form onSubmit={handleSubmit}>
@@ -99,8 +133,14 @@ const Register = () => {
           type="password"
           variant="outlined"
           fullWidth
+<<<<<<< Updated upstream
         />
 
+=======
+        />{" "}
+        <Typography>Enter Captcha </Typography>
+        <Captcha />
+>>>>>>> Stashed changes
         <Button
           type="submit"
           className="register_button"
