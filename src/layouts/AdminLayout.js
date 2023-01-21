@@ -4,8 +4,6 @@ import "../assets/index.scss";
 import "../assets/NavbarSection.scss";
 import { useState } from "react";
 import AdminSidebar from "../pages/Admin/global/AdminSidebar";
-import { Route, Routes } from "react-router-dom";
-import AddArtist from "../pages/Admin/AdminPages/Artist/AddArtist";
 
 const AdminLayout = ({ children }) => {
   const [theme, setTheme] = useState("light");
@@ -13,16 +11,10 @@ const AdminLayout = ({ children }) => {
 
   return (
     <div className="app">
-      <AdminSidebar theme={theme} setTheme={setTheme} isSidebar={isSidebar} >
-      
-        <Navbar theme={theme} setTheme={setTheme}  />
+      <AdminSidebar theme={theme} setTheme={setTheme} isSidebar={isSidebar}>
+        <Navbar theme={theme} setTheme={setTheme} />
         {children}
-      
-   
-      
-
       </AdminSidebar>
-      
     </div>
   );
 };

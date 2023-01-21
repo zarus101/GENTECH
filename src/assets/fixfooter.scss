@@ -1,145 +1,166 @@
 @use "./Commons.scss" as *;
 
-.fix-footer{
-    position: fixed;
-    bottom: 0;
-    padding: 10px;
-    width: 75%;
-    background-color: rgb(255, 255, 255);
-    background-position: center;
-    background-size: cover;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    height: 80px;
-    transition: height .2s ease-out;
-    z-index: 2;
+.fix-footer {
+  position: fixed;
+  bottom: 0;
+  padding: 10px;
+  width: 75%;
+  background-color: rgb(255, 255, 255);
+  background-position: center;
+  background-size: cover;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  height: 80px;
+  transition: height 0.2s ease-out;
+  z-index: 2;
 
+  .slide-up-btn {
+    width: 30px;
+    height: 15px;
+    background-color: $primary-text-color;
+    border-radius: 10px;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: 0.5s ease;
+  }
 
-    .slide-up-btn{
-        width: 50px;
-        height: 20px;
-        background-color: white;
-        border-radius: 10px;
-        margin:0 auto;
+  .slide-up-btn:hover {
+    transform: scale(1.2);
+  }
 
+  .mini-player {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    .flex {
+      display: flex;
+      .artist-cover-img {
+        img {
+          width: 40px;
+          height: 40px;
+          background-color: grey;
+          border-radius: 50%;
+        }
+      }
+
+      .artist-info {
+        padding-left: 10px;
+        p {
+          font-weight: bold;
+          font-size: $p;
+          margin: 0;
+          color: $primary-text-color;
+        }
+      }
     }
+    .mini-player-control {
+      display: flex;
+      align-items: center;
+      gap: 40px;
 
-    .mini-player{
-        width: 100%;
-
+      .audio-control-buttons {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
 
-        .flex{
-            display: flex;
-            .artist-cover-img{
-                width: 40px;
-                height: 40px;
-                background-color: grey;
-                border-radius: 50%;
+        .play-button,
+        .next-button,
+        .prev-button {
+          height: 40px;
+          width: 40px;
 
-
-       
-            }
-
-            .artist-info{
-                padding-left: 10px;
-                p{
-                    font-weight: bold;
-                    font-size: $p;
-                    margin: 0;
-                    color: white;
-                }
-
-            }
-    
-
-        }
-        .mini-player-control{
-            display: flex;
-
-            .play-button{
-                height: 40px;
-                width: 40px;
-
-                .icon{
-                    width: 100%;
-                    height: 100%;
-                    color: white;
-                }
-            }
-            .close-button{
-                height: 40px;
-                width: 40px;
-
-                .icon{
-                    width: 100%;
-                    height: 100%;
-                    color: white;
-                }
-            }
-        }
-        
-    }
-
-
-    .audio-player-lg{
-        width: 300px;
-        height: 300px;
-        position: relative;
-        margin: 20px auto;
-
-        .audio-cover-lg-img{
-            img{
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-                position: relative;
-                left: 50%;
-                transform: translateX(-50%);
-               
-             
-                background: grey;
-            }
-        }
-
-        .artist-info{
-            color: white;
-            text-align: center;
-        }
-
-        .audio-music-progress{
+          .icon {
             width: 100%;
-            margin: 20px 0;
-            
-            input[type= range]{
-                width: 100%;
-                -webkit-appearance: none;
-                height: 2px;
-                border-radius: 2px;
-                background: linear-gradient(to right, rgb(239, 25, 25), grey 50%);
+            height: 100%;
+            color: $primary-text-color;
+            cursor: pointer;
+            transition: 0.5s ease;
+          }
 
-            }
+          .icon:hover {
+            transform: scale(1.2);
+          }
+        }
+      }
+
+      .close-button {
+        height: 30px;
+        width: 30px;
+
+        .icon {
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          color: $primary-text-color;
+          transition: 0.5s ease;
         }
 
-        .audio-control-buttons{
-            display: flex;
-            margin: auto ;
-            justify-content: center;
-
-            .icon{
-                width: 60px;
-                height: 60px;
-                color: white;
-            }
-
+        .icon:hover {
+          transform: scale(1.2);
         }
+      }
+    }
+  }
+
+  .audio-player-lg {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    margin: 20px auto;
+
+    .audio-cover-lg-img {
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+
+        background: grey;
+      }
     }
 
+    .artist-info {
+      color: $primary-text-color;
+      text-align: center;
+    }
+
+    .audio-music-progress {
+      width: 100%;
+      margin: 20px 0;
+
+      input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(to right, rgb(239, 25, 25), grey 50%);
+      }
+    }
+
+    .audio-control-buttons {
+      display: flex;
+      margin: auto;
+      justify-content: center;
+
+      .icon {
+        width: 60px;
+        height: 60px;
+        color: $primary-text-color;
+        cursor: pointer;
+        transition: 0.5s ease;
+      }
+
+      .icon:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
 }
 
-.fix-footer.active{
-    height: calc(100% - 40px);
-    z-index: 2;
-
+.fix-footer.active {
+  height: calc(100% - 40px);
+  z-index: 2;
 }

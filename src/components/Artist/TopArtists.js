@@ -81,8 +81,8 @@ function TopArtists({ theme }) {
               <img src={artist.src} alt="" />
             </div>
             <div className="artist_info">
-              <h5 id="text">{artist.title}</h5>
-              <h6>{artist.name}</h6>
+              <h5 id="text">{artist.name}</h5>
+              {/* <h6>{artist.name}</h6> */}
             </div>
           </SwiperSlide>
         ))}

@@ -9,6 +9,7 @@ import { calenderRoute } from "./pages/Admin/AdminPages/Calender/Route";
 import { adminDashboard } from "./pages/Admin/AdminPages/Dashboard/Route";
 import { addSongs } from "./pages/Admin/AdminPages/Songs/Route";
 import { userList } from "./pages/Admin/AdminPages/Users/Route";
+import { addGenreRoute } from "./pages/Admin/AdminPages/Genre/Route";
 import { adminRoute } from "./pages/Admin/Route";
 import { albumRoute } from "./pages/Album/Route";
 import { artistRoute, singleArtistRoute } from "./pages/Artist/Route";
@@ -16,7 +17,7 @@ import { browseRoute } from "./pages/Browse/Route";
 import { homeRoute } from "./pages/Home/Route";
 import { loginRoute } from "./pages/Login/Route";
 import { registerRoute } from "./pages/Register/Route";
-import { videoRoute } from "./pages/Video/Route";
+import { genreRoute } from "./pages/Genre/Route";
 
 const Routes = () => {
   const isLoggedIn = true;
@@ -28,12 +29,13 @@ const Routes = () => {
     homeRoute,
     loginRoute,
     registerRoute,
-    videoRoute,
+    genreRoute,
     adminRoute,
     addartistRoute,
     updateArtistRoute,
     calenderRoute,
     addSongs,
+    addGenreRoute,
     adminDashboard,
     artistList,
     userList,

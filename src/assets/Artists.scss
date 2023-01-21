@@ -1,40 +1,40 @@
 @use "./Commons.scss" as *;
 
-.artist-section{
-    .top-section{
+.artist-section {
+  .middle-section {
+    .wrapper {
+      display: block;
 
-    }
-
-    
-  .middle-section{
-      .wrapper{
+      .carousel_header {
         display: block;
-    
-        .carousel_header{
-            display: block;
 
-            .artist-card{
-                display: grid;
-                grid-template-rows: 1fr 1fr 1fr 1fr;
-                grid-template-columns: 1fr 1fr 1fr 1fr;
+        .artist-card {
+          display: grid;
+          //   grid-template-rows: 1fr 1fr 1fr 1fr;
+          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+          margin: 0;
+          padding: 2rem;
 
-                .card{
-                    height: 90%;
-                    width: 90%;
-                    .artist_image{
-                        
-
-                        img{
-                            height: 100%;
-                            width: 100%;
-                            border-radius: 20%;
-                        }
-                    }
-                }
+          .card {
+            height: 90%;
+            width: 90%;
+            cursor: pointer;
+            transition: 0.5s ease;
+            .artist_image {
+              img {
+                display: block;
+                height: 100%;
+                width: 100%;
+                border-radius: 5%;
+              }
             }
-        }
-    
-    }
-}
+          }
 
+          .card:hover {
+            opacity: 0.9;
+          }
+        }
+      }
+    }
+  }
 }

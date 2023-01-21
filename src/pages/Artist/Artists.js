@@ -21,7 +21,7 @@ const Artists = ({ theme }) => {
           <div className="wrapper" id={theme}>
             <div className="carousel_header">
               <div className="carousal_title">
-                <h3 id="text">Top Artists</h3>
+                <h3 id="text">All Artists</h3>
               </div>
               <div className="artist-card">
                 {bestArtists.map((item) => (
@@ -34,21 +34,10 @@ const Artists = ({ theme }) => {
                       <img src={item.src} alt="" />
                     </div>
                     <div className="artist_info">
-                      <h5 id="text">{item.name}</h5>
-                      <h6>{item.title}</h6>
+                      <h4 id="text">{item.name}</h4>
                     </div>
                   </div>
                 ))}
-
-                {/* <div className="card">
-                  <div className="artist_image">
-                    <img src="./images/artists/1.jpg" alt="" />
-                  </div>
-                  <div className="artist_info">
-                    <h5 id="text">Sagun</h5>
-                    <h6>hhh</h6>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>

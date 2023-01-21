@@ -1,9 +1,9 @@
 import AuthLayout from "../../layouts/AuthLayout";
-import Videos from "./Videos";
+import Genre from "./Genre";
 
-export const videoRoute = {
-  path: "/videos",
-  element: Videos,
+export const genreRoute = {
+  path: "/genre",
+  element: Genre,
   layout: AuthLayout,
   exact: true,
   isPublic: false,
