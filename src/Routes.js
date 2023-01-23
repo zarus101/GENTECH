@@ -18,6 +18,7 @@ import { homeRoute } from "./pages/Home/Route";
 import { loginRoute } from "./pages/Login/Route";
 import { registerRoute } from "./pages/Register/Route";
 import { videoRoute } from "./pages/Video/Route";
+import { profileRoute } from "./pages/Profile/Route";
 
 const Routes = () => {
   const[login, setLogin]= useState(false)
@@ -39,6 +40,8 @@ const Routes = () => {
     adminDashboard,
     artistList,
     userList,
+    profileRoute
+
   ];
 
   const result = routes.map(

@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, Button, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import "../../assets/NavbarSection.scss";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -8,11 +8,13 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useNavigate } from "react-router-dom";
-import { doLogout, isLoggedIN } from "../../connection/UserService";
+import { doLogout, getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const Navbar = ({ theme, setTheme }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+ 
 
   const navigate = useNavigate("");
 
@@ -29,10 +31,6 @@ const Navbar = ({ theme, setTheme }) => {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
-
-
-  
 
   return (
     <Box className="box" display="flex" justifyContent="space-between" p={2}>
@@ -66,6 +64,11 @@ const Navbar = ({ theme, setTheme }) => {
         )}
         {isLoggedIN() === true && (
           <>
+          <IconButton>
+          <Typography id="text" className="user-name"><span className="wel">Welcome, </span>{getCurrentUserDetail().user.name}</Typography>
+
+          </IconButton>
+
             <IconButton>
               <PersonOutlinedIcon id="text" />
             </IconButton>
@@ -90,7 +93,7 @@ const Navbar = ({ theme, setTheme }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+               <NavLink to={"/profile"}><MenuItem >Profile</MenuItem></NavLink> 
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
 

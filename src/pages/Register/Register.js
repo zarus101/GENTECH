@@ -13,6 +13,8 @@ import {
 import { toast } from "react-hot-toast";
 import { signUP } from "../../connection/UserService";
 import { useNavigate } from "react-router-dom";
+import Captcha from "./Captcha";
+import { registerSchema } from "./registerSchema";
 
 const Register = () => {
   const navigate = useNavigate("");
@@ -36,7 +38,8 @@ const Register = () => {
     if (error.isError) {
       toast.error("form data is invalid");
       return;
-    } else {
+    } 
+    else {
       signUP(data)
         .then((resp) => {
           toast.success("registered Successfully");
@@ -56,7 +59,7 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form validationSchema={registerSchema} onSubmit={handleSubmit}>
       <Paper elevation={10} className="register_wrapper">
         <Avatar src="../images/logo.jpg" className="form_logo" />
         <h2>Sign Up</h2>
@@ -99,8 +102,9 @@ const Register = () => {
           type="password"
           variant="outlined"
           fullWidth
-        />
-
+        />{" "}
+        <Typography>Enter Captcha </Typography>
+        <Captcha />
         <Button
           type="submit"
           className="register_button"

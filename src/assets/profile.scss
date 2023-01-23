@@ -1,0 +1,104 @@
+$main-color: #dec050;
+$secondary-color: #cb5a41;
+
+.profile-container {
+  .profile-wrapper {
+    .top-portion {
+      width: 100%;
+      height: 400px;
+      background-color: transparent;
+
+      .user-profile-bg-image {
+        height: 70%;
+        width: 100%;
+        background: white;
+        #bg-img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+
+        .cover-photo-icon {
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 3rem;
+          width: 3rem;
+          background-color: rgb(30, 29, 29);
+          color: white;
+          padding: 5px;
+          transform: translate(-20%,-130%);
+          border-radius: 50px;
+          svg {
+            height: 100%;
+            width: 90%;
+          }
+        }
+      
+      }
+      .flex {
+        display: flex;
+        .user-profile-image {
+          width: 20%;
+          position: relative;
+          height: 13rem;
+          width: 12rem;
+          border-radius: 50%;
+
+          transform: translate(30%, -50%);
+          #pp-img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+
+          .profile-photo-icon {
+            height: 3rem;
+            width: 3rem;
+            background-color: rgb(30, 29, 29);
+            color: white;
+            padding: 5px;
+            border-radius: 50px;
+            transform: translateY(-30%);
+
+            .icon {
+              height: 100%;
+              width: 90%;
+            }
+          }
+        }
+        .detail-portion {
+          width: 80%;
+          display: flex;
+          height: 100%;
+          .left-side {
+            position: relative;
+            width: 40%;
+            height: 100%;
+            align-items: center;
+            text-align: justify;
+            font-weight: bold;
+            margin-left: 80px;
+            
+          }
+          .right-side {
+            justify-content: center;
+            position: relative;
+            width: 30%;
+            height: 100%;
+            text-align: center;
+            padding-top: 30px;
+          }
+          .side{
+            position: relative;
+            justify-content: center;
+            padding-top: 30px;
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+}

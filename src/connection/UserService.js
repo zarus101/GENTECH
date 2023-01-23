@@ -46,4 +46,30 @@ export const doLogin=(data, next)=>{
     return myAxios.get('/allusers').then(response=>{return response.data})
  }
  
+//change Password
+export const userChangePassword=(data, token)=>{
+    return myAxios.post('/changePassword', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
+}
+
+//user changing details
+export const updateUserDetails=(data, token)=>{
+    return myAxios.post('/changeUserDetails', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+}
+
+//deleting tyhe user
+export const deleteUserById=(id, token)=>{
+    return myAxios.delete(`/deleteUser/${id}` ,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(res=>res.data)
+}
