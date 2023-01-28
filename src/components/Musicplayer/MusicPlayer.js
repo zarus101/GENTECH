@@ -1,103 +1,171 @@
-// import React, { useRef, useState } from "react";
-// import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-// import PauseCircleIcon from "@mui/icons-material/PauseCircle";
-// import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-// import SkipNextIcon from "@mui/icons-material/SkipNext";
-// import "../../assets/HomePageMusicPLayer.scss";
+import React, { useEffect, useState } from "react";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import VolumeDownIcon from "@mui/icons-material/VolumeDown";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
+import { styled, Slider } from "@mui/material";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import "../../assets/HomePageMusicPLayer.scss";
 
-// const MusicPlayer = (props, { theme }) => {
-//   const audioElement = useRef(null);
+const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
+  color: "brown",
+  height: 2,
+  "&:hover": {
+    cursor: "auto",
+  },
+  "& .MuiSlider-thumb": {
+    width: "13px",
+    height: "13px",
+    display: props.thumbless ? "none" : "block",
+  },
+}));
 
-//   const SkipSong = (forwards = true) => {
-//     if (forwards) {
-//       props.setCurrentSongIndex(() => {
-//         let temp = props.currentSongIndex;
-//         temp++;
+const MusicPlayer = (props) => {
+  const [mute, setMute] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const [duration, setDuration] = useState(0);
 
-//         if (temp > props.songs.length - 1) {
-//           temp = 0;
-//         }
+  useEffect(() => {
+    if (props.isPlaying) {
+      setInterval(() => {
+        const _duration = Math.floor(props.audioPlayer?.current?.duration);
+        const _elapsed = Math.floor(props.audioPlayer?.current?.currentTime);
 
-//         return temp;
-//       });
-//     } else {
-//       props.setCurrentSongIndex(() => {
-//         let temp = props.currentSongIndex;
-//         temp--;
+        setDuration(_duration);
+        setElapsed(_elapsed);
+      }, 100);
+    }
+  });
 
-//         if (temp < 0) {
-//           temp = props.songs.length - 1;
-//         }
+  const SkipSong = (forwards = true) => {
+    if (forwards) {
+      props.setCurrentSongIndex(() => {
+        let temp = props.currentSongIndex;
+        temp++;
 
-//         return temp;
-//       });
-//     }
-//   };
+        if (temp > props.songs.length - 1) {
+          temp = 0;
+        }
 
-//   const [range, setRange] = useState(0);
+        return temp;
+      });
+    } else {
+      props.setCurrentSongIndex(() => {
+        let temp = props.currentSongIndex;
+        temp--;
 
-//   const handleChange = (e) => {
-//     e.preventDefault();
-//     return setRange(audioElement.current.currentTime);
-//   };
+        if (temp < 0) {
+          temp = props.songs.length - 1;
+        }
 
-//   return (
-//     <>
-//       <div className="home-music-section" id={theme}>
-//         <div className="mostplayed_header">
-//           <h2 id="text">Music Player</h2>
-//         </div>
+        return temp;
+      });
+    }
+  };
 
-//         <audio
-//           src={props.songs[props.currentSongIndex].src}
-//           ref={audioElement}
-//         ></audio>
+  function VolumeBtns() {
+    return mute || props.volume === 0 ? (
+      <VolumeOffIcon
+        sx={{ color: "red", "&:hover": { color: "black" } }}
+        onClick={() => setMute(!mute)}
+      />
+    ) : props.volume <= 20 ? (
+      <VolumeMuteIcon
+        sx={{ color: "red", "&:hover": { color: "black" } }}
+        onClick={() => setMute(!mute)}
+      />
+    ) : props.volume <= 75 ? (
+      <VolumeDownIcon
+        sx={{ color: "brown", "&:hover": { color: "black" } }}
+        onClick={() => setMute(!mute)}
+      />
+    ) : (
+      <VolumeUpIcon
+        sx={{ color: "brown", "&:hover": { color: "black" } }}
+        onClick={() => setMute(!mute)}
+      />
+    );
+  }
+  return (
+    <>
+      <audio
+        src={props.songs[props.currentSongIndex]}
+        ref={props.audioPlayer}
+      />
+      <div className="home-music-section">
+        <div className="mostplayed_header">
+          <h2 id="text">Music Player</h2>
+        </div>
 
-//         <div className="audio-player-lg">
-//           <div className="audio-cover-lg-img">
-//             <img
-//               src={props.songs[props.currentSongIndex].img_src}
-//               alt={props.songs[props.currentSongIndex].title}
-//             />
-//           </div>
+        <div className="audio-player-lg">
+          <div className="audio-cover-lg-img">
+            <img
+              src="https://www.lovethispic.com/uploaded_images/126066-I-Love-Music.gif?1"
+              alt="cover"
+            />
+          </div>
 
-//           <div className="artist-info">
-//             <h2>{props.songs[props.currentSongIndex].title}</h2>
-//             <h3>{props.songs[props.currentSongIndex].artist}</h3>
-//           </div>
+          <div className="audio-music-progress">
+            <MusicSlider
+              value={elapsed}
+              max={duration}
+              sx={{
+                "& .MuiSlider-track": {
+                  height: "10px",
+                },
+              }}
+            />
+          </div>
 
-//           <div className="audio-music-progress">
-//             <input
-//               type="range"
-//               min={"0"}
-//               max={"100"}
-//               value={range}
-//               onChange={(e) => handleChange(e)}
-//             />
-//           </div>
+          <div className="artist-info">
+            <h2>Don't Let Me Down </h2>
+            <h3>The Chainsmokers </h3>
+          </div>
 
-//           <div className="audio-control-buttons">
-//             <div className="prev-button" onClick={() => SkipSong(false)}>
-//               <SkipPreviousIcon className="icon" />
-//             </div>
-//             <div
-//               className="play-button"
-//               onClick={() => props.setIsPlaying(!props.isPlaying)}
-//             >
-//               {props.isPlaying ? (
-//                 <PauseCircleIcon className="icon " />
-//               ) : (
-//                 <PlayCircleIcon className="icon " />
-//               )}
-//             </div>
-//             <div className="next-button" onClick={() => SkipSong()}>
-//               <SkipNextIcon className="icon" />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+          <div className="audio-control-buttons">
+            <div className="audio-controls">
+              <div className="prev-button" onClick={() => SkipSong(false)}>
+                <SkipPreviousIcon className="icon" />
+              </div>
+              <div
+                className="play-button"
+                onClick={() => props.setIsPlaying(!props.isPlaying)}
+              >
+                {props.isPlaying ? (
+                  <PauseCircleIcon className="icon " />
+                ) : (
+                  <PlayCircleIcon className="icon " />
+                )}
+              </div>
 
-// export default MusicPlayer;
+              <div className="next-button" onClick={() => SkipSong()}>
+                <SkipNextIcon className="icon" />
+              </div>
+            </div>
+
+            <div className="audio-volume">
+              <VolumeBtns />
+              <MusicSlider
+                min={0}
+                max={100}
+                value={props.volume}
+                onChange={(e, v) => props.setVolume(v)}
+                sx={{
+                  "& .MuiSlider-thumb": {
+                    width: 20,
+                    height: 20,
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MusicPlayer;

@@ -1,0 +1,24 @@
+.captcha{
+    display: flex;
+    .captcha_code{
+        background-color: bisque;
+        height: max-content;
+        cursor: pointer;
+        width: 42%;
+        margin-right: 5px;
+        margin-top: 10px;
+    }
+    .captcha_text{
+        height: max-content;
+        cursor: pointer;
+        width: 42%;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-top: 10px;
+    }
+    .icons{
+        flex-direction: column;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+}

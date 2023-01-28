@@ -15,10 +15,10 @@ export default function ArtistInfo({ theme }) {
           sequi eveniet aliquid officiis blanditiis magnam vero, veritatis vitae
           provident quos id beatae?
         </p>
-
+        {/* 
         <h4 id="text">Date of Birth:</h4>
         <h4 id="text">Status:</h4>
-        <h4 id="text">Major Honors:</h4>
+        <h4 id="text">Major Honors:</h4> */}
       </div>
     </div>
   );

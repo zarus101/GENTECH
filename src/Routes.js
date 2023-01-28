@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
+import { isLoggedIN } from "./connection/UserService";
 import {
   addartistRoute,
   artistList,
@@ -17,10 +18,10 @@ import { browseRoute } from "./pages/Browse/Route";
 import { homeRoute } from "./pages/Home/Route";
 import { loginRoute } from "./pages/Login/Route";
 import { registerRoute } from "./pages/Register/Route";
+import { profileRoute } from "./pages/Profile/Route";
 import { genreRoute } from "./pages/Genre/Route";
 
 const Routes = () => {
-  const isLoggedIn = true;
   const routes = [
     albumRoute,
     artistRoute,
@@ -30,6 +31,7 @@ const Routes = () => {
     loginRoute,
     registerRoute,
     genreRoute,
+    profileRoute,
     adminRoute,
     addartistRoute,
     updateArtistRoute,
@@ -48,7 +50,7 @@ const Routes = () => {
         <Layout>
           <Element />
         </Layout>
-      ) : isLoggedIn && !isPublic ? (
+      ) : isLoggedIN && !isPublic ? (
         <Layout>
           <Element />
         </Layout>

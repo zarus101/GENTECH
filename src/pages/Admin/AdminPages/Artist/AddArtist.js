@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Alert from "@mui/material/Alert";
 
 import axios from "axios";
 
 const AddArtist = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  const [showAlert, setShowAlert] = useState(false);
+
   const [inputs, setInputs] = useState({});
+  const [file, setFile] = useState("");
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -15,28 +19,48 @@ const AddArtist = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+    // console.log(file);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const artistData = {
+      artistID: inputs.artistID,
       artistName: inputs.artistName,
       artistBio: inputs.artistBio,
       year: inputs.year,
+      artistPhoto: file,
       status: inputs.status,
     };
 
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
     axios
-      .post("/v1/createArtist", artistData)
+      .post("v1/createArtist", artistData, config)
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
 
     console.log(artistData);
     setInputs({});
-    alert("Successfully added.");
+    setShowAlert(true);
   };
 
   return (
     <>
+      {showAlert ? (
+        <Alert severity="success" onClose={() => setShowAlert(false)}>
+          Successful!
+        </Alert>
+      ) : (
+        ""
+      )}
       <Box m="20px">
         <form onSubmit={handleSubmit}>
           <Box
@@ -47,7 +71,7 @@ const AddArtist = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {/* <TextField
+            <TextField
               fullWidth
               variant="filled"
               type="text"
@@ -56,7 +80,7 @@ const AddArtist = () => {
               value={inputs.artistID || ""}
               onChange={handleChange}
               sx={{ gridColumn: "span 2" }}
-            /> */}
+            />
             <TextField
               fullWidth
               variant="filled"
@@ -65,7 +89,7 @@ const AddArtist = () => {
               name="artistName"
               value={inputs.artistName || ""}
               onChange={handleChange}
-              sx={{ gridColumn: "span 4" }}
+              sx={{ gridColumn: "span 2" }}
             />
             <TextField
               multiline
@@ -89,19 +113,6 @@ const AddArtist = () => {
               sx={{ gridColumn: "span 2" }}
             />
 
-            {/* <Typography fullWidth sx={{ gridColumn: "span 4" }}>
-              Artist Photo
-            </Typography>
-            <TextField
-              fullWidth
-              type="file"
-              label="Artist Photo"
-              name="artistPhoto"
-              value={"inputs.artistPhoto" || ""}
-              onChange={handleChange}
-              sx={{ gridColumn: "span 4" }}
-            /> */}
-
             <TextField
               variant="filled"
               type="text"
@@ -110,6 +121,16 @@ const AddArtist = () => {
               value={inputs.status || ""}
               onChange={handleChange}
               sx={{ gridColumn: "span 2" }}
+            />
+
+            <Typography fullWidth sx={{ gridColumn: "span 4" }}>
+              Artist Photo
+            </Typography>
+            <TextField
+              type="file"
+              name="artistPhoto"
+              onChange={handleFile}
+              sx={{ gridColumn: "span 4" }}
             />
           </Box>
           <Box display="flex" justifyContent="end" mt="20px">

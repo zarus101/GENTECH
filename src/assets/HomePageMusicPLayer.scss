@@ -2,8 +2,8 @@
 
 .home-music-section {
   padding-top: 10px;
-
   padding-right: 30px;
+
   .audio-player-lg {
     border-radius: 10px;
     padding: 15px 20px;
@@ -25,7 +25,6 @@
         position: relative;
         left: 50%;
         transform: translateX(-50%);
-        display: block;
 
         background: grey;
       }
@@ -35,33 +34,29 @@
       text-align: center;
     }
 
-    .audio-music-progress {
-      width: 100%;
-      margin: 20px 0;
-
-      input[type="range"] {
-        width: 100%;
-        -webkit-appearance: none;
-        height: 2px;
-        border-radius: 2px;
-        background: linear-gradient(to right, rgb(239, 25, 25), grey 50%);
-      }
-    }
-
     .audio-control-buttons {
       display: flex;
-      margin: auto;
-      justify-content: center;
+      flex-direction: column;
+
+      .audio-volume {
+        display: flex;
+        width: 100%;
+        margin-inline: auto;
+
+        & > * {
+          margin-inline: 10px;
+        }
+      }
+
+      .audio-controls {
+        display: flex;
+        margin-inline: auto;
+      }
 
       .icon {
         width: 60px;
         height: 60px;
-        cursor: pointer;
-        transition: 0.5s ease;
-      }
-
-      .icon:hover {
-        transform: scale(1.2);
+        color: brown;
       }
     }
   }

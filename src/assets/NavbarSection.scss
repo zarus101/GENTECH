@@ -12,10 +12,6 @@
     overflow: scroll;
     transition: 0.5s ease;
 
-    .top-navbar {
-      
-    }
-
     .nav-header {
       padding-left: 7vh;
       h2 {
@@ -31,21 +27,14 @@
       display: block;
       color: black;
 
-  
-
-
-
       .active {
-        .icon{
+        .icon {
           color: red;
         }
-      
-
-      
-    }
+      }
 
       .nav-list {
-        padding-bottom: 3vh;
+        padding-bottom: 5vh;
         width: 100%;
         list-style: none;
         color: black;
@@ -57,7 +46,6 @@
         :hover {
           background-color: red;
         }
-   
 
         .icon {
           background-color: transparent;
@@ -96,14 +84,12 @@
   }
 }
 
-.box{
+.box {
   border-bottom: 1px solid rgba(0, 0, 0, 0.299);
   padding: 0;
- 
-  .icon{
-    border-left:  1px solid rgba(0, 0, 0, 0.299);
+
+  .icon {
+    border-left: 1px solid rgba(0, 0, 0, 0.299);
     border-radius: 0;
-   
   }
-  
 }

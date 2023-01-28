@@ -1,6 +1,4 @@
-import { Box, Button, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
-// import { ColorModeContext, tokens } from "../../theme";
+import { Box, Button, IconButton } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import "../../assets/NavbarSection.scss";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -9,14 +7,25 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
 
-const Topbar = ({ theme, setTheme }) => {
-  const [isLoggedIN, setIsLoggedIN] = useState(false);
-  //   const theme = useTheme();
-  //   const colors = tokens(theme.palette.mode);
-  //   const colorMode = useContext(ColorModeContext);
+import { NavLink, useNavigate } from "react-router-dom";
+
+import { doLogout, isLoggedIN } from "../../connection/UserService";
+
+
+const Navbar = ({ theme, setTheme }) => {
+
+  const navigate = useNavigate("");
+
+  const logout = () => {
+    doLogout(() => {
+      navigate("/");
+    });
+  };
+
+
+
+  
 
   return (
     <Box className="box" display="flex" justifyContent="space-between" p={2}>
@@ -38,15 +47,17 @@ const Topbar = ({ theme, setTheme }) => {
 
       {/* ICONS */}
       <Box display="flex">
-        {!isLoggedIN && (
+        {isLoggedIN() === false && (
           <>
-            <NavLink to={"/login"}><Button className="btn">Sign IN</Button></NavLink>
-            <NavLink to={"/register"}><Button className="btn">Sign UP</Button></NavLink>
-            
+            <NavLink to={"/login"}>
+              <Button className="btn">Sign IN</Button>
+            </NavLink>
+            <NavLink to={"/register"}>
+              <Button className="btn">Sign UP</Button>
+            </NavLink>
           </>
         )}
-
-        {isLoggedIN && (
+        {isLoggedIN() === true && (
           <>
             <IconButton>
               <PersonOutlinedIcon id="text" />
@@ -58,6 +69,8 @@ const Topbar = ({ theme, setTheme }) => {
             <IconButton>
               <NotificationsOutlinedIcon id="text" />
             </IconButton>
+
+            <Button onClick={logout}>Logout</Button>
           </>
         )}
 
@@ -75,4 +88,4 @@ const Topbar = ({ theme, setTheme }) => {
   );
 };
 
-export default Topbar;
+export default Navbar;

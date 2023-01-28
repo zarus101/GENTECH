@@ -127,7 +127,6 @@ const AddSongs = () => {
             fullWidth
             variant="filled"
             type="date"
-            label="Date Added"
             name="dateAdded"
             value={inputs.dateAdded || ""}
             onChange={handleChange}
