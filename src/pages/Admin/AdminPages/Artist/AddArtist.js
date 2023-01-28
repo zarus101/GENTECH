@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Alert from "@mui/material/Alert";
 
 import axios from "axios";
+import { getCurrentUserDetail } from "../../../../connection/UserService";
 
 const AddArtist = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [showAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState("");
+  const [response, setResponse] = useState("");
 
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState("");
+
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    getCurrentUserDetail();
+    setToken(getCurrentUserDetail().token);
+  }, []);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -39,13 +49,14 @@ const AddArtist = () => {
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
     };
 
     axios
       .post("v1/createArtist", artistData, config)
-      .then((response) => console.log(response))
-      .catch((error) => console.error(error));
+      .then((response) => setResponse(response.data))
+      .catch((error) => setError(error));
 
     console.log(artistData);
     setInputs({});
@@ -56,7 +67,7 @@ const AddArtist = () => {
     <>
       {showAlert ? (
         <Alert severity="success" onClose={() => setShowAlert(false)}>
-          Successful!
+          {error ? `${error}` : `${response}`}
         </Alert>
       ) : (
         ""
