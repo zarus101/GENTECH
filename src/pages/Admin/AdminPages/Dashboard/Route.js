@@ -5,7 +5,7 @@ import Dashboard from "./Dashboard";
 
 
 export const adminDashboard = {
-  path: "/dashboard",
+  path: "/admin/dashboard",
   element: Dashboard,
   layout: AdminLayout,
   exact: true,

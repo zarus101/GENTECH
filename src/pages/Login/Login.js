@@ -44,7 +44,7 @@ const Login = () => {
         doLogin(data, () => {
           console.log(data);
           if(data.user.role==="admin"){
-            navigate("/admin")
+            navigate("/admin/dashboard")
           }else{
             navigate('/')
           } 

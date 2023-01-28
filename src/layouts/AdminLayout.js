@@ -16,10 +16,6 @@ const AdminLayout = ({ children }) => {
       
         <Navbar theme={theme} setTheme={setTheme}  />
         {children}
-      
-   
-      
-
       </AdminSidebar>
       
     </div>
