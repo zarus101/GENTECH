@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
-import { isLoggedIN } from "./connection/UserService";
+
 import {
   addartistRoute,
   artistList,
@@ -22,6 +22,8 @@ import { profileRoute } from "./pages/Profile/Route";
 import { genreRoute } from "./pages/Genre/Route";
 
 const Routes = () => {
+  const [login, setLogin] = useState(false);
+
   const routes = [
     albumRoute,
     artistRoute,
@@ -41,6 +43,7 @@ const Routes = () => {
     adminDashboard,
     artistList,
     userList,
+    profileRoute,
   ];
 
   const result = routes.map(
@@ -50,12 +53,12 @@ const Routes = () => {
         <Layout>
           <Element />
         </Layout>
-      ) : isLoggedIN && !isPublic ? (
+      ) : setLogin && !isPublic ? (
         <Layout>
           <Element />
         </Layout>
       ) : (
-        <Navigate to="/sign-in" />
+        <Navigate to="/login" />
       ),
       children: subRoutes,
     })

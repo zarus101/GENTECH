@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/profile.scss";
 import EditDetails from "../../components/Profile/EditDetails";
 import EditCoverPhoto from "../../components/Profile/EditCoverPhoto";
@@ -11,13 +11,21 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Container } from "@mui/system";
 import userEvent from "@testing-library/user-event";
 import { getAuth } from "firebase/auth";
-
-
+import { getCurrentUserDetail } from "../../connection/UserService";
+import ChangePassword from "../../components/Profile/ChangePassword";
 
 const Profile = () => {
   // const [auth, user] = getAuth();
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+
+    console.log(setUser(getCurrentUserDetail().user));
+    
+  }, []);
+
   const [currentTab, setCurrentTab] = useState("songs");
-   
+
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
   };
@@ -27,13 +35,15 @@ const Profile = () => {
         <div className="top-portion">
           <div className="user-profile-bg-image">
             <img
-            id="bg-img"
-            src="https://img.freepik.com/free-photo/maple-leaf-border-background-orange-watercolor-autumn-season_53876-128735.jpg?w=2000"
-            alt=""
-            srcSet=""
-          />
+              id="bg-img"
+              src="https://img.freepik.com/free-photo/maple-leaf-border-background-orange-watercolor-autumn-season_53876-128735.jpg?w=2000"
+              alt=""
+              srcSet=""
+            />
             <EditCoverPhoto />
           </div>
+
+          <div className="flex">
           <div className="user-profile-image">
             <img
               id="pp-img"
@@ -41,52 +51,59 @@ const Profile = () => {
               alt=""
               srcSet=""
             />
-            <EditProfilePhoto/>
+            <EditProfilePhoto />
           </div>
-        
-        <div className="detail-portion">
-          <div className="left-side">
-            {/* <p>{user.name}</p>
-            <p>{user.email}</p>
-            <p>{user.bio}</p> */}
-          </div>
-          <div className="right-side">
-            <EditDetails />
-          </div>
-        </div>
-      </div>
-      </div>
-      <div className="bottom-portion">
-      <Container>
-      <div className="tabs">
-        <Button
-          className={currentTab === "songs" ? "active" : ""}
-          onClick={() => handleTabChange("songs")}
-        >
-          <AddCircleIcon />
-          Songs
-        </Button>
-        <Button
-          className={currentTab === "subscriptions" ? "active" : ""}
-          onClick={() => handleTabChange("subscriptions")}
-        >
-          <SubscriptionsIcon />
-          Subscriptions
-        </Button>
-      </div>
-      <div className="tab-content">
-        {currentTab === "songs" && 
-        <div>
-          <AddSongs/>
-        </div>}
-        {currentTab === "subscriptions" && 
-        <div>
-          <Subscribe/>
-        </div>}
-      </div>
-    </Container>
 
+          <div className="detail-portion">
+            <div className="left-side">
+              <p>Name:  {user.name}</p>
+              <p>Email:  {user.email}</p>
+            </div>
+        
+            <div className="right-side">
+              <EditDetails />
+            </div>
+            <div className="side">
+              <ChangePassword />
+            </div>
+          </div>
+
+          </div>
           
+        </div>
+
+        <div className="bottom-portion">
+          <Container>
+            <div className="tabs">
+              <Button
+                className={currentTab === "songs" ? "active" : ""}
+                onClick={() => handleTabChange("songs")}
+              >
+                <AddCircleIcon />
+                Songs
+              </Button>
+              <Button
+                className={currentTab === "subscriptions" ? "active" : ""}
+                onClick={() => handleTabChange("subscriptions")}
+              >
+                <SubscriptionsIcon />
+                Subscriptions
+              </Button>
+            </div>
+            <div className="tab-content">
+              {currentTab === "songs" && (
+                <div>
+                  <AddSongs />
+                </div>
+              )}
+              {currentTab === "subscriptions" && (
+                <div>
+                  <Subscribe />
+                </div>
+              )}
+            </div>
+          </Container>
+        </div>
       </div>
     </div>
   );

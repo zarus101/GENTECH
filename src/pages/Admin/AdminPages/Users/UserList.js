@@ -1,24 +1,42 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getAllUsers } from "../../../../connection/UserService";
+import { toast } from "react-hot-toast";
+import { deleteUserById, getAllUsers, getCurrentUserDetail } from "../../../../connection/UserService";
 
 const UserList = () => {
-  const [users, setUsers]= useState([])
+  const [users, setUsers] = useState([]);
+  const [user, setUser]= useState('');
+  const [token, setToken]= useState('');
 
   useEffect(() => {
+
+    setUser(getCurrentUserDetail().user)
+    setToken(getCurrentUserDetail().token);
     getAllUsers()
       .then((data) => {
         setUsers(data);
-        console.log(data)
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
-
-
-
   }, []);
+
+
+  function deleteUser(value) {
+    //going to delete post
+
+    deleteUserById(value.id, token)
+      .then((res) => {
+        console.log(res);
+
+        toast.success("user deleted!!");
+      })
+      .catch((error) => {
+        toast.error("failed to delete the user..");
+      });
+  }
   return (
     <>
       <main>
@@ -38,14 +56,9 @@ const UserList = () => {
               <td>{value.email}</td>
               <td>{value.passsword}</td>
               <td>{value.role}</td>
-            
+
               <td>
-                <button >
-                  Delete
-                </button>
-                <button >
-                  Update
-                </button>
+                <button onClick={() => deleteUser(value)}>Delete</button>
               </td>
             </tr>
           ))}

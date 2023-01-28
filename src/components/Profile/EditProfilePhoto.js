@@ -33,7 +33,7 @@ export default function EditProfilePhoto() {
     <div className="profile-photo">
       <Button variant="" onClick={handleClickOpen}>
         <div className="profile-photo-icon">
-        <PhotoCameraIcon />
+        <PhotoCameraIcon className="icon" />
         </div>
       </Button>
       <Dialog open={open} onClose={handleClose}>

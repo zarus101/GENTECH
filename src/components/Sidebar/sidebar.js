@@ -68,8 +68,7 @@ const SideNavbar = ({ children, setTheme, theme }) => {
                   key={index}
                   activeclassName="active"
                 >
-                  <li className="nav-list" id="text">
-                    
+                  <li className="nav-list" id="text"> 
                     <div className="nav-item">{item.name}</div>
                   </li>
                 </a>

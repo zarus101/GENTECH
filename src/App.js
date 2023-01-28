@@ -1,6 +1,5 @@
 import "./assets/index.scss";
 import Routes from "./Routes";
-import "./firebase/config";
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";
 
@@ -19,3 +18,5 @@ const [theme , setTheme]= useState("light")
 };
 
 export default App;
+
+

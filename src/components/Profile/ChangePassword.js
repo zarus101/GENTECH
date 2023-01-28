@@ -10,18 +10,18 @@ import { useState } from "react";
 import { useEffect } from "react";
 import {
   getCurrentUserDetail,
-  updateUserDetails,
+  userChangePassword,
 } from "../../connection/UserService";
-import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
-export default function EditDetails() {
-  const navigate = useNavigate("");
+export default function ChangePassword() {
   const [id, setId] = useState();
-  const [open, setOpen] = React.useState(false);
-  const [token, setToken] = useState();
-  const [loggedInUser, setLoggedInUser ]= useState();
 
+  const navigate = useNavigate("");
+  const [token, setToken] = useState();
+
+  const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -29,11 +29,11 @@ export default function EditDetails() {
   const handleClose = () => {
     setOpen(false);
   };
+
   useEffect(() => {
     getCurrentUserDetail();
     console.log(getCurrentUserDetail());
     setToken(getCurrentUserDetail().token);
-    setLoggedInUser(getCurrentUserDetail().user);
     console.log(token);
     setId(getCurrentUserDetail().user.id);
     console.log(id);
@@ -41,8 +41,8 @@ export default function EditDetails() {
 
   const [data, setData] = useState({
     id: id,
-    name: "",
-    email: "",
+    password: "",
+    password_confirm: "",
   });
 
   const HandleChange = (e) => {
@@ -50,10 +50,10 @@ export default function EditDetails() {
     setData({ ...data, [e.target.name]: value, id: id });
   };
 
-  const changeDetails = (e) => {
+  const changePassword = (e) => {
     e.preventDefault();
     console.log(data);
-    updateUserDetails(data, token)
+    userChangePassword(data, token)
       .then((response) => {
         toast.success("successfully updated!!");
         navigate("/");
@@ -67,36 +67,41 @@ export default function EditDetails() {
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
         <ModeEditIcon />
-        Edit Details
+        Change Password
       </Button>
+
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Details</DialogTitle>
+        <DialogTitle>Change Password</DialogTitle>
         <DialogContent>
-          <Typography>Full Name</Typography>
+          <Typography>New Password</Typography>
           <TextField
-            className=""
-            name="name"
-            onChange={(e) => HandleChange(e, "name")}
-            value={data.name}
+            type="password"
+            name="password"
+            onChange={(e) => HandleChange(e, "password")}
+            value={data.password}
             variant="outlined"
+            className="login_textfield"
             fullWidth
           />
-          <Typography>Email </Typography>
+          <Typography>Confirm Password</Typography>
           <TextField
-            className=""
-            type="email"
-            name="email"
-            onChange={(e) => HandleChange(e, "email")}
-            value={data.email}
-            // placeholder={loggedInUser.email}
-
+            type="password"
+            name="password_confirm"
+            value={data.password_confirm}
+            onChange={(e) => HandleChange(e, "password_confirm")}
             variant="outlined"
+            placeholder="Confirm Password"
             fullWidth
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={changeDetails}>Update</Button>
+          <Button
+            type="submit"
+            onClick={changePassword}
+          >
+            Update
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

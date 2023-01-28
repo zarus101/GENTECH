@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
 import "../../assets/register.scss";
+import "../../assets/captcha.scss";
+
 import {
   Typography,
   Paper,
@@ -12,21 +11,19 @@ import {
   Link,
 } from "@mui/material";
 
-// import { registerSchema } from "./registerSchema";
-// // import {
-// //   createUserWithEmailAndPassword,
-// //   getAuth,
-// //   updateCurrentUser,
-// //   updateProfile,
-// // } from "firebase/auth";
-import { toast } from "react-hot-toast";
-import Captcha from "./Captcha";
-
 // import { toast } from "react-hot-toast";
 import { signUP } from "../../connection/UserService";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { registerSchema } from "./registerSchema";
+import { toast } from "react-hot-toast";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 const Register = () => {
+  const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const complexityRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const navigate = useNavigate("");
   const [error, setError] = useState({
     isError: false,
@@ -48,7 +45,34 @@ const Register = () => {
     if (error.isError) {
       toast.error("form data is invalid");
       return;
-    } else {
+    }
+    if (!data.name || !data.email || !data.password || !data.password_confirm) {
+      toast.error("All fields are required");
+      return;
+    }
+    if (!emailRegex.test(data.email)) {
+      toast.error("Invalid email format");
+      return;
+    }
+    if (data.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+    if (data.password !== data.password_confirm) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (!complexityRegex.test(data.password)) {
+      toast.error(
+        "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+      );
+      return;
+    } 
+    if (cap !== captcha1) {
+      toast.error("Invalid Captcha");
+      return;
+    } 
+    else {
       signUP(data)
         .then((resp) => {
           toast.success("registered Successfully");
@@ -67,20 +91,98 @@ const Register = () => {
     }
   };
 
-  // const formSubmitHandler = (data) => {
-  //   createUserWithEmailAndPassword(auth, data.email, data.password)
-  //     .then((user) => {
-  //       updateProfile(user, { displayName: data.name });
-  //       toast.success("User Registered Successfully");
-  //       navigate("/login");
-  //     })
-  //     .catch((error) => {
-  //       toast.error("user name or email is already taken");
-  //     });
-  // };
+  const [captcha1, setCaptcha1] = useState("");
+  const [cap, setCap] = useState("");
+
+  const handleAutoRenew = () => {
+    var a = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+      "U",
+      "V",
+      "W",
+      "X",
+      "Y",
+      "Z",
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p",
+      "q",
+      "r",
+      "s",
+      "t",
+      "u",
+      "v",
+      "w",
+      "x",
+      "y",
+      "z",
+      "!",
+      "@",
+      "#",
+      "$",
+      "%",
+      "&",
+      "@",
+      "#",
+      "$",
+      "%",
+      "&",
+    ];
+    var newCap = "";
+    for (var i = 1; i <= 6; i++) {
+      var r = Math.floor(Math.random() * 62);
+      newCap = newCap + a[r];
+    }
+    setCap(newCap);
+  };
+
+
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form validationSchema={registerSchema} onSubmit={handleSubmit}>
       <Paper elevation={10} className="register_wrapper">
         <Avatar src="../images/logo.jpg" className="form_logo" />
         <h2>Sign Up</h2>
@@ -125,7 +227,18 @@ const Register = () => {
           fullWidth
         />{" "}
         <Typography>Enter Captcha </Typography>
-        <Captcha />
+        <div className="captcha">
+          <TextField className="captcha_code" variant="filled" value={cap} />
+
+          <TextField
+            className="captcha_text"
+            value={captcha1}
+            onChange={(e) => setCaptcha1(e.target.value)}
+          />
+          <div className="icons">
+            <AutorenewIcon onClick={handleAutoRenew} />
+          </div>
+        </div>
         <Button
           type="submit"
           className="register_button"

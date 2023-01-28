@@ -34,7 +34,6 @@ export default function EditCoverPhoto() {
       
       <Button variant="" onClick={handleClickOpen}>
         <div className="cover-photo-icon">
-        
         <PhotoCameraIcon />
         </div>
       </Button>
