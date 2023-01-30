@@ -119,7 +119,7 @@ const FixFooter = (props) => {
       <div className="d-visibility"></div>
 
       <audio
-        src={props.songs[props.currentSongIndex]}
+        src={props.songs[props.currentSongIndex].src}
         ref={props.audioPlayer}
       ></audio>
 

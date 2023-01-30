@@ -1,8 +1,5 @@
-
 import AdminLayout from "../../../../layouts/AdminLayout";
 import Dashboard from "./Dashboard";
-
-
 
 export const adminDashboard = {
   path: "/admin/dashboard",

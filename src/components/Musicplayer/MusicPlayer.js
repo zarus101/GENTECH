@@ -29,14 +29,24 @@ const MusicPlayer = (props) => {
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
+    // fetchSongs();
+    if (props.audioPlayer) {
+      props.audioPlayer.current.volume = props.volume / 100;
+    }
+  }, [props.volume, props.audioPlayer]);
+
+  useEffect(() => {
     if (props.isPlaying) {
-      setInterval(() => {
+      const interval = setInterval(() => {
         const _duration = Math.floor(props.audioPlayer?.current?.duration);
         const _elapsed = Math.floor(props.audioPlayer?.current?.currentTime);
 
         setDuration(_duration);
         setElapsed(_elapsed);
       }, 100);
+      return () => {
+        clearInterval(interval);
+      };
     }
   });
 
@@ -92,9 +102,10 @@ const MusicPlayer = (props) => {
   return (
     <>
       <audio
-        src={props.songs[props.currentSongIndex]}
+        src={props.songs[props.currentSongIndex].src}
         ref={props.audioPlayer}
       />
+
       <div className="home-music-section">
         <div className="mostplayed_header">
           <h2 id="text">Music Player</h2>
@@ -121,8 +132,8 @@ const MusicPlayer = (props) => {
           </div>
 
           <div className="artist-info">
-            <h2>Don't Let Me Down </h2>
-            <h3>The Chainsmokers </h3>
+            <h2>{props.songs[props.currentSongIndex].songName}</h2>
+            <h3>{props.songs[props.currentSongIndex].artistName}</h3>
           </div>
 
           <div className="audio-control-buttons">

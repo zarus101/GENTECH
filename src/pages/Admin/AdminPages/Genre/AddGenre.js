@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { getCurrentUserDetail } from "../../../../connection/UserService";
 
 import axios from "axios";
 
@@ -8,6 +9,19 @@ const AddGenre = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [inputs, setInputs] = useState({});
+
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    getCurrentUserDetail();
+    setToken(getCurrentUserDetail().token);
+  }, []);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -26,7 +40,7 @@ const AddGenre = () => {
     };
 
     axios
-      .post("/v1/addGenre", genreData)
+      .post("/v1/addGenre", genreData, config)
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
 

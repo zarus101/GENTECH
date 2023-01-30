@@ -67,7 +67,7 @@ const AdminSidebar = ({ children }) => {
                 >
                   <Item
                     title="Dashboard"
-                    to="/dashboard"
+                    to="/admin/dashboard"
                     icon={<HomeOutlinedIcon />}
                     selected={selected}
                     setSelected={setSelected}

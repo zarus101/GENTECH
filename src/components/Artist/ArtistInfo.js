@@ -1,20 +1,25 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import "../../assets/ArtistInfo.scss";
 
-export default function ArtistInfo({ theme }) {
+export default function ArtistInfo({ theme, id }) {
+  const [artist, setArtist] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`/v1/getSingleArtist/${id}`)
+      .then((response) => setArtist(response.data[0]))
+      .catch((error) => console.error(`Error: ${error}`));
+  }, [id]);
+
   return (
     <div className="artist-card" id={theme}>
       <div className="card-image">
-        <img src="../images/artists/1.jpg" alt="Profile" />
-        <h2 id="text">Adele</h2>
+        <img src={`/public/img/artist/${artist.artistPhoto}`} alt="Profile" />
+        <h2 id="text">{artist.artistName}</h2>
       </div>
       <div className="card-info">
-        <p id="text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia,
-          sit sequi. Optio reprehenderit similique, quae, quisquam doloremque
-          sequi eveniet aliquid officiis blanditiis magnam vero, veritatis vitae
-          provident quos id beatae?
-        </p>
+        <p id="text">{artist.artistBio}</p>
         {/* 
         <h4 id="text">Date of Birth:</h4>
         <h4 id="text">Status:</h4>

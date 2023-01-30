@@ -6,8 +6,9 @@ import "../../assets/Theme.scss";
 import FixFooter from "../../Footer/FixFooter.js";
 import MusicPlayer from "../../components/Musicplayer/MusicPlayer.js";
 
-import audio from "../../assets/music/test1.mp3";
-import song from "../../assets/music/song.mp3";
+// import audio from "../../assets/music/test1.mp3";
+// import song from "../../assets/music/song.mp3";
+import axios from "axios";
 
 const Home = ({ theme, setTheme }) => {
   // const [songs, setSongs] = useState(allsongs);
@@ -19,16 +20,42 @@ const Home = ({ theme, setTheme }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const [volume, setVolume] = useState(30);
+  // const songs = [audio, song];
 
+  const [songs, setSongs] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
   const audioPlayer = useRef();
 
-  const songs = [audio, song];
+  // const fetchSongs = () => {
+  //   return axios
+  //     .get("/v1/songs")
+  //     .then((response) => setSongs(response.data))
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // };
 
+  // fetching our api
   useEffect(() => {
-    if (audioPlayer) {
-      audioPlayer.current.volume = volume / 100;
-    }
-  }, [volume, isPlaying]);
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get("/v1/songs");
+        let _musics = data;
+        console.log(_musics);
+        _musics.map((music) => {
+          let pload = {
+            songName: music.songName,
+            artistName: music.artistName,
+            src: `/public/songs/${music.song}`,
+          };
+          return setSongs((oldSongs) => [...oldSongs, pload]);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     let subscribed = true;
@@ -46,6 +73,8 @@ const Home = ({ theme, setTheme }) => {
       subscribed = false;
     };
   }, [currentSongIndex, songs.length]);
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
