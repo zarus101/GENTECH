@@ -161,7 +161,7 @@ const AddSongs = () => {
             sx={{ gridColumn: "span 4" }}
           />
 
-          <Typography fullWidth sx={{ gridColumn: "span 4" }}>
+          {/* <Typography fullWidth sx={{ gridColumn: "span 4" }}>
             Song Cover Photo
           </Typography>
           <TextField
@@ -169,7 +169,7 @@ const AddSongs = () => {
             type="file"
             name="coverphoto"
             sx={{ gridColumn: "span 4" }}
-          />
+          /> */}
         </Box>
         <Box display="flex" justifyContent="end" mt="20px">
           <Button type="submit" color="secondary" variant="contained">
