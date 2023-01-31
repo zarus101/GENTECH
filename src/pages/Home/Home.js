@@ -19,7 +19,7 @@ const Home = ({ theme, setTheme }) => {
   // const [CurrentSong] = useState(audio);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const [volume, setVolume] = useState(30);
+  const [volume, setVolume] = useState(60);
   // const songs = [audio, song];
 
   const [songs, setSongs] = useState([]);
@@ -47,6 +47,7 @@ const Home = ({ theme, setTheme }) => {
             artistName: music.artistName,
             src: `/public/songs/${music.song}`,
           };
+          setIsLoading(false);
           return setSongs((oldSongs) => [...oldSongs, pload]);
         });
       } catch (error) {
@@ -54,7 +55,6 @@ const Home = ({ theme, setTheme }) => {
       }
     };
     fetchData();
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
