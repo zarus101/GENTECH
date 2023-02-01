@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "../../assets/TopArtists.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,17 +8,35 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
-import bestArtists from "../../services/artistsData.js";
+import axios from "axios";
 
 function TopArtists({ theme }) {
   const [swiperRef, setSwiperRef] = useState(null);
+  const [artists, setArtists] = useState([]);
+  const navigate = useNavigate();
+
+  const fetchData = () => {
+    return axios
+      .get("/v1/getAllArtist")
+      .then((response) => setArtists(response.data))
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleClick = (id, e) => {
+    e.preventDefault();
+    navigate(`/artist/${id}`);
+  };
 
   const prevHandler = () => {
     swiperRef.slidePrev();
@@ -75,13 +93,19 @@ function TopArtists({ theme }) {
         // modules={[Navigation]}
         className="mySwiper"
       >
-        {bestArtists.map((artist) => (
-          <SwiperSlide key={artist.id}>
+        {artists.map((artist) => (
+          <SwiperSlide
+            key={artist.artistID}
+            onClick={(e) => handleClick(artist.artistID, e)}
+          >
             <div className="artist_image">
-              <img src={artist.src} alt="" />
+              <img
+                src={`/public/img/artist/${artist.artistPhoto}`}
+                alt="Artist"
+              />
             </div>
             <div className="artist_info">
-              <h5 id="text">{artist.name}</h5>
+              <h5 id="text">{artist.artistName}</h5>
               {/* <h6>{artist.name}</h6> */}
             </div>
           </SwiperSlide>

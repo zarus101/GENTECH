@@ -12,7 +12,7 @@ const SingleArtist = ({ theme }) => {
     <>
       <div className="artist-wrapper" id={theme}>
         <div className="artist-info">
-          <ArtistInfo />
+          <ArtistInfo id={id} />
         </div>
         <div className="player-wrapper">
           <div className="player-player"></div>

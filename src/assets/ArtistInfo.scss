@@ -2,6 +2,7 @@
   display: flex;
   margin: 5rem 2rem;
   padding: 1rem;
+  gap: 20;
   flex-direction: column;
   //   background-color: white;
   border-radius: 10px;
@@ -15,12 +16,16 @@
 
   .card-image {
     text-align: center;
+    width: 150px;
+    margin-inline: auto;
 
     img {
-      border-radius: 10px;
+      border-radius: 50%;
       box-shadow: 0px 10px 41px -22px rgba(0, 0, 0, 0.75);
       -webkit-box-shadow: 0px 10px 41px -22px rgba(0, 0, 0, 0.75);
       -moz-box-shadow: 0px 10px 41px -22px rgba(0, 0, 0, 0.75);
+      max-width: 100%;
+      display: block;
     }
   }
 
@@ -28,5 +33,13 @@
     p {
       color: rgb(39, 38, 38);
     }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .artist-card {
+    margin: 0;
+    box-shadow: none;
+    gap: 10;
   }
 }

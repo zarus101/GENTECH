@@ -11,11 +11,17 @@ import { red } from "@mui/material/colors";
 import ClearIcon from "@mui/icons-material/Clear";
 import Alert from "@mui/material/Alert";
 
+import { getCurrentUserDetail } from "../../../../connection/UserService";
+
 const ArtistList = () => {
   const [user, setUser] = useState([]);
   const Navigate = useNavigate();
 
   const [showAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState("");
+  const [response, setResponse] = useState("");
+
+  const [token, setToken] = useState();
 
   const fetchData = () => {
     return axios
@@ -26,15 +32,23 @@ const ArtistList = () => {
 
   useEffect(() => {
     fetchData();
+    getCurrentUserDetail();
+    setToken(getCurrentUserDetail().token);
   }, []);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   const handleDelete = (id, e) => {
     e.preventDefault();
     if (window.confirm("Are you sure you want to delete?")) {
       axios
-        .delete(`/v1/deleteArtist/${id}`)
-        .then((response) => console.log(response))
-        .catch((error) => console.error(error));
+        .delete(`/v1/deleteArtist/${id}`, config)
+        .then((response) => setResponse(response.data.message))
+        .catch((error) => setError(error));
       setShowAlert(true);
     }
   };
@@ -48,9 +62,9 @@ const ArtistList = () => {
     e.preventDefault();
     if (window.confirm("Are you sure you want to delete?")) {
       axios
-        .delete(`/v1/deleteAllArtist`)
-        .then((response) => console.log(response))
-        .catch((error) => console.error(error));
+        .delete(`/v1/deleteAllArtist`, config)
+        .then((response) => setResponse(response.data.message))
+        .catch((error) => setError(error));
       setShowAlert(true);
     }
   };
@@ -59,7 +73,7 @@ const ArtistList = () => {
     <main>
       {showAlert ? (
         <Alert severity="success" onClose={() => setShowAlert(false)}>
-          Delete Successful!
+          {error ? `${error}` : `${response}`}
         </Alert>
       ) : (
         ""
@@ -80,9 +94,9 @@ const ArtistList = () => {
               <th>Options</th>
             </tr>
           </thead>
-          {user.map((value, index) => (
-            <tbody>
-              <tr key={index}>
+          {user.map((value) => (
+            <tbody key={value.artistID}>
+              <tr>
                 <td>{value.artistID}</td>
                 <td>{value.artistName}</td>
                 <td>{value.artistBio}</td>

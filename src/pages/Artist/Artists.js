@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TopArtists from "../../components/Artist/TopArtists";
 import "../../assets/Artists.scss";
 import bestArtists from "../../services/artistsData";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 const Artists = ({ theme }) => {
   const navigate = useNavigate();
+  const [artists, setArtists] = useState([]);
+
+  const fetchData = () => {
+    return axios
+      .get("/v1/getAllArtist")
+      .then((response) => setArtists(response.data))
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleClick = (id, e) => {
     e.preventDefault();
@@ -24,17 +38,20 @@ const Artists = ({ theme }) => {
                 <h3 id="text">All Artists</h3>
               </div>
               <div className="artist-card">
-                {bestArtists.map((item) => (
+                {artists.map((item) => (
                   <div
                     className="card"
-                    key={item.id}
-                    onClick={(e) => handleClick(item.id, e)}
+                    key={item.artistID}
+                    onClick={(e) => handleClick(item.artistID, e)}
                   >
                     <div className="artist_image">
-                      <img src={item.src} alt="" />
+                      <img
+                        src={`/public/img/artist/${item.artistPhoto}`}
+                        alt=""
+                      />
                     </div>
                     <div className="artist_info">
-                      <h4 id="text">{item.name}</h4>
+                      <h4 id="text">{item.artistName}</h4>
                     </div>
                   </div>
                 ))}

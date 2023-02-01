@@ -119,7 +119,7 @@ const FixFooter = (props) => {
       <div className="d-visibility"></div>
 
       <audio
-        src={props.songs[props.currentSongIndex]}
+        src={props.songs[props.currentSongIndex].src}
         ref={props.audioPlayer}
       ></audio>
 
@@ -145,8 +145,8 @@ const FixFooter = (props) => {
           </div>
 
           <div className="artist-info">
-            <h2>Don't Let Me Down </h2>
-            <h3>The Chainsmokers </h3>
+            <h2>{props.songs[props.currentSongIndex].songName}</h2>
+            <h3>{props.songs[props.currentSongIndex].artistName}</h3>
           </div>
 
           <div className="audio-control-buttons">
@@ -207,8 +207,8 @@ const FixFooter = (props) => {
               {/* <p>{props.songs[props.currentSongIndex].title}</p>
               <p>{props.songs[props.currentSongIndex].artist}</p> */}
 
-              <p>Don't Let Me Down </p>
-              <p>The Chainsmokers </p>
+              <p>{props.songs[props.currentSongIndex].songName}</p>
+              <p>{props.songs[props.currentSongIndex].artistName}</p>
             </div>
           </div>
 

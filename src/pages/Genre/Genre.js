@@ -31,8 +31,8 @@ const Genre = ({ theme }) => {
                 {genres.map((item) => (
                   <div
                     className="card"
-                    key={item.id}
-                    onClick={(e) => handleClick(item.id, e)}
+                    key={item.genreID}
+                    onClick={(e) => handleClick(item.genreID, e)}
                   >
                     <div className="genre_image">
                       <img src={item.src} alt="" />

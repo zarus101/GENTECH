@@ -38,3 +38,23 @@
     }
   }
 }
+
+@media screen and (max-width: 640px) {
+  .artist-section {
+    .middle-section {
+      .wrapper {
+        padding: 0 0 0 1rem;
+        .carousel_header {
+          padding: 0;
+          box-shadow: none;
+          .artist-card {
+            width: 100%;
+            grid-template-columns: 1fr 1fr;
+            padding: 0rem;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+}

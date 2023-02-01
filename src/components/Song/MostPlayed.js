@@ -47,7 +47,7 @@ export default function MostPlayed({ theme }) {
 
           <div className="right">
             <span className="grey_text">{artist.name}</span>
-            <span className="grey_text">{artist.duration}</span>
+            {/* <span className="grey_text">{artist.duration}</span> */}
 
             <span>
               <img src="../images/visualizer.gif" alt="" />

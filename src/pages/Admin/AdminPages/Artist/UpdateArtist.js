@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { getCurrentUserDetail } from "../../../../connection/UserService";
 
 const UpdateArtist = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [inputs, setInputs] = useState({});
+  const [file, setFile] = useState("");
 
   const { id } = useParams();
   const Navigate = useNavigate();
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    getCurrentUserDetail();
+    setToken(getCurrentUserDetail().token);
+  }, []);
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   useEffect(() => {
     axios
@@ -26,6 +41,11 @@ const UpdateArtist = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+    console.log(file);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -33,13 +53,14 @@ const UpdateArtist = () => {
       artistName: inputs.artistName,
       artistBio: inputs.artistBio,
       year: inputs.year,
+      artistPhoto: file,
       status: inputs.status,
     };
 
-    console.log(artistData);
+    // console.log(artistData);
 
     axios
-      .put(`/v1/updateArtist/${id}`, artistData)
+      .put(`/v1/updateArtist/${id}`, artistData, config)
       .then((res) => console.log(res.data));
 
     alert("Successful");
@@ -100,18 +121,15 @@ const UpdateArtist = () => {
               sx={{ gridColumn: "span 2" }}
             />
 
-            {/* <Typography fullWidth sx={{ gridColumn: "span 4" }}>
+            <Typography fullWidth sx={{ gridColumn: "span 4" }}>
               Artist Photo
             </Typography>
             <TextField
-              fullWidth
               type="file"
-              label="Artist Photo"
               name="artistPhoto"
-              value={"inputs.artistPhoto" || ""}
-              onChange={handleChange}
+              onChange={handleFile}
               sx={{ gridColumn: "span 4" }}
-            /> */}
+            />
 
             <TextField
               variant="filled"

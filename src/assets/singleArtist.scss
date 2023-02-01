@@ -16,3 +16,18 @@
     }
   }
 }
+
+@media screen and (max-width: 640px) {
+  .artist-wrapper {
+    flex-direction: column;
+
+    .artist-info {
+      width: 100%;
+    }
+
+    .player-wrapper {
+      width: 100%;
+      padding: 0 1rem;
+    }
+  }
+}
