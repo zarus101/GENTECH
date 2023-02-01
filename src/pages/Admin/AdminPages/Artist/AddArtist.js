@@ -31,12 +31,10 @@ const AddArtist = () => {
 
   const handleFile = (e) => {
     setFile(e.target.files[0]);
-    // console.log(file);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const artistData = {
       artistID: inputs.artistID,
       artistName: inputs.artistName,

@@ -73,3 +73,13 @@ export const deleteUserById=(id, token)=>{
         },
       }).then(res=>res.data)
 }
+
+export const updateProfilePhoto=(userData, token)=>{
+    return myAxios.post('/changeUserProfile',userData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+         
+    })
+}
