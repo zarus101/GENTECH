@@ -11,6 +11,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import LyricsIcon from "@mui/icons-material/Lyrics";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import "../../../assets/AdminAssests/AdminSidebar.scss";
 
@@ -94,6 +95,13 @@ const AdminSidebar = ({ children }) => {
                     title="Manage Users"
                     to="/userlist"
                     icon={<ContactsOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                      <Item
+                    title="Manage Songs"
+                    to="/songs"
+                    icon={<MusicNoteIcon />}
                     selected={selected}
                     setSelected={setSelected}
                   />

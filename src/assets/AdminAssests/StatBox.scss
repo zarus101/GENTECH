@@ -1,0 +1,23 @@
+@use "../Commons.scss" as *;
+
+.main-box{
+    .box-1{
+        .mini-box{
+            display: flex;
+
+            .icon{
+                width: 30%;
+                height: 100%;
+                padding: 5px 5px;
+            }
+            .title{
+                width: 80%;
+                padding-top: 18px 8px;
+                color: rgb(116, 115, 115) ;
+                height: 100%;
+
+            }
+        }
+
+    }
+}

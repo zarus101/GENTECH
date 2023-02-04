@@ -1,0 +1,14 @@
+@use "../Commons.scss" as *;
+
+.Header-Component{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .header-title{
+        color: $primary-text-color;
+        font-weight: bold;
+    }
+
+    .header-subtitle{
+        color: rgb(116, 115, 115) ;
+    }
+}

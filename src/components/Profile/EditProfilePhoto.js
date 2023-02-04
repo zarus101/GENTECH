@@ -19,7 +19,7 @@ export default function EditProfilePhoto() {
   const [file, setFile] = useState("");
 
   const handleFile = (e) => {
-    setFile(e.target.files[1]);
+    setFile(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -38,6 +38,8 @@ export default function EditProfilePhoto() {
 
     updateProfilePhoto(userData, token)
       .then((response) => {
+        console.log(userData);
+
         toast.success("successfully added!!");
       })
       .catch((error) => {
@@ -63,7 +65,7 @@ export default function EditProfilePhoto() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Profile Picture</DialogTitle>
         <DialogContent>
-          <input type="file" onChange={handleFile} />
+          <input type="file" name="userProfilePhoto"  onChange={handleFile} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

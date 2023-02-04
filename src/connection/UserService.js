@@ -52,7 +52,7 @@ export const userChangePassword=(data, token)=>{
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+    })
 
 }
 
@@ -62,16 +62,17 @@ export const updateUserDetails=(data, token)=>{
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+    })
 }
 
 //deleting tyhe user
 export const deleteUserById=(id, token)=>{
     return myAxios.delete(`/deleteUser/${id}` ,{
         headers: {
+        "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-      }).then(res=>res.data)
+    })
 }
 
 export const updateProfilePhoto=(userData, token)=>{
@@ -79,7 +80,6 @@ export const updateProfilePhoto=(userData, token)=>{
         headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
-          },
-         
+          },        
     })
 }
