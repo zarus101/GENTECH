@@ -20,6 +20,8 @@ export default function ArtistInfo({ theme, id }) {
       </div>
       <div className="card-info">
         <p id="text">{artist.artistBio}</p>
+        <h4 id="text">Birth Year: {artist.year}</h4>
+        <h4 id="text">Status: {artist.status}</h4>
         {/* 
         <h4 id="text">Date of Birth:</h4>
         <h4 id="text">Status:</h4>
