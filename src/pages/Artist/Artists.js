@@ -21,9 +21,9 @@ const Artists = ({ theme }) => {
     fetchData();
   }, []);
 
-  const handleClick = (id, e) => {
+  const handleClick = (artistID, e) => {
     e.preventDefault();
-    navigate(`/artist/${id}`);
+    navigate(`/artist/${artistID}`);
   };
   return (
     <>

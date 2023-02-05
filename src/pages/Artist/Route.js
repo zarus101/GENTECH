@@ -11,7 +11,7 @@ export const artistRoute = {
 };
 
 export const singleArtistRoute = {
-  path: "/artist/:id",
+  path: "/artist/:artistID",
   element: SingleArtist,
   layout: AuthLayout,
   exact: true,

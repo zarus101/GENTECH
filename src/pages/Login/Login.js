@@ -45,9 +45,11 @@ const Login = () => {
           console.log(data);
           if(data.user.role==="admin"){
             navigate("/admin/dashboard")
-          }else{
+          }else if (data.user.role==="normal"){
             navigate('/')
-          } 
+          } else{
+            navigate('/login')
+          }
   
         });
       })

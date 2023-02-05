@@ -12,6 +12,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Alert from "@mui/material/Alert";
 
 import { getCurrentUserDetail } from "../../../../connection/UserService";
+import { deleteArtistById } from "../../../../connection/ArtistService";
+import { toast } from "react-hot-toast";
+import Header from "../../AdminComponents/Header";
+import { Box } from "@mui/material";
 
 const ArtistList = () => {
   const [user, setUser] = useState([]);
@@ -20,8 +24,8 @@ const ArtistList = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
-
   const [token, setToken] = useState();
+
 
   const fetchData = () => {
     return axios
@@ -34,7 +38,7 @@ const ArtistList = () => {
     fetchData();
     getCurrentUserDetail();
     setToken(getCurrentUserDetail().token);
-  }, []);
+  }, [user]);
 
   const config = {
     headers: {
@@ -42,16 +46,19 @@ const ArtistList = () => {
     },
   };
 
-  const handleDelete = (id, e) => {
-    e.preventDefault();
-    if (window.confirm("Are you sure you want to delete?")) {
-      axios
-        .delete(`/v1/deleteArtist/${id}`, config)
-        .then((response) => setResponse(response.data.message))
-        .catch((error) => setError(error));
-      setShowAlert(true);
-    }
-  };
+  function deleteArtist(value) {
+
+    deleteArtistById(value.artistID, token)
+    .then((res) => {
+      console.log(value.artistID);
+      toast.success("artist deleted!!");
+      
+    })
+    .catch((error) => {
+      toast.error("failed to delete the user..");
+    });
+  
+  }
 
   const handleUpdate = (id, e) => {
     e.preventDefault();
@@ -63,13 +70,20 @@ const ArtistList = () => {
     if (window.confirm("Are you sure you want to delete?")) {
       axios
         .delete(`/v1/deleteAllArtist`, config)
-        .then((response) => setResponse(response.data.message))
+        .then((res) => {   
+          toast.success(" All artist deleted!!");
+        })
         .catch((error) => setError(error));
       setShowAlert(true);
     }
   };
 
   return (
+    <>
+   <Box m="20px">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Header title="Add Artist" subtitle="add new artist here" />
+        </Box>
     <main>
       {showAlert ? (
         <Alert severity="success" onClose={() => setShowAlert(false)}>
@@ -78,6 +92,7 @@ const ArtistList = () => {
       ) : (
         ""
       )}
+
       <button onClick={(e) => handleDeleteAll(e)}>
         <ClearIcon sx={{ color: red[900] }} />
       </button>
@@ -118,7 +133,7 @@ const ArtistList = () => {
                     }}
                   >
                     <button
-                      onClick={(e) => handleDelete(value.artistID, e)}
+                      onClick={() =>deleteArtist(value)}
                       style={{ cursor: "pointer" }}
                     >
                       <Delete sx={{ color: red[800] }} />
@@ -137,6 +152,8 @@ const ArtistList = () => {
         </table>
       </div>
     </main>
+    </Box>
+    </>
   );
 };
 

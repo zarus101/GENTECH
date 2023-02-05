@@ -8,7 +8,7 @@ import {
 } from "./pages/Admin/AdminPages/Artist/Route";
 import { calenderRoute } from "./pages/Admin/AdminPages/Calender/Route";
 import { adminDashboard } from "./pages/Admin/AdminPages/Dashboard/Route";
-import { addSongs } from "./pages/Admin/AdminPages/Songs/Route";
+import { addSongs, listSongs } from "./pages/Admin/AdminPages/Songs/Route";
 import { userList } from "./pages/Admin/AdminPages/Users/Route";
 import { addGenreRoute } from "./pages/Admin/AdminPages/Genre/Route";
 import { adminRoute } from "./pages/Admin/Route";
@@ -39,6 +39,7 @@ const Routes = () => {
     updateArtistRoute,
     calenderRoute,
     addSongs,
+    listSongs,
     addGenreRoute,
     adminDashboard,
     artistList,
