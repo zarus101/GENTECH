@@ -15,33 +15,64 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useNavigate } from "react-router-dom";
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   doLogout,
   getCurrentUserDetail,
   isLoggedIN,
 } from "../../connection/UserService";
-import { useState } from "react";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { getAllArtists } from "../../connection/ArtistService";
+import { getAllMusic } from "../../connection/MusicService";
 const Navbar = ({ theme, setTheme }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [artists, setArtists] = useState("");
+  const [searchItem, setSearchItem] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [songs, setSongs] = useState("");
+  const handleChange = (event) => {
+    setSearchItem(event.target.value);
+    setShowResults(!!event.target.value);
+  };
   const navigate = useNavigate("");
-
   const logout = () => {
     doLogout(() => {
       navigate("/");
     });
   };
 
+  useEffect(() => {
+    getAllArtists()
+      .then((data) => {
+        setArtists(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    getAllMusic()
+      .then((data) => {
+        setSongs(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const handleClose = () => {
     setAnchorEl(null);
+    setSearchItem('');
   };
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleClick = (artistID, e) => {
+    e.preventDefault();
+    navigate(`/artist/${artistID}`);
+  };
   return (
     <Box className="box" display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
@@ -49,15 +80,115 @@ const Navbar = ({ theme, setTheme }) => {
         display="flex"
         // backgroundColor={colors.primary[400]}
         borderRadius="3px"
+        className="top-bar"
       >
         <InputBase
           id="background"
           sx={{ ml: 2, flex: 1 }}
           placeholder="Search"
+          onChange={handleChange}
         />
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon id="text" />
         </IconButton>
+
+        {showResults && searchItem && (
+          <div className="search-box">
+            <div className="cancel">
+            <CancelIcon onClick={handleClose}/>
+
+            </div>
+            <div className="artist-section">
+              <div className="header">
+                <Typography> Artists:</Typography>
+              </div>
+              {artists
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.artistName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value) => {
+                  return (
+                    <div
+                      className="artists"
+                      onClick={(e) => handleClick(value.artistID, e)}
+                    >
+                      <div className="artist-pic">
+                        <img src={`/public/img/artist/${value.artistPhoto}`} />
+                      </div>
+                      <div className="artist-name">
+                        <h3>{value.artistName}</h3>
+                      </div>
+                    </div>
+                  );
+                })}
+              {artists.filter((item) => {
+                if (searchItem === "") {
+                  return item;
+                } else if (
+                  item.artistName
+                    .toLowerCase()
+                    .includes(searchItem.toLowerCase())
+                ) {
+                  return item;
+                }
+              }).length === 0 && (
+                <div className="artists">
+                  <Typography>No Artist Found</Typography>
+                </div>
+              )}
+            </div>
+            <div className="song-section">
+              <div className="header">
+                <Typography> Songs:</Typography>
+              </div>
+              {songs
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.songName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value) => {
+                  return (
+                    <div className="songs">
+                      <div className="songs-pic">
+                        <img src={`/public/img/artist/${value.songPhoto}`} />
+                      </div>
+                      <div className="songs-name">
+                        <h3>{value.songName}</h3>
+                      </div>
+                    </div>
+                  );
+                })}
+              {songs.filter((item) => {
+                if (searchItem === "") {
+                  return item;
+                } else if (
+                  item.songName.toLowerCase().includes(searchItem.toLowerCase())
+                ) {
+                  return item;
+                }
+              }).length === 0 && (
+                <div className="songs">
+                  <Typography>No song Found</Typography>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </Box>
 
       {/* ICONS */}

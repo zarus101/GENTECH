@@ -15,16 +15,19 @@ const SingleArtist = ({ theme }) => {
     <>
       <div className="artist-wrapper" id={theme}>
         <div className="artist-info">
-          <ArtistInfo id={artistID} />
+          <ArtistInfo artistID={artistID} />
         </div>
         <div className="player-wrapper">
           <div className="player-player"></div>
           <div className="player-mostplayed">
-            <ListofSongs  id={artistID} />
+            <ListofSongs  artistID={artistID} />
           </div>
         </div>
       </div>
       <TopSongs />
+      <br/>
+      <br/>
+      <br/>
     </>
   );
 };

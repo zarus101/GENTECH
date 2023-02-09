@@ -26,12 +26,15 @@ export default function ListofSongs({ theme }) {
     console.log(songs);
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`/v1/getSingleArtist/${artistID}`)
-      .then((response) => setArtist(response.data[0]))
-      .catch((error) => console.error(`Error: ${error}`));
-  }, [artistID]);
+
+  const [currentSong, setCurrentSong] = useState(null);
+
+  const handleSongPlay = (song) => {
+    if (currentSong) {
+      currentSong.pause();
+    }
+    setCurrentSong(song);
+  };
 
   return (
     <div className="songlist" id={theme}>
@@ -58,8 +61,12 @@ export default function ListofSongs({ theme }) {
 
             <div className="right">
               <span className="grey_text">{song.Description}</span>
-              {/* <span className="grey_text">{artist.duration}</span> */}
-              <audio controls src={`/public/songs/${song.song}`}></audio>
+              {/* <span className="grey_text">{props.artist.duration}</span> */}
+              <audio
+                controls
+                onPlay={() => handleSongPlay(this)}
+                src={`/public/songs/${song.song}`}
+              ></audio>
             </div>
           </div>
         ))

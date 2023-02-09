@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from "react";
-import "../../assets/TopSongs.scss";
+import React, { useEffect, useState } from "react";
+
+import "../../assets/TopArtists.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { NavLink } from "react-router-dom";
+
+// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { getAllMusic } from "../../connection/MusicService";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import { getAllMusic } from "../../connection/MusicService";
 
-function TopSongs({ theme }) {
+function BrowseSongs({ theme, searchItem }) {
   const [swiperRef, setSwiperRef] = useState(null);
   const [songs, setSongs] = useState([]);
-
-  const prevHandler = () => {
-    swiperRef.slidePrev();
-  };
-
-  const nextHandler = () => {
-    swiperRef.slideNext();
-  };
 
   useEffect(() => {
     getAllMusic()
@@ -35,24 +33,20 @@ function TopSongs({ theme }) {
       });
   }, []);
 
-
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const handlePlay = () => {
-    setIsPlaying(true);
+  const prevHandler = () => {
+    swiperRef.slidePrev();
   };
 
-  const handlePause = () => {
-    setIsPlaying(false);
+  const nextHandler = () => {
+    swiperRef.slideNext();
   };
   return (
     <div className="wrapper" id={theme}>
       <div className="carousel_header">
         <div className="carousal_title">
-          <h3 id="text">Top Songs</h3>
+          <h3 id="text">Songs</h3>
 
-          <p>- Top 10</p>
-          <NavLink className="none_text_decoration" to={"/songs"}>
+          <NavLink className="none_text_decoration">
             <p id="text">
               See all <ArrowRightAltIcon className="see_all_arrow" />
             </p>
@@ -70,8 +64,6 @@ function TopSongs({ theme }) {
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
-        // loop={true}
-        // loopFillGroupWithBlank={true}
         breakpoints={{
           0: {
             slidesPerView: 2,
@@ -93,16 +85,31 @@ function TopSongs({ theme }) {
         onSwiper={(swiper) => setSwiperRef(swiper)}
         className="mySwiper"
       >
-        {songs.map((song) => (
-          <SwiperSlide key={song.songID}>
-            <div className="artist_image">
-              <img src="../images/download.jfif" alt="" />
-              <div className="audiopart">
+        {songs
+          .filter((song) => {
+            if (searchItem === "") {
+              return song;
+            } else if (
+              song.songName.toLowerCase().includes(searchItem.toLowerCase())
+            ) {
+              return song;
+            } else if (song === "") {
+              return (
+                <>
+                  <div>empty songs</div>
+                </>
+              );
+            }
+          })
+          .map((song) => {
+            return (
+              <SwiperSlide key={song.songID}>
+                <div className="artist_image">
+                <img src="./images/download.jfif" alt="" />
+                <div className="audiopart">
                 <audio
-                 className="audio"
-                 controls
-                 onPlay={handlePlay}
-                 onPause={handlePause}
+                  className="audio"
+                  controls
                   src={`/public/songs/${song.song}`}
                 ></audio>
                 <div className="buttons">
@@ -114,16 +121,32 @@ function TopSongs({ theme }) {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="artist_info">
-              <h5 id="text">{song.songName}</h5>
-              <h6>{song.Description}</h6>
-            </div>
+                </div>
+                <div className="artist_info">
+                  <h5 id="text">{song.songName}</h5>
+                  {/* <h6>{artist.name}</h6> */}
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        {songs.filter((song) => {
+          if (searchItem === "") {
+            return song;
+          } else if (
+            song.songName.toLowerCase().includes(searchItem.toLowerCase())
+          ) {
+            return song;
+          }
+        }).length === 0 && (
+          <SwiperSlide>
+            <div>No songs found</div>
           </SwiperSlide>
-        ))}
+        )}
       </Swiper>
+
+      {}
     </div>
   );
 }
 
-export default TopSongs;
+export default BrowseSongs;

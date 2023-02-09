@@ -4,35 +4,71 @@
   .middle-section {
     .wrapper {
       display: block;
-
       .carousel_header {
-        display: block;
+        display: flex;
 
-        .artist-card {
-          display: grid;
-          //   grid-template-rows: 1fr 1fr 1fr 1fr;
-          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-          margin: 0;
-          padding: 2rem;
+        .search-div {
+          width: 50%;
+          max-width: 600px;
+          background: white;
+          display: flex;
+          align-items: center;
+          border-radius: 10px;
+          padding: 5px;
 
-          .card {
-            height: 90%;
-            width: 90%;
-            cursor: pointer;
-            transition: 0.5s ease;
-            .artist_image {
-              img {
-                display: block;
-                height: 200px;
-                width: 100%;
-                border-radius: 5%;
-              }
+          .search-bar{
+            width: 100%;
+            input {
+              background-color: transparent;
+              border: 0;
+              width: 90%;
+              outline: none;
+              padding: 10px 10px;
+              font-size: 20px;
+              color: #070716;
+            }
+  
+          }
+
+          
+          
+        }
+      }
+
+      .artist-card-1 {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        margin: 0;
+        padding: 2rem;
+
+        .card {
+          height: 90%;
+          width: 90%;
+          cursor: pointer;
+          transition: 0.5s ease;
+          .artist_image {
+            img {
+              display: block;
+              height: 200px;
+              width: 100%;
+              border-radius: 5%;
             }
           }
 
-          .card:hover {
-            opacity: 0.9;
+          .not-found-error{
+            height: 100%;
+            width: 100%;
+            display: flex;
+            text-align: center;
+            background-color: white;
+            color: black;
+            padding: 100px;
           }
+        }
+
+        .card:hover {
+          opacity: 0.9;
         }
       }
     }

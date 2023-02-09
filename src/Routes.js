@@ -9,7 +9,7 @@ import {
 import { calenderRoute } from "./pages/Admin/AdminPages/Calender/Route";
 import { adminDashboard } from "./pages/Admin/AdminPages/Dashboard/Route";
 import { addSongs, listSongs } from "./pages/Admin/AdminPages/Songs/Route";
-import { userList } from "./pages/Admin/AdminPages/Users/Route";
+import { updateUserRoute, userList } from "./pages/Admin/AdminPages/Users/Route";
 import { addGenreRoute } from "./pages/Admin/AdminPages/Genre/Route";
 import { adminRoute } from "./pages/Admin/Route";
 import { albumRoute } from "./pages/Album/Route";
@@ -20,6 +20,7 @@ import { loginRoute } from "./pages/Login/Route";
 import { registerRoute } from "./pages/Register/Route";
 import { profileRoute } from "./pages/Profile/Route";
 import { genreRoute } from "./pages/Genre/Route";
+import { searchRoute } from "./pages/Search/Route";
 
 const Routes = () => {
   const [login, setLogin] = useState(false);
@@ -45,6 +46,8 @@ const Routes = () => {
     artistList,
     userList,
     profileRoute,
+    searchRoute,
+    updateUserRoute,
   ];
 
   const result = routes.map(

@@ -25,7 +25,7 @@ const ArtistList = () => {
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
   const [token, setToken] = useState();
-
+  const [searchItem, setSearchItem] = useState("");
 
   const fetchData = () => {
     return axios
@@ -47,22 +47,19 @@ const ArtistList = () => {
   };
 
   function deleteArtist(value) {
-
     deleteArtistById(value.artistID, token)
-    .then((res) => {
-      console.log(value.artistID);
-      toast.success("artist deleted!!");
-      
-    })
-    .catch((error) => {
-      toast.error("failed to delete the user..");
-    });
-  
+      .then((res) => {
+        console.log(value.artistID);
+        toast.success("artist deleted!!");
+      })
+      .catch((error) => {
+        toast.error("failed to delete the user..");
+      });
   }
 
   const handleUpdate = (id, e) => {
     e.preventDefault();
-    Navigate(`/UpdateArtist/${id}`);
+    Navigate(`/updateArtist/${id}`);
   };
 
   const handleDeleteAll = (e) => {
@@ -70,7 +67,7 @@ const ArtistList = () => {
     if (window.confirm("Are you sure you want to delete?")) {
       axios
         .delete(`/v1/deleteAllArtist`, config)
-        .then((res) => {   
+        .then((res) => {
           toast.success(" All artist deleted!!");
         })
         .catch((error) => setError(error));
@@ -80,79 +77,112 @@ const ArtistList = () => {
 
   return (
     <>
-   <Box m="20px">
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="Add Artist" subtitle="add new artist here" />
+      <Box m="20px" className="artistlist-section">
+        <Box
+          className="header"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <div className="left-part">
+            <Header title="Add Artist" subtitle="add new artist here" />
+          </div>
+          <div className="search-div">
+            <form action="" className="search-bar">
+              <input
+                type="search"
+                placeholder="search your artist here"
+                name="seacrh"
+                onChange={(event) => {
+                  setSearchItem(event.target.value);
+                }}
+              />
+            </form>
+          </div>
         </Box>
-    <main>
-      {showAlert ? (
-        <Alert severity="success" onClose={() => setShowAlert(false)}>
-          {error ? `${error}` : `${response}`}
-        </Alert>
-      ) : (
-        ""
-      )}
+        <main>
+          {showAlert ? (
+            <Alert severity="success" onClose={() => setShowAlert(false)}>
+              {error ? `${error}` : `${response}`}
+            </Alert>
+          ) : (
+            ""
+          )}
 
-      <button onClick={(e) => handleDeleteAll(e)}>
-        <ClearIcon sx={{ color: red[900] }} />
-      </button>
-      <div style={{ overflowX: "auto" }}>
-        <table>
-          <thead>
-            <tr>
-              <th>Artist ID</th>
-              <th>Artist Name</th>
-              <th>Artist Bio</th>
-              <th>Artist Year</th>
-              <th>Artist Status</th>
-              <th>Artist Pic</th>
-              <th>Options</th>
-            </tr>
-          </thead>
-          {user.map((value) => (
-            <tbody key={value.artistID}>
-              <tr>
-                <td>{value.artistID}</td>
-                <td>{value.artistName}</td>
-                <td>{value.artistBio}</td>
-                <td>{value.year}</td>
-                <td>{value.status}</td>
-                <td>
-                  <img
-                    src={`/public/img/artist/${value.artistPhoto}`}
-                    alt="Artist"
-                    width="100px"
-                    loading="lazy"
-                  />
-                </td>
-                <td>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <button
-                      onClick={() =>deleteArtist(value)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <Delete sx={{ color: red[800] }} />
-                    </button>
-                    <button
-                      onClick={(e) => handleUpdate(value.artistID, e)}
-                      style={{ cursor: "pointer", marginLeft: "5px" }}
-                    >
-                      <Edit color="primary" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          ))}
-        </table>
-      </div>
-    </main>
-    </Box>
+          <button onClick={(e) => handleDeleteAll(e)}>
+            <ClearIcon sx={{ color: red[900] }} />
+          </button>
+          <div style={{ overflowX: "auto" }}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Artist ID</th>
+                  <th>Artist Name</th>
+                  <th>Artist Bio</th>
+                  <th>Artist Year</th>
+                  <th>Artist Status</th>
+                  <th>Artist Pic</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              {user
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.artistName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value) => {
+                  return (
+                    <tbody key={value.artistID}>
+                      <tr>
+                        <td>{value.artistID}</td>
+                        <td>{value.artistName}</td>
+                        <td>{value.artistBio}</td>
+                        <td>{value.year}</td>
+                        <td>{value.status}</td>
+                        <td>
+                          <img
+                            src={`/public/img/artist/${value.artistPhoto}`}
+                            alt="Artist"
+                            width="100px"
+                            loading="lazy"
+                          />
+                        </td>
+                        <td>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <button
+                              onClick={() => deleteArtist(value)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <Delete sx={{ color: red[800] }} />
+                            </button>
+                            <button
+                              onClick={(e) => handleUpdate(value.artistID, e)}
+                              style={{ cursor: "pointer", marginLeft: "5px" }}
+                            >
+                              <Edit color="primary" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
+            </table>
+          </div>
+        </main>
+      </Box>
     </>
   );
 };

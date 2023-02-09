@@ -50,7 +50,7 @@ export default function MostPlayed({ theme }) {
             {/* <span className="grey_text">{artist.duration}</span> */}
 
             <span>
-              <img src="../images/visualizer.gif" alt="" />
+              <img style={{height:'50px'}} src="../images/visualizer.gif" alt="" />
             </span>
           </div>
         </div>

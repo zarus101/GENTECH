@@ -6,7 +6,7 @@ import { myAxios } from "./Helper"
  }
 
  export const getMusicByArtistId=(artistID)=>{
-    return myAxios.get(`/songs/${artistID}`).then(response=>{return response.data})
+    return myAxios.get(`/getSongsByArtistID/${artistID}`).then(response=>{return response.data})
  }
  
 //deleting tyhe song 
