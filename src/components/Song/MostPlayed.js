@@ -6,13 +6,38 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 
 import "../../assets/MostPlayed.scss";
+import { useEffect } from "react";
+import { getAllMusic } from "../../connection/MusicService";
 
 export default function MostPlayed({ theme }) {
   const [isActive, setIsActive] = useState(false);
+  const [songs, setSongs] = useState([]);
 
   const handleClick = (index) => {
     setIsActive((current) => !current);
   };
+
+  useEffect(() => {
+    getAllMusic()
+      .then((data) => {
+        setSongs(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
   return (
     <div className="mostplayed" id={theme}>
       <div className="mostplayed_header">
@@ -25,32 +50,47 @@ export default function MostPlayed({ theme }) {
         </p>
       </div>
 
-      {bestArtists.slice(0, 5).map((artist, index) => (
+      {songs.slice(0, 5).map((song, index) => (
         <div
-          className={
-            isActive ? "mostplayed_element_play" : "mostplayed_element_stop"
-          }
+          className="mostplayed_element_play"
           onClick={() => {
             handleClick(index);
           }}
           key={index}
         >
           <div className="left">
-            <span className="primary_text_color">{artist.id}</span>
+            <span className="primary_text_color">{song.songID}</span>
 
-            <img src={artist.src} alt="artists" />
+            <img
+              src="./images/download.jfif"
+              style={{ height: "50px" }}
+              alt="artists"
+            />
 
             <PlayArrowIcon className="grey_text" />
 
-            <span className="primary_text_color">{artist.title}</span>
+            <span className="primary_text_color">{song.songName}</span>
+          </div>
+          <div className="audio">
+            <audio
+              className="audio"
+              controls
+              onPlay={handlePlay}
+              onPause={handlePause}
+              src={`/public/songs/${song.song}`}
+            ></audio>
           </div>
 
           <div className="right">
-            <span className="grey_text">{artist.name}</span>
+            {/* <span className="grey_text">{song.Description}</span> */}
             {/* <span className="grey_text">{artist.duration}</span> */}
 
             <span>
-              <img style={{height:'50px'}} src="../images/visualizer.gif" alt="" />
+              <img
+                style={{ height: "50px" }}
+                src="../images/visualizer.gif"
+                alt=""
+              />
             </span>
           </div>
         </div>
