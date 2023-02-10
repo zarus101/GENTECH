@@ -8,3 +8,10 @@ export const deleteArtistById = (artistID, token) => {
     },
   });
 };
+
+//getting all the artists
+export const getAllArtists = () => {
+  return myAxios.get("/getAllArtist").then((response) => {
+    return response.data;
+  });
+};

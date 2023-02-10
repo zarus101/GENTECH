@@ -18,7 +18,10 @@ import {
   listSongs,
   updateSongRoute,
 } from "./pages/Admin/AdminPages/Songs/Route";
-import { userList } from "./pages/Admin/AdminPages/Users/Route";
+import {
+  updateUserRoute,
+  userList,
+} from "./pages/Admin/AdminPages/Users/Route";
 import { adminRoute } from "./pages/Admin/Route";
 import { albumRoute } from "./pages/Album/Route";
 import { artistRoute, singleArtistRoute } from "./pages/Artist/Route";
@@ -28,6 +31,7 @@ import { loginRoute } from "./pages/Login/Route";
 import { registerRoute } from "./pages/Register/Route";
 import { profileRoute } from "./pages/Profile/Route";
 import { genreRoute, singleGenreRoute } from "./pages/Genre/Route";
+import { searchRoute } from "./pages/Search/Route";
 
 const Routes = () => {
   const [login, setLogin] = useState(false);
@@ -57,6 +61,8 @@ const Routes = () => {
     artistList,
     userList,
     profileRoute,
+    searchRoute,
+    updateUserRoute,
   ];
 
   const result = routes.map(

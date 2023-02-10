@@ -33,3 +33,30 @@ tfoot td {
   background-color: #04aa6d;
   color: white;
 }
+
+.artistlist-section {
+  .header {
+    .search-div {
+      width: 50%;
+      max-width: 600px;
+      background: white;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      padding: 5px;
+
+      .search-bar {
+        width: 100%;
+        input {
+          background-color: transparent;
+          border: 0;
+          width: 90%;
+          outline: none;
+          padding: 10px 10px;
+          font-size: 20px;
+          color: #070716;
+        }
+      }
+    }
+  }
+}

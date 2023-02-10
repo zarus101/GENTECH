@@ -2,15 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "../../assets/ArtistInfo.scss";
 
-export default function ArtistInfo({ theme, id }) {
+export default function ArtistInfo({ theme, artistID }) {
   const [artist, setArtist] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`/v1/getSingleArtist/${id}`)
+      .get(`/v1/getSingleArtist/${artistID}`)
       .then((response) => setArtist(response.data[0]))
       .catch((error) => console.error(`Error: ${error}`));
-  }, [id]);
+  }, [artistID]);
 
   return (
     <div className="artist-card" id={theme}>

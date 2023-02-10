@@ -35,14 +35,6 @@ const FixFooter = (props) => {
 
   useEffect(() => {
     let subscribed = true;
-    if (subscribed) {
-      if (props.isPlaying) {
-        props.audioPlayer.current.play();
-      } else {
-        props.audioPlayer.current.pause();
-      }
-    }
-
     if (props.isPlaying) {
       const interval = setInterval(() => {
         const _duration = Math.floor(props.audioPlayer?.current?.duration);
@@ -56,7 +48,6 @@ const FixFooter = (props) => {
         clearInterval(interval);
       };
     }
-
     return () => {
       subscribed = false;
     };

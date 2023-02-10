@@ -25,6 +25,7 @@ const ArtistList = () => {
   const [error, setError] = useState("");
   const [response] = useState("");
   const [token, setToken] = useState();
+  const [searchItem, setSearchItem] = useState("");
 
   const fetchData = () => {
     return axios
@@ -61,7 +62,7 @@ const ArtistList = () => {
 
   const handleUpdate = (id, e) => {
     e.preventDefault();
-    Navigate(`/UpdateArtist/${id}`);
+    Navigate(`/updateArtist/${id}`);
   };
 
   const handleDeleteAll = (e) => {
@@ -79,9 +80,28 @@ const ArtistList = () => {
 
   return (
     <>
-      <Box m="20px">
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="All Artists" subtitle="All artist here" />
+      <Box m="20px" className="artistlist-section">
+        <Box
+          className="header"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <div className="left-part">
+            <Header title="All Artists" subtitle="All artists here" />
+          </div>
+          <div className="search-div">
+            <form action="" className="search-bar">
+              <input
+                type="search"
+                placeholder="Search your artist here"
+                name="seacrh"
+                onChange={(event) => {
+                  setSearchItem(event.target.value);
+                }}
+              />
+            </form>
+          </div>
         </Box>
         <main>
           {showAlert ? (
@@ -108,46 +128,60 @@ const ArtistList = () => {
                   <th>Options</th>
                 </tr>
               </thead>
-              {user.map((value) => (
-                <tbody key={value.artistID}>
-                  <tr>
-                    <td>{value.artistID}</td>
-                    <td>{value.artistName}</td>
-                    <td>{value.artistBio}</td>
-                    <td>{value.year}</td>
-                    <td>{value.status}</td>
-                    <td>
-                      <img
-                        src={`/public/img/artist/${value.artistPhoto}`}
-                        alt="Artist"
-                        width="100px"
-                        loading="lazy"
-                      />
-                    </td>
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <button
-                          onClick={() => deleteArtist(value)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <Delete sx={{ color: red[800] }} />
-                        </button>
-                        <button
-                          onClick={(e) => handleUpdate(value.artistID, e)}
-                          style={{ cursor: "pointer", marginLeft: "5px" }}
-                        >
-                          <Edit color="primary" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
+              {user
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.artistName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value) => {
+                  return (
+                    <tbody key={value.artistID}>
+                      <tr>
+                        <td>{value.artistID}</td>
+                        <td>{value.artistName}</td>
+                        <td>{value.artistBio}</td>
+                        <td>{value.year}</td>
+                        <td>{value.status}</td>
+                        <td>
+                          <img
+                            src={`/public/img/artist/${value.artistPhoto}`}
+                            alt="Artist"
+                            width="100px"
+                            loading="lazy"
+                          />
+                        </td>
+                        <td>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <button
+                              onClick={() => deleteArtist(value)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <Delete sx={{ color: red[800] }} />
+                            </button>
+                            <button
+                              onClick={(e) => handleUpdate(value.artistID, e)}
+                              style={{ cursor: "pointer", marginLeft: "5px" }}
+                            >
+                              <Edit color="primary" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
             </table>
           </div>
         </main>

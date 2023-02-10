@@ -1,7 +1,7 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
+import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import MusicVideoOutlinedIcon from "@mui/icons-material/MusicVideoOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
@@ -18,11 +18,16 @@ const sideNavbar = {
       name: "Browse",
       icon: <ListAltOutlinedIcon />,
     },
-    {
-      path: "/album",
-      name: "Album",
-      icon: <LibraryMusicOutlinedIcon />,
-    },
+    // {
+    //   path: "/search",
+    //   name: "Search",
+    //   icon: <SearchIcon />,
+    // },
+    // {
+    //   path: "/album",
+    //   name: "Album",
+    //   icon: <LibraryMusicOutlinedIcon />,
+    // },
     {
       path: "/artists",
       name: "Artists",

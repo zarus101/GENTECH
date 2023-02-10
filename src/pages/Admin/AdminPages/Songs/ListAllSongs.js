@@ -1,6 +1,7 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import Header from "../../AdminComponents/Header";
+import "../../../../assets/AdminSongList.scss";
 import ClearIcon from "@mui/icons-material/Clear";
 import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ const ListAllSongs = () => {
   // const [showAlert, setShowAlert] = useState(false);
   // const [error, setError] = useState("");
   // const [response, setResponse] = useState("");
+  const [searchItem, setSearchItem] = useState("");
   const [token, setToken] = useState();
 
   const fetchData = async () => {
@@ -80,19 +82,30 @@ const ListAllSongs = () => {
 
   return (
     <>
-      <Box m="20px">
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="List of All Songs" subtitle="All songs here" />
+      <Box m="20px" className="songlist-section">
+        <Box
+          className="header"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <div className="left-part">
+            <Header title="List of All Songs" subtitle="All songs here" />
+          </div>
+          <div className="search-div">
+            <form action="" className="search-bar">
+              <input
+                type="search"
+                placeholder="search song here"
+                name="seacrh"
+                onChange={(event) => {
+                  setSearchItem(event.target.value);
+                }}
+              />
+            </form>
+          </div>
         </Box>
         <main>
-          {/* {showAlert ? (
-        <Alert severity="success" onClose={() => setShowAlert(false)}>
-          {error ? `${error}` : `${response}`}
-        </Alert>
-      ) : (
-        ""
-      )} */}
-
           <button>
             <ClearIcon
               sx={{ color: red[900] }}
@@ -113,49 +126,76 @@ const ListAllSongs = () => {
                   <th>Options</th>
                 </tr>
               </thead>
-              {songs.map((value) => (
-                <tbody key={value.artistID}>
-                  <tr>
-                    <td>{value.songID}</td>
-                    <td>{value.songName}</td>
-                    <td>{value.Description}</td>
-                    <td>{value.genreName}</td>
-                    <td>{value.dateAdded}</td>
-                    <td>{value.artistName}</td>
-                    <td>
-                      <img
-                        src={`/public/img/coverphoto/${value.coverphoto}`}
-                        alt="Artist"
-                        width="100px"
-                        loading="lazy"
-                      />
-                    </td>
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <button
-                          onClick={() => deleteSong(value)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <Delete sx={{ color: red[800] }} />
-                        </button>
-                        <button
-                          style={{ cursor: "pointer", marginLeft: "5px" }}
-                        >
-                          <Edit
-                            color="primary"
-                            onClick={(e) => handleUpdate(value.songID, e)}
+              {songs
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.songName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value) => {
+                  return (
+                    <tbody key={value.songID}>
+                      <tr>
+                        <td>{value.songID}</td>
+                        <td>{value.songName}</td>
+                        <td>{value.Description}</td>
+                        <td>{value.genreName}</td>
+                        <td>{value.dateAdded}</td>
+                        <td>{value.artistName}</td>
+                        <td>
+                          <img
+                            src={`/public/img/coverphoto/${value.coverphoto}`}
+                            alt="Artist"
+                            width="100px"
+                            loading="lazy"
                           />
-                        </button>
-                      </div>
-                    </td>
+                        </td>
+                        <td>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <button
+                              onClick={() => deleteSong(value)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <Delete sx={{ color: red[800] }} />
+                            </button>
+                            <button
+                              onClick={(e) => handleUpdate(value.songID, e)}
+                              style={{ cursor: "pointer", marginLeft: "5px" }}
+                            >
+                              <Edit color="primary" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
+              {songs.filter((item) => {
+                if (searchItem === "") {
+                  return item;
+                } else if (
+                  item.songName.toLowerCase().includes(searchItem.toLowerCase())
+                ) {
+                  return item;
+                }
+              }).length === 0 && (
+                <tbody>
+                  <tr>
+                    <td> No song found for ' {searchItem} '</td>
                   </tr>
                 </tbody>
-              ))}
+              )}
             </table>
           </div>
         </main>
