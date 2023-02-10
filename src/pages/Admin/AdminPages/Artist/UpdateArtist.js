@@ -57,7 +57,7 @@ const UpdateArtist = () => {
       status: inputs.status,
     };
 
-    // console.log(artistData);
+    console.log(artistData);
 
     axios
       .put(`/v1/updateArtist/${id}`, artistData, config)

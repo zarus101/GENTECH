@@ -4,7 +4,7 @@ import Header from "../../AdminComponents/Header";
 import ClearIcon from "@mui/icons-material/Clear";
 import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
 import { toast } from "react-hot-toast";
 import { Delete, Edit } from "@mui/icons-material";
@@ -17,41 +17,39 @@ const ListAllSongs = () => {
   const [songs, setSongs] = useState([]);
   const Navigate = useNavigate();
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState("");
-  const [response, setResponse] = useState("");
+  // const [showAlert, setShowAlert] = useState(false);
+  // const [error, setError] = useState("");
+  // const [response, setResponse] = useState("");
   const [token, setToken] = useState();
 
   const fetchData = async () => {
-    getAllMusic()
+    await getAllMusic()
       .then((data) => {
         setSongs(data);
-        console.log(data);
       })
       .catch((error) => console.error(`Error: ${error}`));
-
   };
   useEffect(() => {
     fetchData();
     getCurrentUserDetail();
     setToken(getCurrentUserDetail().token);
-  }, []);
+  }, [songs]);
 
-  
-
-  const deleteSong= async(value)=> {
-    deleteSongById(value.songID, token)
-      .then((res) => {
-        console.log(value.id);
-        toast.success("song deleted!!");
-      })
-      .catch((error) => {
-        toast.error("failed to delete the song..");
-      });
-
-      const newSongs= await getAllMusic.json();
-      setSongs(oldSongs=> [...oldSongs, newSongs])
-  }
+  const deleteSong = async (value) => {
+    if (window.confirm("Are you sure you want to delete?")) {
+      deleteSongById(value.songID, token)
+        .then((res) => {
+          console.log(value.id);
+          toast.success("Song deleted!!");
+        })
+        .catch((error) => {
+          toast.error("Failed to delete the song..");
+        });
+    }
+    // window.location.reload(false);
+    // const newSongs = await getAllMusic();
+    // setSongs([...songs]);
+  };
 
   function deleteAllSong() {
     deleteSongById(token)
@@ -62,10 +60,10 @@ const ListAllSongs = () => {
         toast.error("failed to delete the song..");
       });
   }
-  //   const handleUpdate = (id, e) => {
-  //     e.preventDefault();
-  //     Navigate(`/UpdateArtist/${id}`);
-  //   };
+  const handleUpdate = (id, e) => {
+    e.preventDefault();
+    Navigate(`/updateSong/${id}`);
+  };
 
   //   const handleDeleteAll = (e) => {
   //     e.preventDefault();
@@ -84,7 +82,7 @@ const ListAllSongs = () => {
     <>
       <Box m="20px">
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="List of All Songs" subtitle="add new artist here" />
+          <Header title="List of All Songs" subtitle="All songs here" />
         </Box>
         <main>
           {/* {showAlert ? (
@@ -96,7 +94,10 @@ const ListAllSongs = () => {
       )} */}
 
           <button>
-            <ClearIcon sx={{ color: red[900] }} />
+            <ClearIcon
+              sx={{ color: red[900] }}
+              onClick={() => deleteAllSong()}
+            />
           </button>
           <div style={{ overflowX: "auto" }}>
             <table>
@@ -108,7 +109,7 @@ const ListAllSongs = () => {
                   <th>Genre</th>
                   <th>Date Added</th>
                   <th>Artist Name</th>
-                  <th>Song</th>
+                  <th>Cover Photo</th>
                   <th>Options</th>
                 </tr>
               </thead>
@@ -122,12 +123,12 @@ const ListAllSongs = () => {
                     <td>{value.dateAdded}</td>
                     <td>{value.artistName}</td>
                     <td>
-                      {/* <File
-                    src={`/public/img/artist/${value.song}`}
-                    alt="Artist"
-                    width="100px"
-                    loading="lazy"
-                  /> */}
+                      <img
+                        src={`/public/img/coverphoto/${value.coverphoto}`}
+                        alt="Artist"
+                        width="100px"
+                        loading="lazy"
+                      />
                     </td>
                     <td>
                       <div
@@ -143,10 +144,12 @@ const ListAllSongs = () => {
                           <Delete sx={{ color: red[800] }} />
                         </button>
                         <button
-                          onClick={() => deleteAllSong()}
                           style={{ cursor: "pointer", marginLeft: "5px" }}
                         >
-                          <Edit color="primary" />
+                          <Edit
+                            color="primary"
+                            onClick={(e) => handleUpdate(value.songID, e)}
+                          />
                         </button>
                       </div>
                     </td>

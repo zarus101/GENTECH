@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TopArtists from "../../components/Artist/TopArtists";
 import "../../assets/Artists.scss";
-import bestArtists from "../../services/artistsData";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";

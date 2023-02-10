@@ -1,36 +1,32 @@
-import {
-  Alert,
-  Box,
-  Button,
-  TextField,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
+
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 
-const AddSongs = () => {
+const UpdateSong = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState("");
   const [pic, setPic] = useState("");
+
+  const { id } = useParams();
+  const Navigate = useNavigate();
+  const [token, setToken] = useState();
   const [selected, setSelected] = useState([]);
   const [selectedArtist, setSelectedArtist] = useState("");
   // const [selectedArtist, setSelectedArtist] = useState([]);
-  const [token, setToken] = useState();
   const [genres, setGenres] = useState([""]);
   const [artists, setArtists] = useState([""]);
   const [singleArtist, setSingleArtist] = useState([]);
   const [fetching, setFetching] = useState(true);
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState("");
-  const [response, setResponse] = useState("");
 
   useEffect(() => {
     getCurrentUserDetail();
@@ -83,6 +79,23 @@ const AddSongs = () => {
     getData();
   }, [selectedArtist, fetching]);
 
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    axios.get(`/v1/getSingleSong/${id}`).then((res) => setInputs(res.data[0]));
+  }, [id]);
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
+
   const handleFile = (e) => {
     setFile(e.target.files[0]);
     // console.log(file);
@@ -90,7 +103,7 @@ const AddSongs = () => {
 
   const handlePic = (e) => {
     setPic(e.target.files[0]);
-    // console.log(pic);
+    // console.log(file);
   };
 
   const handleSelected = (e) => {
@@ -116,24 +129,10 @@ const AddSongs = () => {
     }, 2000);
   };
 
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const songData = {
-      // songID: inputs.songID,
       songName: inputs.songName,
       Description: inputs.Description,
       genreName: selected,
@@ -143,29 +142,20 @@ const AddSongs = () => {
       coverphoto: pic,
       artistID: selectedArtist,
     };
-    axios
-      .post("/v1/addSong", songData, config)
-      .then((response) => setResponse(response))
-      .catch((error) => setError(error));
 
-    setInputs({});
-    setFile("");
-    setSelected([]);
-    setSelectedArtist([]);
+    console.log(songData);
+
+    axios
+      .put(`/v1/updateSong/${id}`, songData, config)
+      .then((res) => console.log(res.data));
+
+    alert("Successful");
+    Navigate("/songs");
   };
 
   return (
     <>
-      {showAlert ? (
-        <Alert severity="success" onClose={() => setShowAlert(false)}>
-          {error ? `${error}` : `${response}`}
-        </Alert>
-      ) : (
-        ""
-      )}
       <Box m="20px">
-        {/* <Header title="CREATE USER" subtitle="Create a New User Profile" /> */}
-
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"
@@ -175,16 +165,6 @@ const AddSongs = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {/* <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="Song ID"
-            name="songID"
-            value={inputs.songID || ""}
-            onChange={handleChange}
-            sx={{ gridColumn: "span 2" }}
-          /> */}
             <TextField
               fullWidth
               variant="filled"
@@ -207,28 +187,6 @@ const AddSongs = () => {
               onChange={handleChange}
               sx={{ gridColumn: "span 4" }}
             />
-
-            {/* <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="Song Duration"
-            name="songDuration"
-            value={inputs.songDuration || ""}
-            onChange={handleChange}
-            sx={{ gridColumn: "span 2" }}
-          /> */}
-
-            {/* <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="Genre Name"
-            name="genreName"
-            value={inputs.genreName || ""}
-            onChange={handleChange}
-            sx={{ gridColumn: "span 2" }}
-          /> */}
 
             <Box sx={{ gridColumn: "span 2" }}>
               <Select
@@ -306,7 +264,7 @@ const AddSongs = () => {
           </Box>
           <Box display="flex" justifyContent="end" mt="20px">
             <Button type="submit" color="secondary" variant="contained">
-              Add Song
+              Save
             </Button>
           </Box>
         </form>
@@ -315,4 +273,4 @@ const AddSongs = () => {
   );
 };
 
-export default AddSongs;
+export default UpdateSong;

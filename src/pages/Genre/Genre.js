@@ -14,9 +14,9 @@ const Genre = ({ theme }) => {
       .catch((error) => console.error(error));
   }, []);
 
-  const handleClick = (id, e) => {
+  const handleClick = (name, e) => {
     e.preventDefault();
-    navigate(`/genre/${id}`);
+    navigate(`/genre/${name}`);
   };
   return (
     <>
@@ -32,7 +32,7 @@ const Genre = ({ theme }) => {
                   <div
                     className="card"
                     key={item.genreID}
-                    onClick={(e) => handleClick(item.genreID, e)}
+                    onClick={(e) => handleClick(item.genreName, e)}
                   >
                     <div className="genre_image">
                       <img src={item.src} alt="" />

@@ -12,24 +12,23 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Alert from "@mui/material/Alert";
 
 import { getCurrentUserDetail } from "../../../../connection/UserService";
-import { deleteArtistById } from "../../../../connection/ArtistService";
 import { toast } from "react-hot-toast";
 import Header from "../../AdminComponents/Header";
 import { Box } from "@mui/material";
 
-const ArtistList = () => {
-  const [user, setUser] = useState([]);
+const GenreList = () => {
+  const [genres, setGenres] = useState([]);
   const Navigate = useNavigate();
 
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
-  const [response] = useState("");
+  const [response, setResponse] = useState("");
   const [token, setToken] = useState();
 
   const fetchData = () => {
     return axios
-      .get("/v1/getAllArtist")
-      .then((response) => setUser(response.data))
+      .get("/v1/genre")
+      .then((response) => setGenres(response.data))
       .catch((error) => console.error(`Error: ${error}`));
   };
 
@@ -37,7 +36,7 @@ const ArtistList = () => {
     fetchData();
     getCurrentUserDetail();
     setToken(getCurrentUserDetail().token);
-  }, [user]);
+  }, [genres]);
 
   const config = {
     headers: {
@@ -45,32 +44,32 @@ const ArtistList = () => {
     },
   };
 
-  function deleteArtist(value) {
+  function deleteGenre(id) {
     if (window.confirm("Are you sure you want to delete?")) {
-      deleteArtistById(value.artistID, token)
+      axios
+        .delete(`/v1/deleteGenre/${id}`, config)
         .then((res) => {
-          console.log(value.artistID);
-          toast.success("Artist deleted!!");
+          console.log(id);
+          toast.success("Genre deleted!!");
         })
         .catch((error) => {
-          toast.error("Failed to delete the artist..");
+          toast.error("Failed to delete the genre..");
         });
-      // window.location.reload(false);
     }
   }
 
   const handleUpdate = (id, e) => {
     e.preventDefault();
-    Navigate(`/UpdateArtist/${id}`);
+    Navigate(`/updateGenre/${id}`);
   };
 
   const handleDeleteAll = (e) => {
     e.preventDefault();
     if (window.confirm("Are you sure you want to delete?")) {
       axios
-        .delete(`/v1/deleteAllArtist`, config)
+        .delete(`/v1/deleteAllGenre`, config)
         .then((res) => {
-          toast.success(" All artist deleted!!");
+          toast.success(" All genres deleted!!");
         })
         .catch((error) => setError(error));
       setShowAlert(true);
@@ -81,7 +80,7 @@ const ArtistList = () => {
     <>
       <Box m="20px">
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="All Artists" subtitle="All artist here" />
+          <Header title="All Genres" subtitle="All genres here" />
         </Box>
         <main>
           {showAlert ? (
@@ -99,31 +98,19 @@ const ArtistList = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Artist ID</th>
-                  <th>Artist Name</th>
-                  <th>Artist Bio</th>
-                  <th>Artist Year</th>
-                  <th>Artist Status</th>
-                  <th>Artist Pic</th>
+                  <th>Genre ID</th>
+                  <th>Genre Name</th>
+                  <th>Genre Description</th>
                   <th>Options</th>
                 </tr>
               </thead>
-              {user.map((value) => (
-                <tbody key={value.artistID}>
+              {genres.map((value) => (
+                <tbody key={value.genreID}>
                   <tr>
-                    <td>{value.artistID}</td>
-                    <td>{value.artistName}</td>
-                    <td>{value.artistBio}</td>
-                    <td>{value.year}</td>
-                    <td>{value.status}</td>
-                    <td>
-                      <img
-                        src={`/public/img/artist/${value.artistPhoto}`}
-                        alt="Artist"
-                        width="100px"
-                        loading="lazy"
-                      />
-                    </td>
+                    <td>{value.genreID}</td>
+                    <td>{value.genreName}</td>
+                    <td>{value.Description}</td>
+
                     <td>
                       <div
                         style={{
@@ -132,13 +119,13 @@ const ArtistList = () => {
                         }}
                       >
                         <button
-                          onClick={() => deleteArtist(value)}
+                          onClick={() => deleteGenre(value.genreID)}
                           style={{ cursor: "pointer" }}
                         >
                           <Delete sx={{ color: red[800] }} />
                         </button>
                         <button
-                          onClick={(e) => handleUpdate(value.artistID, e)}
+                          onClick={(e) => handleUpdate(value.genreID, e)}
                           style={{ cursor: "pointer", marginLeft: "5px" }}
                         >
                           <Edit color="primary" />
@@ -156,4 +143,4 @@ const ArtistList = () => {
   );
 };
 
-export default ArtistList;
+export default GenreList;
