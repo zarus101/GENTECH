@@ -79,7 +79,11 @@ export default function ListofSongs({ theme }) {
               {/* <span className="primary_text_color">{song.id}</span> */}
 
               <img
-                src={`/public/img/coverphoto/${song.coverphoto}`}
+                src={
+                  song.coverphoto
+                    ? `/public/img/coverphoto/${song.coverphoto}`
+                    : "../images/download.jfif"
+                }
                 alt="song_cover"
               />
               <div className="left-info">

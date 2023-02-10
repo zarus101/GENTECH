@@ -62,7 +62,11 @@ export default function MostPlayed({ theme }) {
             <span className="primary_text_color">{song.songID}</span>
 
             <img
-              src="./images/download.jfif"
+              src={
+                song.coverphoto
+                  ? `/public/img/coverphoto/${song.coverphoto}`
+                  : "../images/download.jfif"
+              }
               style={{ height: "50px" }}
               alt="artists"
             />
@@ -71,19 +75,20 @@ export default function MostPlayed({ theme }) {
 
             <span className="primary_text_color">{song.songName}</span>
           </div>
-          <div className="audio">
-            <audio
-              className="audio"
-              controls
-              onPlay={handlePlay}
-              onPause={handlePause}
-              src={`/public/songs/${song.song}`}
-            ></audio>
-          </div>
 
           <div className="right">
             {/* <span className="grey_text">{song.Description}</span> */}
             {/* <span className="grey_text">{artist.duration}</span> */}
+
+            <div className="audio">
+              <audio
+                className="audio"
+                controls
+                onPlay={handlePlay}
+                onPause={handlePause}
+                src={`/public/songs/${song.song}`}
+              ></audio>
+            </div>
 
             <span>
               <img

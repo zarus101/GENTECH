@@ -33,9 +33,9 @@
 
       .artist-card-1 {
         display: grid;
-        grid-template-rows: 1fr 1fr 1fr 1fr;
+        // grid-template-rows: 1fr 1fr 1fr 1fr;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        margin: 0;
+        margin-bottom: 1rem;
         padding: 2rem;
 
         .card {
@@ -46,9 +46,10 @@
           .artist_image {
             img {
               display: block;
-              height: 200px;
-              width: 100%;
-              border-radius: 5%;
+              height: 150px;
+              width: 150px;
+              max-width: 100%;
+              border-radius: 50%;
             }
           }
 
@@ -79,12 +80,12 @@
         .carousel_header {
           padding: 0;
           box-shadow: none;
-          .artist-card {
-            width: 100%;
-            grid-template-columns: 1fr 1fr;
-            padding: 0rem;
-            box-shadow: none;
-          }
+        }
+        .artist-card-1 {
+          width: 100%;
+          grid-template-columns: 1fr 1fr;
+          padding: 0rem;
+          box-shadow: none;
         }
       }
     }
