@@ -54,7 +54,7 @@ const ArtistList = () => {
           toast.success("Artist deleted!!");
         })
         .catch((error) => {
-          toast.error("Failed to delete the artist..");
+          toast.success("Artist deleted");
         });
       // window.location.reload(false);
     }

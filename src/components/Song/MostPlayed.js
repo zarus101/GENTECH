@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import bestArtists from "../../services/artistsData";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -10,7 +9,7 @@ import { useEffect } from "react";
 import { getAllMusic } from "../../connection/MusicService";
 
 export default function MostPlayed({ theme }) {
-  const [isActive, setIsActive] = useState(false);
+  const [setIsActive] = useState(false);
   const [songs, setSongs] = useState([]);
 
   const handleClick = (index) => {
@@ -28,7 +27,7 @@ export default function MostPlayed({ theme }) {
       });
   }, []);
 
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [setIsPlaying] = useState(false);
 
   const handlePlay = () => {
     setIsPlaying(true);

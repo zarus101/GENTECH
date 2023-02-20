@@ -32,6 +32,7 @@ import { registerRoute } from "./pages/Register/Route";
 import { profileRoute } from "./pages/Profile/Route";
 import { genreRoute, singleGenreRoute } from "./pages/Genre/Route";
 import { searchRoute } from "./pages/Search/Route";
+import { playlistRoute } from "./pages/Playlist/Route";
 
 const Routes = () => {
   const [login, setLogin] = useState(false);
@@ -63,6 +64,7 @@ const Routes = () => {
     profileRoute,
     searchRoute,
     updateUserRoute,
+    playlistRoute,
   ];
 
   const result = routes.map(

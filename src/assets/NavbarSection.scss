@@ -31,6 +31,32 @@
         }
       }
 
+      .playlist-list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style-type: none;
+        padding-bottom: 5vh;
+        padding-inline: 2rem;
+        width: 100%;
+        color: black;
+        cursor: pointer;
+        background-color: transparent;
+        transition: 0.5s ease-in;
+      }
+
+      .playlist-list:hover {
+        color: rgb(238, 8, 8);
+      }
+      .delete-icon {
+        cursor: pointer;
+      }
+
+      .delete-icon:hover {
+        transition: 0.3s ease;
+        color: rgb(250, 5, 5);
+      }
+
       .nav-list {
         padding-bottom: 5vh;
         width: 100%;
@@ -53,6 +79,7 @@
             width: 30px;
           }
         }
+
         .nav-item {
           background-color: transparent;
           font-size: $li;
@@ -92,10 +119,8 @@
 }
 
 .top-bar {
-
-  input{
+  input {
     padding: 10px 20px;
-
   }
   .search-box {
     position: absolute;
@@ -108,7 +133,7 @@
     margin-left: 15px;
     display: block;
 
-    .cancel{
+    .cancel {
       display: flex;
       width: 100%;
       position: relative;
@@ -116,25 +141,25 @@
       justify-content: end;
       padding-right: 10px;
 
-      svg{
+      svg {
         cursor: pointer;
       }
     }
 
-    .artist-section{
-      .header{
+    .artist-section {
+      .header {
         padding-left: 20px;
       }
       .artists {
         padding: 0px 20px 0 20px;
         display: flex;
         cursor: pointer;
-  
+
         .artist-pic {
           padding-top: 5px;
           width: 20%;
           height: 20%;
-  
+
           img {
             width: 50px;
             height: 50px;
@@ -154,11 +179,10 @@
       .artists:hover {
         background-color: rgba(0, 0, 0, 0.3);
       }
-
     }
-    
-    .song-section{
-      .header{
+
+    .song-section {
+      .header {
         padding-left: 20px;
       }
       .songs {
@@ -188,8 +212,39 @@
       .songs:hover {
         background-color: rgba(0, 0, 0, 0.3);
       }
-
     }
-    
+  }
+}
+
+.wrapper {
+  .artist_image {
+    .audiopart {
+      .buttons {
+        .addtoplaylist {
+          .playlist {
+            background-color: white;
+            position: absolute;
+            z-index: 9999;
+            left: 0px;
+            width: 100%;
+
+            ul {
+              padding: 0;
+              background-color: white;
+
+              li {
+                list-style-type: none;
+                padding: 10px;
+                display: flex;
+              }
+
+              li:hover {
+                background-color: rgb(174, 216, 216);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
