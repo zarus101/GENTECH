@@ -7,7 +7,12 @@ const StatBox = ({ title, subtitle, icon, progress, increase }) => {
         <Box className="mini-box" display="flex">
           <div className="icon">{icon}</div>
 
-          <Typography className="title" variant="h4" fontWeight="bold" sx={{ color: "#e0e0e0 " }}>
+          <Typography
+            className="title"
+            variant="h4"
+            fontWeight="bold"
+            sx={{ color: "#e0e0e0 ", ml: "50px" }}
+          >
             {title}
           </Typography>
         </Box>

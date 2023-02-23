@@ -1,9 +1,11 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import Header from "../../AdminComponents/Header";
-import "../../../../assets/AdminSongList.scss"
+import "../../../../assets/AdminSongList.scss";
 import ClearIcon from "@mui/icons-material/Clear";
 import { red } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
 import { toast } from "react-hot-toast";
 import { Delete, Edit } from "@mui/icons-material";
@@ -14,14 +16,18 @@ import {
 
 const ListAllSongs = () => {
   const [songs, setSongs] = useState([]);
+  const Navigate = useNavigate();
+
+  // const [showAlert, setShowAlert] = useState(false);
+  // const [error, setError] = useState("");
+  // const [response, setResponse] = useState("");
   const [searchItem, setSearchItem] = useState("");
   const [token, setToken] = useState();
 
   const fetchData = async () => {
-    getAllMusic()
+    await getAllMusic()
       .then((data) => {
         setSongs(data);
-        console.log(data);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -29,20 +35,22 @@ const ListAllSongs = () => {
     fetchData();
     getCurrentUserDetail();
     setToken(getCurrentUserDetail().token);
-  }, []);
+  }, [songs]);
 
   const deleteSong = async (value) => {
-    deleteSongById(value.songID, token)
-      .then((res) => {
-        console.log(value.id);
-        toast.success("song deleted!!");
-      })
-      .catch((error) => {
-        toast.error("failed to delete the song..");
-      });
-
-    const newSongs = await getAllMusic.json();
-    setSongs((oldSongs) => [...oldSongs, newSongs]);
+    if (window.confirm("Are you sure you want to delete?")) {
+      deleteSongById(value.songID, token)
+        .then((res) => {
+          console.log(value.id);
+          toast.success("Song deleted!!");
+        })
+        .catch((error) => {
+          toast.error("Failed to delete the song..");
+        });
+    }
+    // window.location.reload(false);
+    // const newSongs = await getAllMusic();
+    // setSongs([...songs]);
   };
 
   function deleteAllSong() {
@@ -54,10 +62,10 @@ const ListAllSongs = () => {
         toast.error("failed to delete the song..");
       });
   }
-  //   const handleUpdate = (id, e) => {
-  //     e.preventDefault();
-  //     Navigate(`/UpdateArtist/${id}`);
-  //   };
+  const handleUpdate = (id, e) => {
+    e.preventDefault();
+    Navigate(`/updateSong/${id}`);
+  };
 
   //   const handleDeleteAll = (e) => {
   //     e.preventDefault();
@@ -75,9 +83,14 @@ const ListAllSongs = () => {
   return (
     <>
       <Box m="20px" className="songlist-section">
-        <Box className="header" display="flex" justifyContent="space-between" alignItems="center">
+        <Box
+          className="header"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <div className="left-part">
-          <Header title="List of All Songs" subtitle="add new artist here" />
+            <Header title="List of All Songs" subtitle="All songs here" />
           </div>
           <div className="search-div">
             <form action="" className="search-bar">
@@ -94,7 +107,10 @@ const ListAllSongs = () => {
         </Box>
         <main>
           <button>
-            <ClearIcon sx={{ color: red[900] }} />
+            <ClearIcon
+              sx={{ color: red[900] }}
+              onClick={() => deleteAllSong()}
+            />
           </button>
           <div style={{ overflowX: "auto" }}>
             <table>
@@ -106,7 +122,7 @@ const ListAllSongs = () => {
                   <th>Genre</th>
                   <th>Date Added</th>
                   <th>Artist Name</th>
-                  <th>Song</th>
+                  <th>Cover Photo</th>
                   <th>Options</th>
                 </tr>
               </thead>
@@ -115,7 +131,9 @@ const ListAllSongs = () => {
                   if (searchItem === "") {
                     return value;
                   } else if (
-                    value.songName.toLowerCase().includes(searchItem.toLowerCase())
+                    value.songName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
                   ) {
                     return value;
                   }
@@ -131,12 +149,12 @@ const ListAllSongs = () => {
                         <td>{value.dateAdded}</td>
                         <td>{value.artistName}</td>
                         <td>
-                          {/* <File
-                    src={`/public/img/artist/${value.song}`}
-                    alt="Artist"
-                    width="100px"
-                    loading="lazy"
-                  /> */}
+                          <img
+                            src={`/public/img/coverphoto/${value.coverphoto}`}
+                            alt="Artist"
+                            width="100px"
+                            loading="lazy"
+                          />
                         </td>
                         <td>
                           <div
@@ -152,7 +170,7 @@ const ListAllSongs = () => {
                               <Delete sx={{ color: red[800] }} />
                             </button>
                             <button
-                              onClick={() => deleteAllSong()}
+                              onClick={(e) => handleUpdate(value.songID, e)}
                               style={{ cursor: "pointer", marginLeft: "5px" }}
                             >
                               <Edit color="primary" />
@@ -163,24 +181,20 @@ const ListAllSongs = () => {
                     </tbody>
                   );
                 })}
-                 {songs.filter((item) => {
+              {songs.filter((item) => {
                 if (searchItem === "") {
                   return item;
                 } else if (
-                  item.songName
-                    .toLowerCase()
-                    .includes(searchItem.toLowerCase())
+                  item.songName.toLowerCase().includes(searchItem.toLowerCase())
                 ) {
                   return item;
                 }
               }).length === 0 && (
-
                 <tbody>
                   <tr>
                     <td> No song found for ' {searchItem} '</td>
                   </tr>
                 </tbody>
-                
               )}
             </table>
           </div>

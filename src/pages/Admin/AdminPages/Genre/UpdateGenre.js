@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Box, Button, TextField } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, TextField } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { getCurrentUserDetail } from "../../../../connection/UserService";
+
+import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { getCurrentUserDetail } from "../../../../connection/UserService";
 
-const AddGenre = () => {
+const UpdateGenre = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [inputs, setInputs] = useState({});
-  const [showAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState("");
-  const [response, setResponse] = useState("");
 
+  const { id } = useParams();
+  const Navigate = useNavigate();
   const [token, setToken] = useState();
 
   useEffect(() => {
@@ -26,40 +27,37 @@ const AddGenre = () => {
     },
   };
 
+  useEffect(() => {
+    axios.get(`/v1/getSingleGenre/${id}`).then((res) => setInputs(res.data[0]));
+  }, [id]);
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
+    console.log(inputs);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const genreData = {
-      // genreID: inputs.genreID,
       genreName: inputs.genreName,
       Description: inputs.Description,
-      // artistID: inputs.artistID,
     };
 
-    axios
-      .post("/v1/addGenre", genreData, config)
-      .then((response) => setResponse(response))
-      .catch((error) => setError(error));
+    console.log(genreData);
 
-    setInputs({});
-    setShowAlert(true);
+    axios
+      .put(`/v1/updateGenre/${id}`, genreData, config)
+      .then((res) => console.log(res.data));
+
+    alert("Successful");
+    Navigate("/genrelist");
   };
 
   return (
     <>
-      {showAlert ? (
-        <Alert severity="success" onClose={() => setShowAlert(false)}>
-          {error ? `${error}` : `${response}`}
-        </Alert>
-      ) : (
-        ""
-      )}
       <Box m="20px">
         <form onSubmit={handleSubmit}>
           <Box
@@ -70,16 +68,6 @@ const AddGenre = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {/* <TextField
-              fullWidth
-              variant="filled"
-              type="number"
-              label="Genre ID"
-              name="genreID"
-              value={inputs.genreID || ""}
-              onChange={handleChange}
-              sx={{ gridColumn: "span 2" }}
-            /> */}
             <TextField
               fullWidth
               variant="filled"
@@ -88,34 +76,23 @@ const AddGenre = () => {
               name="genreName"
               value={inputs.genreName || ""}
               onChange={handleChange}
-              sx={{ gridColumn: "span 2" }}
+              sx={{ gridColumn: "span 4" }}
             />
             <TextField
               multiline
               variant="filled"
               type="text"
-              label="Genre Description"
+              label="Description"
               rows={4}
               name="Description"
               value={inputs.Description || ""}
               onChange={handleChange}
               sx={{ gridColumn: "span 4" }}
             />
-
-            {/* <TextField
-              fullWidth
-              variant="filled"
-              type="number"
-              label="Artist ID"
-              name="artistID"
-              value={inputs.artistID || ""}
-              onChange={handleChange}
-              sx={{ gridColumn: "span 4" }}
-            /> */}
           </Box>
           <Box display="flex" justifyContent="end" mt="20px">
             <Button type="submit" color="secondary" variant="contained">
-              Add New Genre
+              Save
             </Button>
           </Box>
         </form>
@@ -124,4 +101,4 @@ const AddGenre = () => {
   );
 };
 
-export default AddGenre;
+export default UpdateGenre;

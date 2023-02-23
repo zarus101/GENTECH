@@ -10,7 +10,7 @@ import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import LyricsIcon from "@mui/icons-material/Lyrics";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import "../../../assets/AdminAssests/AdminSidebar.scss";
 
@@ -97,10 +97,18 @@ const AdminSidebar = ({ children }) => {
                     selected={selected}
                     setSelected={setSelected}
                   />
-                      <Item
+                  <Item
                     title="Manage Songs"
                     to="/songs"
                     icon={<MusicNoteIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+
+                  <Item
+                    title="Manage Genres"
+                    to="/genrelist"
+                    icon={<LyricsIcon />}
                     selected={selected}
                     setSelected={setSelected}
                   />

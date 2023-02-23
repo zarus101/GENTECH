@@ -8,6 +8,13 @@ table td,
 table th {
   border: 1px solid #ddd;
   padding: 8px;
+
+  img {
+    display: block;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+  }
 }
 
 table tr:nth-child(even) {
@@ -18,10 +25,6 @@ table tr:hover {
   background-color: #ddd;
 }
 
-img {
-  border-radius: 50px;
-  height: 100px;
-}
 table th,
 tfoot td {
   padding-top: 12px;

@@ -16,7 +16,7 @@
           border-radius: 10px;
           padding: 5px;
 
-          .search-bar{
+          .search-bar {
             width: 100%;
             input {
               background-color: transparent;
@@ -27,19 +27,15 @@
               font-size: 20px;
               color: #070716;
             }
-  
           }
-
-          
-          
         }
       }
 
       .artist-card-1 {
         display: grid;
-        grid-template-rows: 1fr 1fr 1fr 1fr;
+        // grid-template-rows: 1fr 1fr 1fr 1fr;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        margin: 0;
+        margin-bottom: 1rem;
         padding: 2rem;
 
         .card {
@@ -50,13 +46,14 @@
           .artist_image {
             img {
               display: block;
-              height: 200px;
-              width: 100%;
-              border-radius: 5%;
+              height: 150px;
+              width: 150px;
+              max-width: 100%;
+              border-radius: 50%;
             }
           }
 
-          .not-found-error{
+          .not-found-error {
             height: 100%;
             width: 100%;
             display: flex;
@@ -83,12 +80,12 @@
         .carousel_header {
           padding: 0;
           box-shadow: none;
-          .artist-card {
-            width: 100%;
-            grid-template-columns: 1fr 1fr;
-            padding: 0rem;
-            box-shadow: none;
-          }
+        }
+        .artist-card-1 {
+          width: 100%;
+          grid-template-columns: 1fr 1fr;
+          padding: 0rem;
+          box-shadow: none;
         }
       }
     }

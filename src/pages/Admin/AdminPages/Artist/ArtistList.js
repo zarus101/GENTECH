@@ -23,7 +23,7 @@ const ArtistList = () => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
-  const [response, setResponse] = useState("");
+  const [response] = useState("");
   const [token, setToken] = useState();
   const [searchItem, setSearchItem] = useState("");
 
@@ -47,14 +47,17 @@ const ArtistList = () => {
   };
 
   function deleteArtist(value) {
-    deleteArtistById(value.artistID, token)
-      .then((res) => {
-        console.log(value.artistID);
-        toast.success("artist deleted!!");
-      })
-      .catch((error) => {
-        toast.error("failed to delete the user..");
-      });
+    if (window.confirm("Are you sure you want to delete?")) {
+      deleteArtistById(value.artistID, token)
+        .then((res) => {
+          console.log(value.artistID);
+          toast.success("Artist deleted!!");
+        })
+        .catch((error) => {
+          toast.error("Failed to delete the artist..");
+        });
+      // window.location.reload(false);
+    }
   }
 
   const handleUpdate = (id, e) => {
@@ -85,13 +88,13 @@ const ArtistList = () => {
           alignItems="center"
         >
           <div className="left-part">
-            <Header title="Add Artist" subtitle="add new artist here" />
+            <Header title="All Artists" subtitle="All artists here" />
           </div>
           <div className="search-div">
             <form action="" className="search-bar">
               <input
                 type="search"
-                placeholder="search your artist here"
+                placeholder="Search your artist here"
                 name="seacrh"
                 onChange={(event) => {
                   setSearchItem(event.target.value);

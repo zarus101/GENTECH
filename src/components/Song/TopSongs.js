@@ -9,8 +9,8 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { getAllMusic } from "../../connection/MusicService";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
 function TopSongs({ theme }) {
   const [swiperRef, setSwiperRef] = useState(null);
@@ -34,7 +34,6 @@ function TopSongs({ theme }) {
         console.log(error);
       });
   }, []);
-
 
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -96,28 +95,35 @@ function TopSongs({ theme }) {
         {songs.map((song) => (
           <SwiperSlide key={song.songID}>
             <div className="artist_image">
-              <img src="../images/download.jfif" alt="" />
+              <img
+                src={
+                  song.coverphoto
+                    ? `/public/img/coverphoto/${song.coverphoto}`
+                    : "../images/download.jfif"
+                }
+                alt=""
+              />
               <div className="audiopart">
                 <audio
-                 className="audio"
-                 controls
-                 onPlay={handlePlay}
-                 onPause={handlePause}
+                  className="audio"
+                  controls
+                  onPlay={handlePlay}
+                  onPause={handlePause}
                   src={`/public/songs/${song.song}`}
                 ></audio>
                 <div className="buttons">
                   <div className="likebutton">
-                    <FavoriteIcon/>
+                    <FavoriteIcon />
                   </div>
                   <div className="addtoplaylist">
-                    <PlaylistAddIcon/>
+                    <PlaylistAddIcon />
                   </div>
                 </div>
               </div>
             </div>
             <div className="artist_info">
               <h5 id="text">{song.songName}</h5>
-              <h6>{song.Description}</h6>
+              <h6>{song.artistName}</h6>
             </div>
           </SwiperSlide>
         ))}
