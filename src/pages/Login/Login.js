@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Paper,
@@ -15,10 +15,18 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/login.scss";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { doLogin, loginUser } from "../../connection/UserService";
+import {
+  doLogin,
+  getCurrentUserDetail,
+  loginUser,
+} from "../../connection/UserService";
+
+import { useStateValue } from "../../context/StateProvider";
+import { actionType } from "../../context/reducer";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [{ user, loggedIN }, dispatch] = useStateValue();
   const [loginDetail, setLoginDetail] = useState({
     email: "",
     password: "",
@@ -41,16 +49,19 @@ const Login = () => {
     loginUser(loginDetail)
       .then((data) => {
         console.log(data);
-        doLogin(data, () => {
+        doLogin(data, dispatch, () => {
           console.log(data);
-          if(data.user.role==="admin"){
-            navigate("/admin/dashboard")
-          }else if (data.user.role==="normal"){
-            navigate('/')
-          } else{
-            navigate('/login')
+          dispatch({
+            type: actionType.SET_LOGGED_IN,
+            loggedIN: true,
+          });
+          if (data.user.role === "admin") {
+            navigate("/admin/dashboard");
+          } else if (data.user.role === "normal") {
+            navigate("/");
+          } else {
+            navigate("/login");
           }
-  
         });
       })
       .catch((error) => {
@@ -58,6 +69,7 @@ const Login = () => {
         toast.error("something went wrong in server");
       });
   };
+
 
   return (
     <form className="form" onSubmit={handleSubmitForm}>

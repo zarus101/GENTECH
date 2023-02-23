@@ -5,10 +5,14 @@ import "../assets/index.scss";
 import "../assets/NavbarSection.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import { isLoggedIN } from "../connection/UserService";
+import { doLogin, isLoggedIN } from "../connection/UserService";
 import FixFooter from "../Footer/FixFooter";
 import axios from "axios";
 import { useRef } from "react";
+import { getAllMusic } from "../connection/MusicService";
+import { actionType } from "../context/reducer";
+import { motion } from "framer-motion";
+import { useStateValue } from "../context/StateProvider";
 
 const AuthLayout = ({ children }) => {
   const [login, setLogin] = useState("");
@@ -17,16 +21,17 @@ const AuthLayout = ({ children }) => {
   useEffect(() => {
     setLogin(isLoggedIN());
   }, [login]);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [nextSongIndex, setNextSongIndex] = useState(currentSongIndex + 1);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(60);
-  const [elapsed, setElapsed] = useState(0);
-  const [duration, setDuration] = useState(0);
+
+  const [{ allSongs, isSongPlaying, loggedIN }, dispatch] = useStateValue();
+  const [isLoading, setIsLoading] = useState(true);
   const [songs, setSongs] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const audioPlayer = useRef();
+  useEffect(() => {
+    dispatch({
+      type: actionType.SET_LOGGED_IN,
+      loggedIN: true,
+    });
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,50 +56,13 @@ const AuthLayout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    let subscribed = true;
-    if (subscribed) {
-      setNextSongIndex(() => {
-        if (currentSongIndex + 1 > songs.length - 1) {
-          return 0;
-        } else {
-          return currentSongIndex + 1;
-        }
+    getAllMusic().then((data) => {
+      dispatch({
+        type: actionType.SET_ALL_SONGS,
+        allSongs: data,
       });
-    }
-
-    return () => {
-      subscribed = false;
-    };
-  }, [currentSongIndex, songs.length]);
-
-  useEffect(() => {
-    let subscribed = true;
-    if (subscribed) {
-      if (audioPlayer?.current) {
-        if (isPlaying) {
-          audioPlayer.current.play();
-        } else {
-          audioPlayer.current.pause();
-        }
-      }
-    }
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        const _duration = Math.floor(audioPlayer?.current?.duration);
-        const _elapsed = Math.floor(audioPlayer?.current?.currentTime);
-
-        setDuration(_duration);
-        setElapsed(_elapsed);
-      }, 100);
-
-      return () => {
-        clearInterval(interval);
-      };
-    }
-    return () => {
-      subscribed = false;
-    };
-  },[isPlaying]);
+    });
+  }, []);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -103,34 +71,13 @@ const AuthLayout = ({ children }) => {
       <Sidebar theme={theme} setTheme={setTheme}>
         <Navbar theme={theme} setTheme={setTheme} />
 
-        {React.Children.map(children, (child) =>
-          React.cloneElement(child, {
-            currentSongIndex,
-            setCurrentSongIndex,
-            nextSongIndex,
-            songs,
-            isPlaying,
-            setIsPlaying,
-            volume,
-            setVolume,
-            audioPlayer,
-            elapsed,
-            duration
-          })
+        {children}
+
+        {isSongPlaying && (
+          <div>
+            <FixFooter />
+          </div>
         )}
-
-
-        <FixFooter
-          currentSongIndex={currentSongIndex}
-          setCurrentSongIndex={setCurrentSongIndex}
-          nextSongIndex={nextSongIndex}
-          songs={songs}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          volume={volume}
-          setVolume={setVolume}
-          audioPlayer={audioPlayer}
-        />
       </Sidebar>
     </div>
   );

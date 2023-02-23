@@ -24,12 +24,15 @@ import {
 import { useEffect, useState } from "react";
 import { getAllArtists } from "../../connection/ArtistService";
 import { getAllMusic } from "../../connection/MusicService";
+import { useStateValue } from "../../context/StateProvider";
 const Navbar = ({ theme, setTheme }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [artists, setArtists] = useState("");
   const [searchItem, setSearchItem] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [songs, setSongs] = useState("");
+const [{user}, dispatch]= useStateValue();
+
   const handleChange = (event) => {
     setSearchItem(event.target.value);
     setShowResults(!!event.target.value);
@@ -42,6 +45,7 @@ const Navbar = ({ theme, setTheme }) => {
   };
 
   useEffect(() => {
+    console.log(user);
     getAllArtists()
       .then((data) => {
         setArtists(data);
@@ -212,7 +216,7 @@ const Navbar = ({ theme, setTheme }) => {
                 sx={{ display: { xs: "none", md: "block" } }}
               >
                 <span className="wel">Welcome, </span>
-                {getCurrentUserDetail().user.name}
+                {user?.user?.name}
               </Typography>
             </IconButton>
 

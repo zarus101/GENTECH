@@ -1,3 +1,5 @@
+import { actionType } from "../context/reducer";
+import { useStateValue } from "../context/StateProvider";
 import { myAxios } from "./Helper"
 
 ////checking user is logged in or not
@@ -20,8 +22,12 @@ export const loginUser=(loginDetail)=>{
     return myAxios.post('/login', loginDetail).then((response)=> response.data)
 };
 
-export const doLogin=(data, next)=>{
+export const doLogin=(data,dispatch, next)=>{
     localStorage.setItem("data", JSON.stringify(data))
+    dispatch({
+        type:actionType.SET_USER,
+        user:data,
+      })
     next()
  }
 

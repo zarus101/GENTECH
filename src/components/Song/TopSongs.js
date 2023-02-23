@@ -11,10 +11,14 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { getAllMusic } from "../../connection/MusicService";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import { useSelector } from "react-redux";
+import { useStateValue } from "../../context/StateProvider";
 
 function TopSongs({ theme }) {
   const [swiperRef, setSwiperRef] = useState(null);
   const [songs, setSongs] = useState([]);
+
+  const [{ loggedIn }, dispatch] = useStateValue();
 
   const prevHandler = () => {
     swiperRef.slidePrev();
@@ -29,6 +33,7 @@ function TopSongs({ theme }) {
       .then((data) => {
         setSongs(data);
         console.log(data);
+        console.log(loggedIn);
       })
       .catch((error) => {
         console.log(error);
@@ -36,7 +41,6 @@ function TopSongs({ theme }) {
   }, []);
 
   const [isPlaying, setIsPlaying] = useState(false);
-
   const handlePlay = () => {
     setIsPlaying(true);
   };
@@ -111,14 +115,17 @@ function TopSongs({ theme }) {
                   onPause={handlePause}
                   src={`/public/songs/${song.song}`}
                 ></audio>
-                <div className="buttons">
-                  <div className="likebutton">
-                    <FavoriteIcon />
+
+                {loggedIn && (
+                  <div className="buttons">
+                    <div className="likebutton">
+                      <FavoriteIcon />
+                    </div>
+                    <div className="addtoplaylist">
+                      <PlaylistAddIcon />
+                    </div>
                   </div>
-                  <div className="addtoplaylist">
-                    <PlaylistAddIcon />
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="artist_info">

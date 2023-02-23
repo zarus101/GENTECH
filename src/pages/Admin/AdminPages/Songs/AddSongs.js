@@ -12,6 +12,7 @@ import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
+import { getAllArtists } from "../../../../connection/ArtistService";
 
 const AddSongs = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -24,7 +25,7 @@ const AddSongs = () => {
   // const [selectedArtist, setSelectedArtist] = useState([]);
   const [token, setToken] = useState();
   const [genres, setGenres] = useState([""]);
-  const [artists, setArtists] = useState([""]);
+  const [artists, setArtists] = useState([]);
   const [singleArtist, setSingleArtist] = useState([]);
   const [fetching, setFetching] = useState(true);
 
@@ -55,7 +56,7 @@ const AddSongs = () => {
   useEffect(() => {
     const getData = async () => {
       const arr = [];
-      await axios.get("/v1/getAllArtist").then((res) => {
+      getAllArtists().then((res) => {
         let result = res.data;
         result.map((artist) => {
           return arr.push({

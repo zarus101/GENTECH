@@ -1,0 +1,50 @@
+@use "../Commons.scss" as *;
+
+.userlist_section{
+  .user_list {
+    width :100%;
+
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  
+    .list {
+      width: 100%;
+      padding: 12px;
+      min-height: 400px;
+      overflow-x: scroll;
+      background-color: white;
+      margin: 4px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 4px;
+      border: 1px solid #e6e6e6;
+      border-radius: 5px;
+      gap: 3px;
+  
+      .div_3 {
+        position: relative;
+        display: flex;
+        text-align: left;
+        width: 100%;
+        .text {
+          font-size: 1.5em;
+          font-weight: bold;
+          width: 100%;
+  
+          span {
+            font-size: 0.875rem;
+            font-weight: bold;
+            color: var(--textColor);
+          }
+        }
+      }
+    }
+  }
+  
+
+}

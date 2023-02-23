@@ -1,0 +1,46 @@
+@use "../Commons.scss" as *;
+
+
+
+
+.main-box {
+  .main-div {
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    .dashboard_card {
+        margin-top: 15px;
+        padding: 1rem;
+        width: 20%;
+        gap: 2%;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        justify-content: center;
+        cursor: pointer;
+        align-items: center;
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        background-color: #4299e1;
+      
+        .dash_text {
+          font-size: 1.25rem;
+          color:white;
+          font-weight: bold;
+        }
+        .dash_sub_text {
+          font-size: 1.25rem;
+          color: white;
+        }
+
+        svg{
+            font-size: 3rem;
+            color: white;
+        }
+      }
+  }
+}
