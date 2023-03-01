@@ -7,6 +7,7 @@ import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import "../../assets/MostPlayed.scss";
 import { useEffect } from "react";
 import { getAllMusic } from "../../connection/MusicService";
+import axios from "axios";
 
 export default function MostPlayed({ theme }) {
   const [setIsActive] = useState(false);
@@ -16,21 +17,43 @@ export default function MostPlayed({ theme }) {
     setIsActive((current) => !current);
   };
 
+  // useEffect(() => {
+  //   getAllMusic()
+  //     .then((data) => {
+  //       setSongs(data);
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    getAllMusic()
-      .then((data) => {
-        setSongs(data);
-        console.log(data);
-      })
-      .catch((error) => {
+    const fetchSongs = async () => {
+      try {
+        const res = await axios.get("/v1/getMostPlayedSongs");
+        console.log(res.data);
+        setSongs(res.data);
+      } catch (error) {
         console.log(error);
-      });
-  }, []);
+      }
+    };
+    fetchSongs();
+  }, [songs]);
 
   const [setIsPlaying] = useState(false);
 
   const handlePlay = () => {
     setIsPlaying(true);
+  };
+
+  const handleMostPlayed = async (id) => {
+    try {
+      const response = await axios.put(`v1/updateplay/${id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlePause = () => {
@@ -45,7 +68,8 @@ export default function MostPlayed({ theme }) {
         </h2>
 
         <p className="grey_text">
-          55 songs in the list <ArrowCircleDownIcon className="arrowdown" />
+          {songs.length} songs in the list{" "}
+          <ArrowCircleDownIcon className="arrowdown" />
         </p>
       </div>
 
@@ -72,7 +96,12 @@ export default function MostPlayed({ theme }) {
 
             <PlayArrowIcon className="grey_text" />
 
-            <span className="primary_text_color">{song.songName}</span>
+            <span
+              className="primary_text_color"
+              onClick={() => handleMostPlayed(song.songID)}
+            >
+              {song.songName}
+            </span>
           </div>
 
           <div className="right">
