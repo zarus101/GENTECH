@@ -3,14 +3,33 @@ import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
-
+import {motion} from 'framer-motion';
 import "../../assets/MostPlayed.scss";
 import { useEffect } from "react";
 import { getAllMusic } from "../../connection/MusicService";
+import { useStateValue } from "../../context/stateProvider";
+import { actionType } from "../../context/reducer";
 
 export default function MostPlayed({ theme }) {
   const [setIsActive] = useState(false);
   const [songs, setSongs] = useState([]);
+  const [{ allSongs, song, isSongPlaying }, dispatch] = useStateValue();
+
+  const addSongToContext = (index) => {
+    if (!isSongPlaying) {
+      dispatch({
+        type: actionType.SET_SONG_PLAYING,
+        isSongPlaying: true,
+      });
+    }
+    if (song !== index) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: index,
+      });
+    }
+    console.log(song);
+  };
 
   const handleClick = (index) => {
     setIsActive((current) => !current);
@@ -50,11 +69,12 @@ export default function MostPlayed({ theme }) {
       </div>
 
       {songs.slice(0, 5).map((song, index) => (
-        <div
+        <motion.div
+        initial={{ opacity: 0, translateY: -50 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.1 }}
           className="mostplayed_element_play"
-          onClick={() => {
-            handleClick(index);
-          }}
+          onClick={() => addSongToContext(index)}
           key={index}
         >
           <div className="left">
@@ -97,7 +117,7 @@ export default function MostPlayed({ theme }) {
               />
             </span>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

@@ -16,6 +16,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useNavigate } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
+import {motion } from "framer-motion";
 import {
   doLogout,
   getCurrentUserDetail,
@@ -114,9 +115,12 @@ const Navbar = ({ theme, setTheme }) => {
                     return value;
                   }
                 })
-                .map((value) => {
+                .map((value, index) => {
                   return (
-                    <div
+                    <motion.div
+                    initial={{ opacity: 0, translateY: -50 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
                       className="artists"
                       onClick={(e) => handleClick(value.artistID, e)}
                     >
@@ -126,7 +130,7 @@ const Navbar = ({ theme, setTheme }) => {
                       <div className="artist-name">
                         <h3>{value.artistName}</h3>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
               {artists.filter((item) => {

@@ -9,9 +9,10 @@ import MusicPlayer from "../../components/Musicplayer/MusicPlayer.js";
 // import audio from "../../assets/music/test1.mp3";
 // import song from "../../assets/music/song.mp3";
 import axios from "axios";
+import { useStateValue } from "../../context/stateProvider";
 
-const Home = (props) => {
-  const { theme, setTheme, currentSongIndex, setCurrentSongIndex, nextSongIndex, songs, isPlaying, setIsPlaying, volume, setVolume, audioPlayer } = props;
+const Home = () => {
+  const [{ isSongPlaying }, dispatch] = useStateValue([]);
   return (
     <>
       <div className="home">
@@ -19,19 +20,11 @@ const Home = (props) => {
 
         <div className="double_column">
           <div className="left_column">
-            <MusicPlayer
-            theme={theme}
-            setTheme={setTheme}
-            currentSongIndex={currentSongIndex}
-            setCurrentSongIndex={setCurrentSongIndex}
-            nextSongIndex={nextSongIndex}
-            songs={songs}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            volume={volume}
-            setVolume={setVolume}
-            audioPlayer={audioPlayer}
-            />
+            {isSongPlaying && (
+              <>
+                <MusicPlayer />
+              </>
+            )}
           </div>
           <div className="right_column">
             <MostPlayed />

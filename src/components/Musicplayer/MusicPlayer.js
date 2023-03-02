@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
-import VolumeDownIcon from "@mui/icons-material/VolumeDown";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
+
 import { styled, Slider } from "@mui/material";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import "../../assets/HomePageMusicPLayer.scss";
+import { useStateValue } from "../../context/stateProvider";
+import { actionType } from "../../context/reducer";
 
 const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
   color: "brown",
@@ -24,86 +23,44 @@ const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
 }));
 
 const MusicPlayer = (props) => {
-  const [mute, setMute] = useState(false);
-  const [elapsed, setElapsed] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [{ allSongs, song,Playing, }, dispatch] =
+    useStateValue([]);
+    const audioPlayer= useRef();
 
-  useEffect(() => {
-    // fetchSongs();
-    if (props.audioPlayer) {
-      props.audioPlayer.current.volume = props.volume / 100;
-    }
-  }, [props.volume, props.audioPlayer]);
+    const nextTrack = () => {
+      if (song > allSongs.length) {
+        dispatch({
+          type: actionType.SET_SONG,
+          song: 0,
+        });
+      } else {
+        dispatch({
+          type: actionType.SET_SONG,
+          song: song + 1,
+        });
+      }
+    };
+  
+    const previousTrack = () => {
+      if (song === 0) {
+        dispatch({
+          type: actionType.SET_SONG,
+          song: 0,
+        });
+      } else {
+        dispatch({
+          type: actionType.SET_SONG,
+          song: song - 1,
+        });
+      }
+    };
 
-  useEffect(() => {
-    if (props.isPlaying) {
-      const interval = setInterval(() => {
-        const _duration = Math.floor(props.audioPlayer?.current?.duration);
-        const _elapsed = Math.floor(props.audioPlayer?.current?.currentTime);
 
-        setDuration(_duration);
-        setElapsed(_elapsed);
-      }, 100);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  });
-
-  const SkipSong = (forwards = true) => {
-    if (forwards) {
-      props.setCurrentSongIndex(() => {
-        let temp = props.currentSongIndex;
-        temp++;
-
-        if (temp > props.songs.length - 1) {
-          temp = 0;
-        }
-
-        return temp;
-      });
-    } else {
-      props.setCurrentSongIndex(() => {
-        let temp = props.currentSongIndex;
-        temp--;
-
-        if (temp < 0) {
-          temp = props.songs.length - 1;
-        }
-
-        return temp;
-      });
-    }
-  };
-
-  function VolumeBtns() {
-    return mute || props.volume === 0 ? (
-      <VolumeOffIcon
-        sx={{ color: "red", "&:hover": { color: "black" } }}
-        onClick={() => setMute(!mute)}
-      />
-    ) : props.volume <= 20 ? (
-      <VolumeMuteIcon
-        sx={{ color: "red", "&:hover": { color: "black" } }}
-        onClick={() => setMute(!mute)}
-      />
-    ) : props.volume <= 75 ? (
-      <VolumeDownIcon
-        sx={{ color: "brown", "&:hover": { color: "black" } }}
-        onClick={() => setMute(!mute)}
-      />
-    ) : (
-      <VolumeUpIcon
-        sx={{ color: "brown", "&:hover": { color: "black" } }}
-        onClick={() => setMute(!mute)}
-      />
-    );
-  }
   return (
     <>
       <audio
-        src={props.songs[props.currentSongIndex].src}
-        ref={props.audioPlayer}
+        src={`/public/songs/${allSongs[song]?.song}`}
+        ref={audioPlayer}
       />
 
       <div className="home-music-section">
@@ -119,46 +76,36 @@ const MusicPlayer = (props) => {
             />
           </div>
 
-          <div className="audio-music-progress">
-            <MusicSlider
-              value={elapsed}
-              max={duration}
-              sx={{
-                "& .MuiSlider-track": {
-                  height: "10px",
-                },
-              }}
-            />
-          </div>
 
           <div className="artist-info">
-            <h2>{props.songs[props.currentSongIndex].songName}</h2>
-            <h3>{props.songs[props.currentSongIndex].artistName}</h3>
+          <h2>
+              {allSongs[song]?.songName.length > 20
+                ? allSongs[song]?.songName.slice(0, 20)
+                : allSongs[song]?.songName}
+            </h2>
+            <h3>{allSongs[song]?.artistName}</h3>
           </div>
 
           <div className="audio-control-buttons">
             <div className="audio-controls">
-              <div className="prev-button" onClick={() => SkipSong(false)}>
+              <div className="prev-button" onClick={previousTrack}>
                 <SkipPreviousIcon className="icon" />
               </div>
-              <div
-                className="play-button"
-                onClick={() => props.setIsPlaying(!props.isPlaying)}
-              >
-                {props.isPlaying ? (
+              <div className="play-button">
+                {Playing ? (
                   <PauseCircleIcon className="icon " />
                 ) : (
                   <PlayCircleIcon className="icon " />
                 )}
               </div>
 
-              <div className="next-button" onClick={() => SkipSong()}>
-                <SkipNextIcon className="icon" />
+              <div className="next-button">
+                <SkipNextIcon className="icon" onClick={nextTrack} />
               </div>
             </div>
 
             <div className="audio-volume">
-              <VolumeBtns />
+              {/* <VolumeBtns />
               <MusicSlider
                 min={0}
                 max={100}
@@ -170,7 +117,7 @@ const MusicPlayer = (props) => {
                     height: 20,
                   },
                 }}
-              />
+              /> */}
             </div>
           </div>
         </div>
