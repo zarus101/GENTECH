@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { getAllMusic } from "../../connection/MusicService";
 import { actionType } from "../../context/reducer";
 import { useStateValue } from "../../context/StateProvider";
+import axios from "axios";
 
 export default function MostPlayed({ theme }) {
   const [setIsActive] = useState(false);
@@ -37,6 +38,7 @@ export default function MostPlayed({ theme }) {
       })
     }
     console.log(currentsong);
+    console.log(song)
   };
 
   const handleClick = (index) => {
@@ -44,14 +46,16 @@ export default function MostPlayed({ theme }) {
   };
 
   useEffect(() => {
-    getAllMusic()
-      .then((data) => {
-        setSongs(data);
-        console.log(data);
-      })
-      .catch((error) => {
+    const fetchSongs = async () => {
+      try {
+        const res = await axios.get("/v1/getMostPlayedSongs");
+        console.log(res.data);
+        setSongs(res.data);
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+    fetchSongs();
   }, []);
 
   const [setIsPlaying] = useState(false);
@@ -104,18 +108,7 @@ export default function MostPlayed({ theme }) {
           </div>
 
           <div className="right">
-            {/* <span className="grey_text">{song.Description}</span> */}
-            {/* <span className="grey_text">{artist.duration}</span> */}
-
-            {/* <div className="audio">
-              <audio
-                className="audio"
-                controls
-                onPlay={handlePlay}
-                onPause={handlePause}
-                src={`/public/songs/${song.song}`}
-              ></audio>
-            </div> */}
+           
 
             <span>
               <img

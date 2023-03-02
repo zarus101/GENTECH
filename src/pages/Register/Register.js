@@ -92,7 +92,7 @@ const Register = () => {
   };
 
   const [captcha1, setCaptcha1] = useState("");
-  const [cap, setCap] = useState("");
+  const [cap, setCap] = useState("1@345%");
 
   const handleAutoRenew = () => {
     var a = [

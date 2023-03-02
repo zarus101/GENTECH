@@ -14,13 +14,52 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import { getAllMusic } from "../../connection/MusicService";
+import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
+import axios from "axios";
+
+import "../../assets/NavbarSection.scss";
+import "../../assets/Theme.scss";
+import { toast } from "react-hot-toast";
 
 function BrowseSongs({ theme, searchItem }) {
   const [swiperRef, setSwiperRef] = useState(null);
   const [songs, setSongs] = useState([]);
+  const [token, setToken] = useState();
+  const [playlists, setPlaylists] = useState([]);
+  const [userid, setUserid] = useState();
+
+  const [show, setShow] = useState(false);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    let controller = new AbortController();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/v1/getAllPlaylist/${userid}`, {
+          signal: controller.signal,
+        });
+        setPlaylists(response.data);
+        controller = null;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (!isLoggedIN()) return;
+
+    getCurrentUserDetail();
+    setToken(getCurrentUserDetail().token);
+    setUserid(getCurrentUserDetail().user.id);
+    userid && fetchData();
+    return () => controller?.abort();
+  }, [userid]);
 
   useEffect(() => {
     getAllMusic()
@@ -33,6 +72,33 @@ function BrowseSongs({ theme, searchItem }) {
       });
   }, []);
 
+  const handleClick = async (songId, playlistId) => {
+    try {
+      const response = await axios.get(`/v1/getSingleSong/${songId}`);
+      const song = response.data[0].song;
+      const songName = response.data[0].songName;
+      console.log(song);
+
+      const playlistData = {
+        playlist_id: playlistId,
+        song: song,
+        songName: songName,
+      };
+
+      const res = await axios.post(
+        `v1/addSongsToPlaylist/${playlistId}`,
+        playlistData,
+        config
+      );
+      console.log(res.data);
+      toast.success("Song added!!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Please Try Again!");
+    }
+    setShow(false);
+  };
+
   const prevHandler = () => {
     swiperRef.slidePrev();
   };
@@ -40,6 +106,7 @@ function BrowseSongs({ theme, searchItem }) {
   const nextHandler = () => {
     swiperRef.slideNext();
   };
+
   return (
     <div className="wrapper" id={theme}>
       <div className="carousel_header">
@@ -105,22 +172,44 @@ function BrowseSongs({ theme, searchItem }) {
             return (
               <SwiperSlide key={song.songID}>
                 <div className="artist_image">
-                <img src="./images/download.jfif" alt="" />
-                <div className="audiopart">
-                <audio
-                  className="audio"
-                  controls
-                  src={`/public/songs/${song.song}`}
-                ></audio>
-                <div className="buttons">
-                  <div className="likebutton">
-                    <FavoriteIcon/>
+                  <img src="./images/download.jfif" alt="" />
+                  <div className="audiopart">
+                    <audio
+                      className="audio"
+                      controls
+                      src={`/public/songs/${song.song}`}
+                    ></audio>
+                    <div className="buttons">
+                      <div className="likebutton">
+                        <FavoriteIcon />
+                      </div>
+                      <div className="addtoplaylist">
+                        <PlaylistAddIcon onClick={() => setShow(!show)} />
+                        {show && (
+                          <div className="playlist">
+                            <ul>
+                              {playlists.map((playlist) => (
+                                <li
+                                  key={playlist.playlistID}
+                                  id="text"
+                                  onClick={() =>
+                                    handleClick(
+                                      song.songID,
+                                      playlist.playlistID
+                                    )
+                                  }
+                                >
+                                  <div className="nav-item">
+                                    {playlist.name}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="addtoplaylist">
-                    <PlaylistAddIcon/>
-                  </div>
-                </div>
-              </div>
                 </div>
                 <div className="artist_info">
                   <h5 id="text">{song.songName}</h5>

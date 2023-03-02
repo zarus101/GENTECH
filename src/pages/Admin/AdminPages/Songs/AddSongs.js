@@ -13,10 +13,12 @@ import { getCurrentUserDetail } from "../../../../connection/UserService";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { getAllArtists } from "../../../../connection/ArtistService";
+import { useStateValue } from "../../../../context/StateProvider";
 
 const AddSongs = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  const [{allArtists}, dispatch]= useStateValue();
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState("");
   const [pic, setPic] = useState("");
@@ -56,19 +58,16 @@ const AddSongs = () => {
   useEffect(() => {
     const getData = async () => {
       const arr = [];
-      getAllArtists().then((res) => {
-        let result = res.data;
-        result.map((artist) => {
-          return arr.push({
-            value: artist.artistID,
-            label: artist.artistName,
-          });
+      allArtists.map((artist) => {
+        return arr.push({
+          value: artist.artistID,
+          label: artist.artistName,
         });
-        setArtists(arr);
       });
+      setArtists(arr);
     };
     getData();
-  }, []);
+  }, [allArtists]);
 
   useEffect(() => {
     if (!selectedArtist) return;
@@ -110,7 +109,7 @@ const AddSongs = () => {
 
   const loadOptions = (searchValue, callback) => {
     setTimeout(() => {
-      const filteredOptions = artists.filter((artist) =>
+      const filteredOptions = allArtists?.filter((artist) =>
         artist.label.toLowerCase().includes(searchValue.toLowerCase())
       );
       callback(filteredOptions);

@@ -14,7 +14,7 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import FastForwardIcon from "@mui/icons-material/FastForward";
-import { styled, Slider } from "@mui/material";
+import { styled, Slider, Modal, Typography } from "@mui/material";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 
@@ -23,6 +23,9 @@ import { useCallback } from "react";
 import { getAllMusic } from "../connection/MusicService";
 import { useStateValue } from "../context/StateProvider";
 import { toast } from "react-hot-toast";
+import { Box } from "@mui/system";
+import SubscriptionModal from "../components/Subscription/Subscription";
+import { getCurrentUserDetail } from "../connection/UserService";
 
 const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
   color: "brown",
@@ -46,6 +49,7 @@ const FixFooter = () => {
       isSongPlaying,
       miniPlayer,
       slideUp,
+      Playing,
     },
     dispatch,
   ] = useStateValue([]);
@@ -54,6 +58,10 @@ const FixFooter = () => {
   const [duration, setDuration] = useState(100);
   const [timeProgress, setTimeProgress] = useState(0);
   const [isPlayList, setIsPlayList] = useState(false);
+  const [premium, setPremium] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const [isPlaying, setIsPlaying] = useState();
   const audioPlayer = useRef();
@@ -107,10 +115,20 @@ const FixFooter = () => {
       if (audioPlayer.current) {
         console.log(currentlyPlayingSong?.song_type);
         if (currentlyPlayingSong?.song_type === "premium") {
-          // Display popup message and return without playing the song
-          toast.error("This song is premium and cannot be played.");
+          if (getCurrentUserDetail().account_type === "normal") {
+            dispatch({
+              type: actionType.SET_PLAYING,
+              Playing: false,
+            });
+            toast.error("This song is premium and cannot be played.");
+            setOpen(true);
+            return;
+          }
+          if (getCurrentUserDetail().account_type === "premium") {
+            audioPlayer.current.play();
+          }
 
-          return;
+          // Display popup message and return without playing the song
         }
         audioPlayer.current.play();
       }
@@ -286,6 +304,12 @@ const FixFooter = () => {
           onEnded={handleNext}
         ></audio>
 
+        {open && (
+          <>
+            <SubscriptionModal handleClose={handleClose} open={open} />
+          </>
+        )}
+
         {miniPlayer && (
           <div className="main-obj">
             <div className="toggle_button" onClick={togglePlayer}>
@@ -438,7 +462,7 @@ const FixFooter = () => {
                     className="play-button"
                     onClick={() => setIsPlaying(!isPlaying)}
                   >
-                    {isPlaying ? (
+                    {Playing ? (
                       <PauseCircleIcon className="icon " />
                     ) : (
                       <PlayCircleIcon className="icon " />

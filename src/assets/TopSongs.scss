@@ -67,6 +67,17 @@
   }
 
   .artist_image {
+
+    .liked-button{
+      position: absolute;
+      top: 14px;
+      left: 12px;
+
+      .favouriteicon{
+        color: red;
+      }
+
+    }
     .audiopart {
       opacity: 0;
       position: absolute;

@@ -1,0 +1,63 @@
+.mostplayed_element_play {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+  background-color: aliceblue;
+  box-shadow: 0px 10px 41px -22px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 10px 41px -22px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 10px 41px -22px rgba(0, 0, 0, 0.75);
+
+  .left {
+    display: flex;
+    align-items: center;
+    width: 40%;
+
+    & > * {
+      margin-inline: 5px;
+    }
+  }
+
+
+
+ 
+}
+#menu-appbar{
+    .remove_menu_item{
+        padding: 10px;
+        cursor: pointer;
+        color: black;
+    }
+  }
+
+img {
+  width: 50px;
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 480px) {
+  .mostplayed {
+    margin-bottom: 10rem;
+    .mostplayed_header {
+      display: block;
+    }
+
+    .mostplayed_element_play,
+    .mostplayed_element_stop {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .right {
+        margin-top: 5px;
+        width: 100%;
+
+        & > * {
+          margin: 0 10px 0 10px;
+        }
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ export const actionType = {
   SET_SLIDE_UP: "SET_SLIDE_UP",
   SET_LOGGED_IN: "SET_LOGGED_IN",
   SET_CURRENT_SONG: "SET_CURRENT_SONG",
+  SET_LIKED_SONGS: "SET_LIKED_SONGS",
 };
 
 const reducer = (state, action) => {
@@ -78,6 +79,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         currentlyPlayingSong: action.currentlyPlayingSong,
+      };
+
+      case actionType.SET_LIKED_SONGS:
+      return {
+        ...state,
+        likedSongs: action.likedSongs,
       };
 
     default:

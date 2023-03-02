@@ -2,26 +2,18 @@ import React, { useEffect, useState } from "react";
 import "../../assets/profile.scss";
 import EditDetails from "../../components/Profile/EditDetails";
 import EditCoverPhoto from "../../components/Profile/EditCoverPhoto";
-import Subscribe from "../../components/Profile/Subscribe";
-import AddSongs from "../../components/Profile/AddSongs";
+
 import EditProfilePhoto from "../../components/Profile/EditProfilePhoto";
-import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
-import { Button } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Container } from "@mui/system";
-import userEvent from "@testing-library/user-event";
-import { getAuth } from "firebase/auth";
 import { getCurrentUserDetail } from "../../connection/UserService";
 import ChangePassword from "../../components/Profile/ChangePassword";
+import ProfileTabs from "./Tabs";
 
 const Profile = () => {
   // const [auth, user] = getAuth();
   const [user, setUser] = useState("");
 
   useEffect(() => {
-
     console.log(setUser(getCurrentUserDetail().user));
-    
   }, []);
 
   const [currentTab, setCurrentTab] = useState("songs");
@@ -44,43 +36,43 @@ const Profile = () => {
           </div>
 
           <div className="flex">
-          <div className="user-profile-image">
-            <img
-              id="pp-img"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkkVsRNVJ7O7xNGK7IXtRwchi4NsKzUUdPMMcmIdbDKH_x6DKXR2EQGWrBiM8KKga7Ey0&usqp=CAU"
-              alt=""
-              srcSet=""
-            />
-            <EditProfilePhoto />
-          </div>
+            <div className="user-profile-image">
+              <img
+                id="pp-img"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkkVsRNVJ7O7xNGK7IXtRwchi4NsKzUUdPMMcmIdbDKH_x6DKXR2EQGWrBiM8KKga7Ey0&usqp=CAU"
+                alt=""
+                srcSet=""
+              />
+              <EditProfilePhoto />
+            </div>
 
-          <div className="detail-portion">
-            <div className="left-side">
-              <p>Name:  {user.name}</p>
-              <p>Email:  {user.email}</p>
-            </div>
-        
-            <div className="right-side">
-              <EditDetails />
-            </div>
-            <div className="side">
-              <ChangePassword />
-            </div>
-          </div>
+            <div className="detail-portion">
+              <div className="left-side">
+                <p>Name: {user.name}</p>
+                <p>Email: {user.email}</p>
+              </div>
 
+              <div className="right-side">
+                <EditDetails />
+              </div>
+              <div className="side">
+                <ChangePassword />
+              </div>
+            </div>
           </div>
-          
         </div>
 
         <div className="bottom-portion">
-          <Container>
+          <ProfileTabs />
+
+          {/* <Container>
             <div className="tabs">
               <Button
                 className={currentTab === "songs" ? "active" : ""}
                 onClick={() => handleTabChange("songs")}
               >
                 <AddCircleIcon />
-                Songs
+                Liked Songs
               </Button>
               <Button
                 className={currentTab === "subscriptions" ? "active" : ""}
@@ -102,7 +94,7 @@ const Profile = () => {
                 </div>
               )}
             </div>
-          </Container>
+          </Container> */}
         </div>
       </div>
     </div>

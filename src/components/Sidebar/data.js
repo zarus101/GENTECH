@@ -1,7 +1,7 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import MusicVideoOutlinedIcon from "@mui/icons-material/MusicVideoOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
@@ -40,41 +40,41 @@ const sideNavbar = {
     },
   ],
 
-  myMusic: [
-    {
-      // path:'/favourites',
-      name: "Recently Played",
-      icon: <AccessTimeOutlinedIcon />,
-    },
-    {
-      // path:'/favourites',
-      name: "Local Files",
-      icon: <AudioFileOutlinedIcon />,
-    },
-  ],
+  // myMusic: [
+  //   {
+  //     // path:'/favourites',
+  //     name: "Recently Played",
+  //     icon: <AccessTimeOutlinedIcon />,
+  //   },
+  //   {
+  //     // path:'/favourites',
+  //     name: "Local Files",
+  //     icon: <AudioFileOutlinedIcon />,
+  //   },
+  // ],
 
-  playlist: [
-    {
-      // path:'/favourites',
-      name: "General Playlist",
-      icon: <MusicVideoOutlinedIcon />,
-    },
-    {
-      // path:'/favourites',
-      name: "Ease up beats",
-      icon: <MusicVideoOutlinedIcon />,
-    },
-    {
-      // path:'/favourites',
-      name: "Pop songs",
-      icon: <MusicVideoOutlinedIcon />,
-    },
-    {
-      // path:'/favourites',
-      name: "Mood swings",
-      icon: <MusicVideoOutlinedIcon />,
-    },
-  ],
+  // playlist: [
+  //   {
+  //     // path:'/favourites',
+  //     name: "General Playlist",
+  //     icon: <MusicVideoOutlinedIcon />,
+  //   },
+  //   {
+  //     // path:'/favourites',
+  //     name: "Ease up beats",
+  //     icon: <MusicVideoOutlinedIcon />,
+  //   },
+  //   {
+  //     // path:'/favourites',
+  //     name: "Pop songs",
+  //     icon: <MusicVideoOutlinedIcon />,
+  //   },
+  //   {
+  //     // path:'/favourites',
+  //     name: "Mood swings",
+  //     icon: <MusicVideoOutlinedIcon />,
+  //   },
+  // ],
 };
 
 export default sideNavbar;

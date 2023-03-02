@@ -5,7 +5,7 @@ import "../assets/index.scss";
 import "../assets/NavbarSection.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import { doLogin, isLoggedIN } from "../connection/UserService";
+import { doLogin, getCurrentUserDetail, isLoggedIN } from "../connection/UserService";
 import FixFooter from "../Footer/FixFooter";
 import axios from "axios";
 import { useRef } from "react";
@@ -25,18 +25,19 @@ const AuthLayout = ({ children }) => {
   const [{ allSongs, isSongPlaying, loggedIN }, dispatch] = useStateValue();
   const [isLoading, setIsLoading] = useState(true);
   const [songs, setSongs] = useState([]);
-
-  useEffect(() => {
-    dispatch({
-      type: actionType.SET_LOGGED_IN,
-      loggedIN: true,
-    });
-  }, []);
+  const [token, setToken] = useState();
+  const [userid, setUserid] = useState();
+  const [likedSong, setLikedSongs] = useState([]);
+  const [likedData, setLikedData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get("/v1/songs");
+        dispatch({
+          type: actionType.SET_ALL_SONGS,
+          allSongs: data,
+        });
         let _musics = data;
         console.log(_musics);
         _musics.map((music) => {
@@ -53,15 +54,15 @@ const AuthLayout = ({ children }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    getAllMusic().then((data) => {
-      dispatch({
-        type: actionType.SET_ALL_SONGS,
-        allSongs: data,
-      });
-    });
+    if (!isLoggedIN()) return;
+
+    getCurrentUserDetail();
+    const id = getCurrentUserDetail().user.id;
+    setUserid(id);
+    setToken(getCurrentUserDetail().token);
   }, []);
 
   if (isLoading) return <p>Loading...</p>;

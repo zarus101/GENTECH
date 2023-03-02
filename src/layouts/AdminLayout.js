@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import "../assets/index.scss";
 import "../assets/NavbarSection.scss";
 import { useState } from "react";
 import AdminSidebar from "../pages/Admin/global/AdminSidebar";
+import { getAllArtists } from "../connection/ArtistService";
+import { useStateValue } from "../context/StateProvider";
+import { actionType } from "../context/reducer";
 
 const AdminLayout = ({ children }) => {
+  const [{allArtists}, dispatch]= useStateValue();
   const [theme, setTheme] = useState("light");
   const [isSidebar] = useState(true);
+
+  useEffect(() => {
+    getAllArtists().then((data) => {
+      dispatch({
+        type: actionType.SET_ALL_ARTISTS,
+        allArtists: data,
+      });
+    });
+  }, []);
 
   return (
     <div className="app">

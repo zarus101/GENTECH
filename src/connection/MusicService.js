@@ -29,3 +29,25 @@ export const deleteAllSongs = (token) => {
     },
   });
 };
+
+export const addSongToLikedList = (token, songID, userID) => {
+  return myAxios
+    .post("/register", songID, userID, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => response.data);
+};
+
+export const getLikedSongs = (userID, token) => {
+  return myAxios
+    .get(`/getAllLiked/${userID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
