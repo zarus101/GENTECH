@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/TopSongs.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -10,6 +10,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { getAllMusic } from "../../connection/MusicService";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import axios from "axios";
 import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
@@ -21,6 +22,7 @@ function TopSongs({ theme }) {
   const [token, setToken] = useState();
   const [playlists, setPlaylists] = useState([]);
   const [userid, setUserid] = useState();
+  const [active, setActive] = useState(false);
 
   const [show, setShow] = useState(false);
 
@@ -101,6 +103,15 @@ function TopSongs({ theme }) {
 
   const [setIsPlaying] = useState(false);
 
+  const handleMostPlayed = async (id) => {
+    try {
+      const response = await axios.put(`v1/updateplay/${id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handlePlay = () => {
     setIsPlaying(true);
   };
@@ -158,7 +169,10 @@ function TopSongs({ theme }) {
       >
         {songs.map((song) => (
           <SwiperSlide key={song.songID}>
-            <div className="artist_image">
+            <div
+              className="artist_image"
+              onClick={() => handleMostPlayed(song.songID)}
+            >
               <img
                 src={
                   song.coverphoto
@@ -177,7 +191,7 @@ function TopSongs({ theme }) {
                 ></audio>
                 <div className="buttons">
                   <div className="likebutton">
-                    <FavoriteIcon />
+                    {active ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                   </div>
                   <div className="addtoplaylist">
                     <PlaylistAddIcon onClick={() => setShow(!show)} />
@@ -203,7 +217,9 @@ function TopSongs({ theme }) {
               </div>
             </div>
             <div className="artist_info">
-              <h5 id="text">{song.songName}</h5>
+              <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
+                {song.songName}
+              </h5>
               <h6>{song.artistName}</h6>
             </div>
           </SwiperSlide>

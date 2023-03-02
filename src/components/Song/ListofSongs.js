@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 
 export default function ListofSongs({ theme }) {
   const { artistID, genreName } = useParams();
-  const [artist, setArtist] = useState([]);
+  const [artist, setArtist] = useState("");
 
   const [songs, setSongs] = useState([]);
 
@@ -41,12 +41,22 @@ export default function ListofSongs({ theme }) {
       }
     };
     fetchData();
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    // console.log(songs);
+    return () => {
+      setSongs([]);
+    };
   }, [artistID, genreName]);
+
+  useEffect(() => {
+    const fetchArtist = async () => {
+      try {
+        const res = await axios.get(`/v1/getSingleArtist/${artistID}`);
+        setArtist(res.data[0].artistName);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchArtist();
+  }, [artistID]);
 
   const [currentSong, setCurrentSong] = useState(null);
 
@@ -57,15 +67,22 @@ export default function ListofSongs({ theme }) {
     setCurrentSong(song);
   };
 
+  const handleMostPlayed = async (id) => {
+    try {
+      const response = await axios.put(`v1/updateplay/${id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="songlist" id={theme}>
       <div className="songlist-header">
-        <h2 id="text">
-          Songs of {artist.artistName ? artist.artistName : genreName}
-        </h2>
+        <h2 id="text">Songs of {artist !== "" ? artist : genreName}</h2>
 
         <p className="grey_text">
-          Number of songs:
+          Number of songs: {songs.length}
           <ArrowCircleDownIcon className="arrowdown" />
         </p>
       </div>
@@ -87,17 +104,23 @@ export default function ListofSongs({ theme }) {
                 alt="song_cover"
               />
               <div className="left-info">
-                <span className="primary_text_color">{song.songName}</span>
+                <span
+                  className="primary_text_color"
+                  onClick={() => handleMostPlayed(song.songID)}
+                >
+                  {song.songName}
+                </span>
                 <span className="grey_text">{song.artistName}</span>
               </div>
             </div>
 
             <div className="right">
-              <span className="grey_text">{song.Description}</span>
+              {/* <span className="grey_text">{song.Description}</span> */}
               {/* <span className="grey_text">{props.artist.duration}</span> */}
               <audio
                 controls
                 onPlay={() => handleSongPlay(this)}
+                // onPause={}
                 src={`/public/songs/${song.song}`}
               ></audio>
             </div>

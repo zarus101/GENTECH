@@ -107,6 +107,15 @@ function BrowseSongs({ theme, searchItem }) {
     swiperRef.slideNext();
   };
 
+  const handleMostPlayed = async (id) => {
+    try {
+      const response = await axios.put(`v1/updateplay/${id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="wrapper" id={theme}>
       <div className="carousel_header">
@@ -171,12 +180,16 @@ function BrowseSongs({ theme, searchItem }) {
           .map((song) => {
             return (
               <SwiperSlide key={song.songID}>
-                <div className="artist_image">
+                <div
+                  className="artist_image"
+                  onClick={() => handleMostPlayed(song.songID)}
+                >
                   <img src="./images/download.jfif" alt="" />
                   <div className="audiopart">
                     <audio
                       className="audio"
                       controls
+                      // onPause={}
                       src={`/public/songs/${song.song}`}
                     ></audio>
                     <div className="buttons">
@@ -212,7 +225,9 @@ function BrowseSongs({ theme, searchItem }) {
                   </div>
                 </div>
                 <div className="artist_info">
-                  <h5 id="text">{song.songName}</h5>
+                  <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
+                    {song.songName}
+                  </h5>
                   {/* <h6>{artist.name}</h6> */}
                 </div>
               </SwiperSlide>
