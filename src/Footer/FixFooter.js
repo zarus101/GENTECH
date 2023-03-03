@@ -14,7 +14,7 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import FastForwardIcon from "@mui/icons-material/FastForward";
-import { styled, Slider, Modal, Typography } from "@mui/material";
+import { styled, Slider, Modal, Typography, Button } from "@mui/material";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 
@@ -25,7 +25,8 @@ import { useStateValue } from "../context/StateProvider";
 import { toast } from "react-hot-toast";
 import { Box } from "@mui/system";
 import SubscriptionModal from "../components/Subscription/Subscription";
-import { getCurrentUserDetail } from "../connection/UserService";
+import { getCurrentUserDetail, isLoggedIN } from "../connection/UserService";
+import { Navigate, NavLink } from "react-router-dom";
 
 const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
   color: "brown",
@@ -60,8 +61,10 @@ const FixFooter = () => {
   const [isPlayList, setIsPlayList] = useState(false);
   const [premium, setPremium] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loginModelOpen, setLoginModelOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleLoginClose=()=> setLoginModelOpen(false);
 
   const [isPlaying, setIsPlaying] = useState();
   const audioPlayer = useRef();
@@ -115,7 +118,10 @@ const FixFooter = () => {
       if (audioPlayer.current) {
         console.log(currentlyPlayingSong?.song_type);
         if (currentlyPlayingSong?.song_type === "premium") {
-          if (getCurrentUserDetail().account_type === "normal") {
+          if (
+            isLoggedIN() &&
+            getCurrentUserDetail().account_type === "normal"
+          ) {
             dispatch({
               type: actionType.SET_PLAYING,
               Playing: false,
@@ -124,12 +130,26 @@ const FixFooter = () => {
             setOpen(true);
             return;
           }
-          if (getCurrentUserDetail().account_type === "premium") {
+
+          if (
+            isLoggedIN() &&
+            getCurrentUserDetail().account_type === "premium"
+          ) {
             audioPlayer.current.play();
           }
 
+          if (!isLoggedIN() && currentlyPlayingSong?.song_type === "premium") {
+            dispatch({
+              type: actionType.SET_PLAYING,
+              Playing: false,
+            });
+            toast.error("This song is premium and cannot be played.");
+            setLoginModelOpen(true);
+            return;
+          }
           // Display popup message and return without playing the song
         }
+
         audioPlayer.current.play();
       }
       dispatch({
@@ -298,7 +318,7 @@ const FixFooter = () => {
         <div className="d-visibility"></div>
 
         <audio
-          src={`/public/songs/${allSongs[song]?.song}`}
+          src={`/public/songs/${currentlyPlayingSong?.song}`}
           ref={audioPlayer}
           onLoadedMetadata={onLoadedMetadata}
           onEnded={handleNext}
@@ -307,6 +327,15 @@ const FixFooter = () => {
         {open && (
           <>
             <SubscriptionModal handleClose={handleClose} open={open} />
+          </>
+        )}
+
+        {loginModelOpen && (
+          <>
+            <LoginModel
+              handleClose={handleLoginClose}
+              loginModelOpen={loginModelOpen}
+            />
           </>
         )}
 
@@ -342,11 +371,11 @@ const FixFooter = () => {
 
             <div className="artist-info">
               <h2>
-                {allSongs[song]?.songName.length > 20
-                  ? allSongs[song]?.songName.slice(0, 20)
-                  : allSongs[song]?.songName}
+                {currentlyPlayingSong?.songName.length > 20
+                  ? currentlyPlayingSong.songName.slice(0, 20)
+                  : currentlyPlayingSong.songName}
               </h2>
-              <h3>{allSongs[song]?.artistName}</h3>
+              <h3>{currentlyPlayingSong.artistName}</h3>
             </div>
 
             <div className="audio-control-buttons">
@@ -409,11 +438,11 @@ const FixFooter = () => {
               <div className="artist-info">
                 <div className="info">
                   <h2>
-                    {allSongs[song]?.songName.length > 20
-                      ? allSongs[song]?.songName.slice(0, 20)
-                      : allSongs[song]?.songName}
+                    {currentlyPlayingSong?.songName.length > 20
+                      ? currentlyPlayingSong?.songName.slice(0, 20)
+                      : currentlyPlayingSong?.songName}
                   </h2>
-                  <h3>{allSongs[song]?.artistName}</h3>
+                  <h3>{currentlyPlayingSong?.artistName}</h3>
                 </div>
 
                 <motion.i
@@ -498,6 +527,42 @@ const FixFooter = () => {
           <PlayListCard />
         </>
       )}
+    </>
+  );
+};
+
+const loginStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "white",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+export const LoginModel = ({ loginModelOpen, handleClose }) => {
+  return (
+    <>
+      <Modal
+        open={loginModelOpen}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...loginStyle, width: 400 }}>
+          <h2 id="parent-modal-title">Premium Song</h2>
+          <p id="parent-modal-description">
+            PLease Login to Play this premium Song
+          </p>
+          <NavLink to={"/login"}>
+            <Button>Login</Button>
+          </NavLink>
+        </Box>
+      </Modal>
     </>
   );
 };

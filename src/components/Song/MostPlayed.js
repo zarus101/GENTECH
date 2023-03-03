@@ -16,7 +16,7 @@ export default function MostPlayed({ theme }) {
   const [songs, setSongs] = useState([]);
   const [{ currentlyPlayingSong,allSongs, song, isSongPlaying }, dispatch] = useStateValue();
 
-  const addSongToContext = (index, currentsong) => {
+  const addSongToContext = (songID, currentSong) => {
     if (!isSongPlaying) {
       dispatch({
         type: actionType.SET_SONG_PLAYING,
@@ -24,26 +24,37 @@ export default function MostPlayed({ theme }) {
       });
       dispatch({
         type: actionType.SET_CURRENT_SONG,
-        currentlyPlayingSong: currentsong,
-      })
+        currentlyPlayingSong: currentSong,
+      });
     }
-    if (song !== index) {
+    if (song !== songID) {
       dispatch({
         type: actionType.SET_SONG,
-        song: index,
+        song: songID,
       });
       dispatch({
         type: actionType.SET_CURRENT_SONG,
-        currentlyPlayingSong: currentsong,
-      })
+        currentlyPlayingSong: currentSong,
+      });
     }
-    console.log(currentsong);
-    console.log(song)
+    console.log(currentSong);
+    console.log(songID);
   };
 
   const handleClick = (index) => {
     setIsActive((current) => !current);
   };
+
+  // useEffect(() => {
+  //   getAllMusic()
+  //     .then((data) => {
+  //       setSongs(data);
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -64,6 +75,15 @@ export default function MostPlayed({ theme }) {
     setIsPlaying(true);
   };
 
+  const handleMostPlayed = async (id) => {
+    try {
+      const response = await axios.put(`v1/updateplay/${id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handlePause = () => {
     setIsPlaying(false);
   };
@@ -76,7 +96,8 @@ export default function MostPlayed({ theme }) {
         </h2>
 
         <p className="grey_text">
-          55 songs in the list <ArrowCircleDownIcon className="arrowdown" />
+          {songs.length} songs in the list{" "}
+          <ArrowCircleDownIcon className="arrowdown" />
         </p>
       </div>
 
@@ -86,7 +107,7 @@ export default function MostPlayed({ theme }) {
         animate={{ opacity: 1, translateY: 0 }}
         transition={{ duration: 0.3, delay: index * 0.1 }}
           className="mostplayed_element_play"
-          onClick={() => addSongToContext(index, song)}
+          onClick={() => addSongToContext(song.songID, song)}
           key={index}
         >
           <div className="left">
@@ -104,7 +125,12 @@ export default function MostPlayed({ theme }) {
 
             <PlayArrowIcon className="grey_text" />
 
-            <span className="primary_text_color">{song.songName}</span>
+            <span
+              className="primary_text_color"
+              onClick={() => handleMostPlayed(song.songID)}
+            >
+              {song.songName}
+            </span>
           </div>
 
           <div className="right">

@@ -8,7 +8,7 @@ export const getAllMusic = () => {
 };
 
 export const getMusicByArtistId = (artistID) => {
-  return myAxios.get(`/songs/${artistID}`).then((response) => {
+  return myAxios.get(`/getSongsByArtistID/${artistID}`).then((response) => {
     return response.data;
   });
 };

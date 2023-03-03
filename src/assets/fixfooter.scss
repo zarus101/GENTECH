@@ -1,5 +1,6 @@
 @use "./Commons.scss" as *;
 
+
 .fix-footer {
   position: fixed;
   bottom: 0;
@@ -185,6 +186,51 @@
   height: 100px;
   width: 100px;
   background-color: blanchedalmond;
+}
+
+.login_model_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .plans-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .plan {
+      background-color:grey;
+      padding: 32px;
+      border-radius: 8px;
+      box-shadow: 4;
+      text-align: center;
+
+      h3 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
+
+      h4 {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 32px;
+      }
+
+      button {
+        background-color: purple;
+        color: white;
+        font-weight: bold;
+        border-radius: 999px;
+        padding: 16px 32px;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          background-color:red;
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 480px) {

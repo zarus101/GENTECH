@@ -23,7 +23,7 @@ const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
 }));
 
 const MusicPlayer = (props) => {
-  const [{ allSongs, song,Playing, }, dispatch] =
+  const [{ allSongs, song,Playing ,currentlyPlayingSong, }, dispatch] =
     useStateValue([]);
     const audioPlayer= useRef();
 
@@ -59,7 +59,7 @@ const MusicPlayer = (props) => {
   return (
     <>
       <audio
-        src={`/public/songs/${allSongs[song]?.song}`}
+        src={`/public/songs/${currentlyPlayingSong?.song}`}
         ref={audioPlayer}
       />
 
@@ -79,11 +79,11 @@ const MusicPlayer = (props) => {
 
           <div className="artist-info">
           <h2>
-              {allSongs[song]?.songName.length > 20
-                ? allSongs[song]?.songName.slice(0, 20)
-                : allSongs[song]?.songName}
+              {currentlyPlayingSong?.songName.length > 20
+                ? currentlyPlayingSong?.songName.slice(0, 20)
+                : currentlyPlayingSong?.songName}
             </h2>
-            <h3>{allSongs[song]?.artistName}</h3>
+            <h3>{currentlyPlayingSong?.artistName}</h3>
           </div>
 
           <div className="audio-control-buttons">
