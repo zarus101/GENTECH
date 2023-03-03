@@ -21,12 +21,12 @@ import { motion } from "framer-motion";
 import { actionType } from "../context/reducer";
 import { useCallback } from "react";
 import { getAllMusic } from "../connection/MusicService";
-import { useStateValue } from "../context/StateProvider";
 import { toast } from "react-hot-toast";
 import { Box } from "@mui/system";
 import SubscriptionModal from "../components/Subscription/Subscription";
 import { getCurrentUserDetail, isLoggedIN } from "../connection/UserService";
 import { Navigate, NavLink } from "react-router-dom";
+import { useStateValue } from "../context/StateProvider";
 
 const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
   color: "brown",
