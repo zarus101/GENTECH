@@ -11,6 +11,7 @@ export const actionType = {
   SET_LOGGED_IN: "SET_LOGGED_IN",
   SET_CURRENT_SONG: "SET_CURRENT_SONG",
   SET_LIKED_SONGS: "SET_LIKED_SONGS",
+  SET_BACKGROUND: "SET_BACKGROUND",
 };
 
 const reducer = (state, action) => {
@@ -81,10 +82,16 @@ const reducer = (state, action) => {
         currentlyPlayingSong: action.currentlyPlayingSong,
       };
 
-      case actionType.SET_LIKED_SONGS:
+    case actionType.SET_LIKED_SONGS:
       return {
         ...state,
         likedSongs: action.likedSongs,
+      };
+
+    case actionType.SET_BACKGROUND:
+      return {
+        ...state,
+        background: action.background,
       };
 
     default:

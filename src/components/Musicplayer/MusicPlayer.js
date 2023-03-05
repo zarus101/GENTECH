@@ -33,10 +33,19 @@ const MusicPlayer = (props) => {
           type: actionType.SET_SONG,
           song: 0,
         });
+        dispatch({
+          type: actionType.SET_CURRENT_SONG,
+          currentlyPlayingSong: allSongs[song],
+        });
       } else {
         dispatch({
           type: actionType.SET_SONG,
           song: song + 1,
+        });
+  
+        dispatch({
+          type: actionType.SET_CURRENT_SONG,
+          currentlyPlayingSong: allSongs[song + 1],
         });
       }
     };
@@ -47,13 +56,23 @@ const MusicPlayer = (props) => {
           type: actionType.SET_SONG,
           song: 0,
         });
+        dispatch({
+          type: actionType.SET_CURRENT_SONG,
+          currentlyPlayingSong: allSongs[song],
+        });
       } else {
         dispatch({
           type: actionType.SET_SONG,
           song: song - 1,
         });
+  
+        dispatch({
+          type: actionType.SET_CURRENT_SONG,
+          currentlyPlayingSong: allSongs[song - 1],
+        });
       }
     };
+  
 
 
   return (

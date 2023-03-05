@@ -66,6 +66,7 @@ const Artists = ({ theme }) => {
                 })
                 .map((item) => {
                   return (
+                    
                     <div
                       className="card"
                       key={item.artistID}

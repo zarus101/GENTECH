@@ -10,7 +10,6 @@ export const initialState ={
     slideUp:false,
     loggedIN: false,
     currentlyPlayingSong:[],
-    likedSongs:null,
- 
-    
+    likedSongs:[],
+    background: 'light',
 }

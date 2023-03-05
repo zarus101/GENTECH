@@ -1,7 +1,6 @@
 import AdminLayout from "../../../../layouts/AdminLayout";
 import AddSongs from "./AddSongs";
 import ListAllSongs from "./ListAllSongs";
-import DashboardSongs from "./SongsList";
 import UpdateSong from "./UpdateSong";
 
 export const addSongs = {
@@ -14,7 +13,7 @@ export const addSongs = {
 
 export const listSongs = {
   path: "/songs",
-  element: DashboardSongs,
+  element: ListAllSongs,
   layout: AdminLayout,
   exact: true,
   isPublic: false,

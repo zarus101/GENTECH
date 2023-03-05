@@ -49,27 +49,31 @@ const Login = () => {
     loginUser(loginDetail)
       .then((data) => {
         console.log(data);
-        doLogin(data, dispatch, () => {
-          console.log(data);
-          dispatch({
-            type: actionType.SET_LOGGED_IN,
-            loggedIN: true,
+        if (data.status==="success") {
+          doLogin(data, dispatch, () => {
+            // console.log(data);
+            dispatch({
+              type: actionType.SET_LOGGED_IN,
+              loggedIN: true,
+            });
+            if (data.user.role === "admin") {
+              navigate("/admin/dashboard");
+            } else if (data.user.role === "normal") {
+              navigate("/");
+            } else {
+              navigate("/login");
+            }
           });
-          if (data.user.role === "admin") {
-            navigate("/admin/dashboard");
-          } else if (data.user.role === "normal") {
-            navigate("/");
-          } else {
-            navigate("/login");
-          }
-        });
+        } else if(data.status==="failed") {
+          toast.error(data.message)
+          navigate("/login");
+        }
       })
       .catch((error) => {
-        console.log("error");
+        console.log(error);
         toast.error("something went wrong in server");
       });
   };
-
 
   return (
     <form className="form" onSubmit={handleSubmitForm}>

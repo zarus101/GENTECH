@@ -1,28 +1,57 @@
-
 .songlist-section {
-    .header {
-      .search-div {
-        width: 50%;
-        max-width: 600px;
-        background: white;
-        display: flex;
-        align-items: center;
-        border-radius: 10px;
-        padding: 5px;
-  
-        .search-bar {
-          width: 100%;
-          input {
-            background-color: transparent;
-            border: 0;
-            width: 90%;
-            outline: none;
-            padding: 10px 10px;
-            font-size: 20px;
-            color: #070716;
-          }
+  .header {
+    .search-div {
+      width: 50%;
+      max-width: 600px;
+      background: white;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      padding: 5px;
+
+      .search-bar {
+        width: 100%;
+        input {
+          background-color: transparent;
+          border: 0;
+          width: 90%;
+          outline: none;
+          padding: 10px 10px;
+          font-size: 20px;
+          color: #070716;
         }
       }
     }
   }
-  
+
+  .card_buttons {
+    .play_button {
+      border: 1px solid black;
+      margin-right: 3px;
+      svg {
+        color: black;
+      }
+    }
+    .delete_button {
+      border: 1px solid red;
+      svg {
+        color: red;
+      }
+    }
+    .edit_button {
+      border: 1px solid green;
+      margin-left: 3px;
+      svg {
+        color: green;
+      }
+    }
+  }
+
+  .premium_icon{
+    svg{
+      color: rgb(231, 139, 12);
+    }
+  }
+}
+
+

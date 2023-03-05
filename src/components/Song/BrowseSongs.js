@@ -23,6 +23,9 @@ import axios from "axios";
 import "../../assets/NavbarSection.scss";
 import "../../assets/Theme.scss";
 import { toast } from "react-hot-toast";
+import { useStateValue } from "../../context/StateProvider";
+import { actionType } from "../../context/reducer";
+import {motion } from "framer-motion";
 
 function BrowseSongs({ theme, searchItem }) {
   const [swiperRef, setSwiperRef] = useState(null);
@@ -30,6 +33,17 @@ function BrowseSongs({ theme, searchItem }) {
   const [token, setToken] = useState();
   const [playlists, setPlaylists] = useState([]);
   const [userid, setUserid] = useState();
+  const [
+    {
+      currentlyPlayingSong,
+      Playing,
+      allSongs,
+      likedSongs,
+      song,
+      isSongPlaying,
+    },
+    dispatch,
+  ] = useStateValue();
 
   const [show, setShow] = useState(false);
 
@@ -116,6 +130,44 @@ function BrowseSongs({ theme, searchItem }) {
     }
   };
 
+  const addSongToContext = (index, currentsong) => {
+    if (!isSongPlaying) {
+      dispatch({
+        type: actionType.SET_SONG_PLAYING,
+        isSongPlaying: true,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentsong,
+      });
+
+      if (Playing) {
+        try {
+          const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    if (song !== index) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: index,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentsong,
+      });
+      try {
+        const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    console.log(currentsong);
+  };
   return (
     <div className="wrapper" id={theme}>
       <div className="carousel_header">
@@ -177,21 +229,25 @@ function BrowseSongs({ theme, searchItem }) {
               );
             }
           })
-          .map((song) => {
+          .map((song, index) => {
             return (
               <SwiperSlide key={song.songID}>
+                <motion.div
+              initial={{ opacity: 0, translateX: -50 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="top_songs_play"
+              onClick={() => addSongToContext(song.songID, song)}
+              key={index}
+            >
                 <div
                   className="artist_image"
                   onClick={() => handleMostPlayed(song.songID)}
                 >
+
                   <img src="./images/download.jfif" alt="" />
                   <div className="audiopart">
-                    <audio
-                      className="audio"
-                      controls
-                      // onPause={}
-                      src={`/public/songs/${song.song}`}
-                    ></audio>
+              
                     <div className="buttons">
                       <div className="likebutton">
                         <FavoriteIcon />
@@ -230,6 +286,7 @@ function BrowseSongs({ theme, searchItem }) {
                   </h5>
                   {/* <h6>{artist.name}</h6> */}
                 </div>
+                </motion.div>
               </SwiperSlide>
             );
           })}

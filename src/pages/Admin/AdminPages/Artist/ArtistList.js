@@ -15,8 +15,22 @@ import { getCurrentUserDetail } from "../../../../connection/UserService";
 import { deleteArtistById } from "../../../../connection/ArtistService";
 import { toast } from "react-hot-toast";
 import Header from "../../AdminComponents/Header";
-import { Box } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonBase,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 
+const Img = styled("img")({
+  margin: "auto",
+  display: "block",
+  maxWidth: "100%",
+  maxHeight: "100%",
+});
 const ArtistList = () => {
   const [user, setUser] = useState([]);
   const Navigate = useNavigate();
@@ -115,7 +129,94 @@ const ArtistList = () => {
           <button onClick={(e) => handleDeleteAll(e)}>
             <ClearIcon sx={{ color: red[900] }} />
           </button>
-          <div style={{ overflowX: "auto" }}>
+
+          <Grid item xs={20}>
+            <Grid container justifyContent="center" spacing={2}>
+              {user
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.artistName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value, index) => (
+                  <Grid key={index} item>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        margin: "auto",
+                        maxWidth: 500,
+                        flexGrow: 1,
+                        backgroundColor: (theme) =>
+                          theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+                      }}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item>
+                          <ButtonBase sx={{ width: 128, height: 128 }}>
+                            <Img
+                              alt="complex"
+                              src={`/public/img/artist/${value.artistPhoto}`}
+                            />
+                          </ButtonBase>
+                        </Grid>
+                        <Grid item xs={12} sm container>
+                          <Grid
+                            item
+                            xs
+                            container
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item xs>
+                              <Typography
+                                gutterBottom
+                                variant="subtitle1"
+                                component="div"
+                                className="text_div"
+
+                              >
+                                <b>Artist Name:</b>  <span>{value.artistName}</span>
+                               
+                              </Typography>
+                              <Typography variant="body2" gutterBottom>
+                                Year : <span>{value.year}</span>
+                              </Typography>
+                              <Typography variant="body2" gutterBottom>
+                                Status : <span>{value.status}</span>
+                              </Typography>
+
+                              <Grid item className="card_buttons" spacing={1}>
+                                <Button
+                                  className="delete_button"
+                                  onClick={() => deleteArtist(value)}
+                                >
+                                  <Delete />
+                                </Button>
+                                <Button
+                                  className="edit_button"
+                                  onClick={(e) =>
+                                    handleUpdate(value.artistID, e)
+                                  }
+                                >
+                                  <Edit />
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                ))}
+            </Grid>
+          </Grid>
+          {/* <div style={{ overflowX: "auto" }}>
             <table>
               <thead>
                 <tr>
@@ -183,7 +284,7 @@ const ArtistList = () => {
                   );
                 })}
             </table>
-          </div>
+          </div> */}
         </main>
       </Box>
     </>

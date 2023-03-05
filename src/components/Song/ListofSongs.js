@@ -1,15 +1,30 @@
 import React, { useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import "../../assets/ListofSongs.scss";
 import { useEffect } from "react";
 import axios from "axios";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import { getMusicByArtistId } from "../../connection/MusicService";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { actionType } from "../../context/reducer";
+import { useStateValue } from "../../context/StateProvider";
 
 export default function ListofSongs({ theme }) {
   const { artistID, genreName } = useParams();
   const [artist, setArtist] = useState("");
+  const [
+    {
+      currentlyPlayingSong,
+      Playing,
+      allSongs,
+      likedSongs,
+      song,
+      isSongPlaying,
+    },
+    dispatch,
+  ] = useStateValue();
 
   const [songs, setSongs] = useState([]);
 
@@ -58,15 +73,6 @@ export default function ListofSongs({ theme }) {
     fetchArtist();
   }, [artistID]);
 
-  const [currentSong, setCurrentSong] = useState(null);
-
-  const handleSongPlay = (song) => {
-    if (currentSong) {
-      currentSong.pause();
-    }
-    setCurrentSong(song);
-  };
-
   const handleMostPlayed = async (id) => {
     try {
       const response = await axios.put(`v1/updateplay/${id}`);
@@ -76,6 +82,44 @@ export default function ListofSongs({ theme }) {
     }
   };
 
+  const addSongToContext = (index, currentsong) => {
+    if (!isSongPlaying) {
+      dispatch({
+        type: actionType.SET_SONG_PLAYING,
+        isSongPlaying: true,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentsong,
+      });
+
+      if (Playing) {
+        try {
+          const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    if (song !== index) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: index,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentsong,
+      });
+      try {
+        const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    console.log(currentsong);
+  };
   return (
     <div className="songlist" id={theme}>
       <div className="songlist-header">
@@ -91,40 +135,53 @@ export default function ListofSongs({ theme }) {
         <div className="no-songs">No songs available</div>
       ) : (
         songs.slice(0, 5).map((song, index) => (
-          <div className="songlist-element" key={index}>
+          <motion.div
+            initial={{ opacity: 0, translateY: -50 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            className="mostplayed_element_play"
+            onClick={() => addSongToContext(song.songID, song)}
+            key={index}
+          >
             <div className="left">
-              {/* <span className="primary_text_color">{song.id}</span> */}
-
               <img
                 src={
                   song.coverphoto
                     ? `/public/img/coverphoto/${song.coverphoto}`
                     : "../images/download.jfif"
                 }
-                alt="song_cover"
+                style={{ height: "50px" }}
+                alt="artists"
               />
-              <div className="left-info">
-                <span
-                  className="primary_text_color"
-                  onClick={() => handleMostPlayed(song.songID)}
-                >
-                  {song.songName}
-                </span>
-                <span className="grey_text">{song.artistName}</span>
-              </div>
+
+              {Playing && currentlyPlayingSong?.songID === song.songID ? (
+                <PauseCircleIcon className="grey_text" />
+              ) : (
+                <PlayCircleIcon className="grey_text" />
+              )}
+
+              <span
+                className="primary_text_color"
+                onClick={() => handleMostPlayed(song.songID)}
+              >
+                {song.songName}
+              </span>
             </div>
 
-            <div className="right">
-              {/* <span className="grey_text">{song.Description}</span> */}
-              {/* <span className="grey_text">{props.artist.duration}</span> */}
-              <audio
-                controls
-                onPlay={() => handleSongPlay(this)}
-                // onPause={}
-                src={`/public/songs/${song.song}`}
-              ></audio>
-            </div>
-          </div>
+            {Playing && currentlyPlayingSong?.songID === song.songID ? (
+              <div className="right">
+                <span>
+                  <img
+                    style={{ height: "40px" }}
+                    src="../images/visualizer.gif"
+                    alt=""
+                  />
+                </span>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </motion.div>
         ))
       )}
     </div>

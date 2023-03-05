@@ -17,18 +17,19 @@ import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
 import { toast } from "react-hot-toast";
 import { useStateValue } from "../../context/StateProvider";
 import { actionType } from "../../context/reducer";
+import { motion } from "framer-motion";
 
 function TopSongs({ theme }) {
   const [swiperRef, setSwiperRef] = useState(null);
-  const [{ currentlyPlayingSong, allSongs,likedSongs, song, isSongPlaying }, dispatch] =
-    useStateValue([]);
+  const [
+    { currentlyPlayingSong, allSongs, likedSongs, song, isSongPlaying },
+    dispatch,
+  ] = useStateValue();
 
   const [songs, setSongs] = useState([]);
   const [token, setToken] = useState();
   const [playlists, setPlaylists] = useState([]);
   const [userid, setUserid] = useState();
-  const [active, setActive] = useState(false);
-
   const [show, setShow] = useState(false);
 
   const config = {
@@ -88,24 +89,29 @@ function TopSongs({ theme }) {
   };
 
   const handleLikeClicked = async (songId) => {
-    try {
-      const likedData = {
-        songID: songId,
-        userID: userid,
-      };
+    if (isLoggedIN()) {
+      try {
+        const likedData = {
+          songID: songId,
+          userID: userid,
+        };
 
-      const res = await axios.post(`v1/songs/like`, likedData, config);
-      console.log(res);
-      if (res.status === 201) {
-        toast.error(res.data);
-        return;
-      } else {
-        toast.success("Song added!!");
+        const res = await axios.post(`v1/songs/like`, likedData, config);
+        console.log(res);
+        if (res.status === 201) {
+          toast.error(res.data);
+          return;
+        } else {
+          toast.success("Song added!!");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error);
+    } else {
+      toast.error("Please login to like the song");
     }
+
     setShow(false);
   };
 
@@ -125,7 +131,9 @@ function TopSongs({ theme }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [songs]);
+
+    console.log(likedSongs);
+  }, []);
 
   const sortedSongs = songs?.sort((a, b) => b.likes - a.likes);
 
@@ -139,6 +147,12 @@ function TopSongs({ theme }) {
         type: actionType.SET_CURRENT_SONG,
         currentlyPlayingSong: currentsong,
       });
+      try {
+        const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     if (song !== index) {
       dispatch({
@@ -149,16 +163,14 @@ function TopSongs({ theme }) {
         type: actionType.SET_CURRENT_SONG,
         currentlyPlayingSong: currentsong,
       });
+      try {
+        const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     console.log(currentsong);
-
-    try {
-      const response =  axios.put(`v1/updateplay/${currentsong?.songID}`);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-
   };
   const handleMostPlayed = async (id) => {
     try {
@@ -168,8 +180,6 @@ function TopSongs({ theme }) {
       console.log(error);
     }
   };
-
-
 
   return (
     <div className="wrapper" id={theme}>
@@ -222,59 +232,70 @@ function TopSongs({ theme }) {
         {sortedSongs.map((song, index) => (
           <SwiperSlide
             key={song.songID}
-            onClick={() => addSongToContext(index, song)}
+            onClick={() => addSongToContext(song.songID, song)}
           >
-            <div className="artist_image">
-              <img
-                src={
-                  song.coverphoto
-                    ? `/public/img/coverphoto/${song.coverphoto}`
-                    : "../images/download.jfif"
-                }
-                alt=""
-              />
+            <motion.div
+              initial={{ opacity: 0, translateX: -50 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="top_songs_play"
+              onClick={() => addSongToContext(song.songID, song)}
+              key={index}
+            >
+              <div className="artist_image">
+                <img
+                  src={
+                    song.coverphoto
+                      ? `/public/img/coverphoto/${song.coverphoto}`
+                      : "../images/download.jfif"
+                  }
+                  alt=""
+                />
 
-              {likedSongs?.likedSongs?.includes(song.songID) && (
-                <div className="liked-button">
-                  <FavoriteIcon className="favouriteicon" />
-                </div>
-              )}
-              <div className="audiopart">
-                <div className="buttons">
-                  <div className="likebutton">
-                    <FavoriteIcon
-                      onClick={() => handleLikeClicked(song.songID)}
-                    />
-                  </div>
-                  <div className="addtoplaylist">
-                    <PlaylistAddIcon onClick={() => setShow(!show)} />
-                    {show && (
-                      <div className="playlist">
-                        <ul>
-                          {playlists.map((playlist) => (
-                            <li
-                              key={playlist.playlistID}
-                              id="text"
-                              onClick={() =>
-                                handleClick(song.songID, playlist.playlistID)
-                              }
-                            >
-                              <div className="nav-item">{playlist.name}</div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                <div className="audiopart">
+                  {likedSongs.includes(song.songID) ? (
+                    <div className="liked-button">
+                      <FavoriteIcon className="favouriteicon" />
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                  <div className="buttons">
+                    <div className="likebutton">
+                      <FavoriteIcon
+                        onClick={() => handleLikeClicked(song.songID)}
+                      />
+                    </div>
+                    <div className="addtoplaylist">
+                      <PlaylistAddIcon onClick={() => setShow(!show)} />
+                      {show && (
+                        <div className="playlist">
+                          <ul>
+                            {playlists.map((playlist) => (
+                              <li
+                                key={playlist.playlistID}
+                                id="text"
+                                onClick={() =>
+                                  handleClick(song.songID, playlist.playlistID)
+                                }
+                              >
+                                <div className="nav-item">{playlist.name}</div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="artist_info">
-              <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
-                {song.songName}
-              </h5>
-              <h6>{song.artistName}</h6>
-            </div>
+              <div className="artist_info">
+                <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
+                  {song.songName}
+                </h5>
+                <h6>{song.artistName}</h6>
+              </div>
+            </motion.div>
           </SwiperSlide>
         ))}
       </Swiper>

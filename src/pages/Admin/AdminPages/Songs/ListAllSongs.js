@@ -8,21 +8,34 @@ import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
 import { toast } from "react-hot-toast";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, PlayArrow } from "@mui/icons-material";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import {
   deleteSongById,
   getAllMusic,
 } from "../../../../connection/MusicService";
+import { Button, ButtonBase, Grid, Paper, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { useStateValue } from "../../../../context/StateProvider";
+import { actionType } from "../../../../context/reducer";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 
+const Img = styled("img")({
+  margin: "auto",
+  display: "block",
+  maxWidth: "100%",
+  maxHeight: "100%",
+});
 const ListAllSongs = () => {
   const [songs, setSongs] = useState([]);
   const Navigate = useNavigate();
-
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [error, setError] = useState("");
-  // const [response, setResponse] = useState("");
   const [searchItem, setSearchItem] = useState("");
   const [token, setToken] = useState();
+  const [
+    { currentlyPlayingSong, allSongs, Playing, song, isSongPlaying },
+    dispatch,
+  ] = useStateValue();
 
   const fetchData = async () => {
     await getAllMusic()
@@ -48,9 +61,6 @@ const ListAllSongs = () => {
           toast.error("Failed to delete the song..");
         });
     }
-    // window.location.reload(false);
-    // const newSongs = await getAllMusic();
-    // setSongs([...songs]);
   };
 
   function deleteAllSong() {
@@ -67,51 +77,179 @@ const ListAllSongs = () => {
     Navigate(`/updateSong/${id}`);
   };
 
-  //   const handleDeleteAll = (e) => {
-  //     e.preventDefault();
-  //     if (window.confirm("Are you sure you want to delete?")) {
-  //       axios
-  //         .delete(`/v1/deleteAllArtist`, config)
-  //         .then((res) => {
-  //           toast.success(" All artist deleted!!");
-  //         })
-  //         .catch((error) => setError(error));
-  //       setShowAlert(true);
-  //     }
-  //   };
+  const addSongToContext = (songID, currentSong) => {
+    if (!isSongPlaying) {
+      dispatch({
+        type: actionType.SET_SONG_PLAYING,
+        isSongPlaying: true,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentSong,
+      });
+    }
+    if (song !== songID) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: songID,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentSong,
+      });
+    }
+    console.log(currentSong);
+    console.log(songID);
+  };
 
   return (
     <>
       <Box m="20px" className="songlist-section">
-        <Box
-          className="header"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <div className="left-part">
-            <Header title="List of All Songs" subtitle="All songs here" />
-          </div>
-          <div className="search-div">
-            <form action="" className="search-bar">
-              <input
-                type="search"
-                placeholder="search song here"
-                name="seacrh"
-                onChange={(event) => {
-                  setSearchItem(event.target.value);
-                }}
-              />
-            </form>
-          </div>
-        </Box>
         <main>
+          <Box
+            className="header"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <div className="left-part">
+              <Header title="List of All Songs" subtitle="All songs here" />
+            </div>
+            <div className="search-div">
+              <form action="" className="search-bar">
+                <input
+                  type="search"
+                  placeholder="search song here"
+                  name="seacrh"
+                  onChange={(event) => {
+                    setSearchItem(event.target.value);
+                  }}
+                />
+              </form>
+            </div>
+          </Box>
           <button>
             <ClearIcon
               sx={{ color: red[900] }}
               onClick={() => deleteAllSong()}
             />
           </button>
+          <Grid item xs={20}>
+            <Grid container justifyContent="center" spacing={2}>
+              {songs
+                .filter((value) => {
+                  if (searchItem === "") {
+                    return value;
+                  } else if (
+                    value.songName
+                      .toLowerCase()
+                      .includes(searchItem.toLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((value) => (
+                  <Grid key={value} item>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        margin: "auto",
+                        maxWidth: 500,
+                        flexGrow: 1,
+                        backgroundColor: (theme) =>
+                          theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+                      }}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item>
+                          <ButtonBase sx={{ width: 128, height: 128 }}>
+                            <Img
+                              alt="complex"
+                              src={`/public/img/coverphoto/${value.coverphoto}`}
+                            />
+                          </ButtonBase>
+                        </Grid>
+                        <Grid item xs={12} sm container>
+                          <Grid
+                            item
+                            xs
+                            container
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item xs>
+                              <Typography
+                                gutterBottom
+                                variant="subtitle1"
+                                component="div"
+                              >
+                                <b>Song Name:</b> <span>{value.songName}</span>
+                              </Typography>
+
+                              <Typography variant="body2" gutterBottom>
+                                Artist Name : <span>{value.artistName}</span>
+                              </Typography>
+                              <Typography variant="body2" gutterBottom>
+                                Description : <span>{value.Description}</span>
+                              </Typography>
+                              <Typography variant="body2" gutterBottom>
+                                Genre : <span>{value.genreName}</span>
+                              </Typography>
+                              <Typography variant="body2" gutterBottom>
+                                Date Added : <span>{value.dateAdded}</span>
+                              </Typography>
+                              <Grid item className="card_buttons" spacing={1}>
+                                <Button
+                                  className="play_button"
+                                  onClick={() =>
+                                    addSongToContext(value.songID, value)
+                                  }
+                                >
+                                  {Playing &&
+                                  currentlyPlayingSong?.songID ===
+                                    value.songID ? (
+                                    <PauseIcon />
+                                  ) : (
+                                    <PlayArrow />
+                                  )}
+                                </Button>
+                                <Button
+                                  className="delete_button"
+                                  onClick={() => deleteSong(value)}
+                                >
+                                  <Delete />
+                                </Button>
+                                <Button
+                                  className="edit_button"
+                                  onClick={(e) => handleUpdate(value.songID, e)}
+                                >
+                                  <Edit />
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Typography
+                            variant="subtitle1"
+                            component="div"
+                            className="premium_icon"
+                          >
+                            {value.song_type === "premium" ? (
+                              <WorkspacePremiumIcon />
+                            ) : (
+                              <div></div>
+                            )}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                ))}
+            </Grid>
+          </Grid>
+
+          {/*           
           <div style={{ overflowX: "auto" }}>
             <table>
               <thead>
@@ -197,7 +335,7 @@ const ListAllSongs = () => {
                 </tbody>
               )}
             </table>
-          </div>
+          </div> */}
         </main>
       </Box>
     </>

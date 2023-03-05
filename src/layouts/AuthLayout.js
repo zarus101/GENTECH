@@ -5,7 +5,11 @@ import "../assets/index.scss";
 import "../assets/NavbarSection.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import { doLogin, getCurrentUserDetail, isLoggedIN } from "../connection/UserService";
+import {
+  doLogin,
+  getCurrentUserDetail,
+  isLoggedIN,
+} from "../connection/UserService";
 import FixFooter from "../Footer/FixFooter";
 import axios from "axios";
 import { useRef } from "react";
@@ -22,7 +26,7 @@ const AuthLayout = ({ children }) => {
     setLogin(isLoggedIN());
   }, [login]);
 
-  const [{ allSongs, isSongPlaying, loggedIN }, dispatch] = useStateValue();
+  const [{ allSongs, isSongPlaying, loggedIN }, dispatch] = useStateValue([]);
   const [isLoading, setIsLoading] = useState(true);
   const [songs, setSongs] = useState([]);
   const [token, setToken] = useState();
@@ -57,13 +61,44 @@ const AuthLayout = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    let controller = new AbortController();
+    const getLikedData = async () => {
+      try {
+        const response = await axios.get(`/v1/getAllLiked/${userid}`, {
+          signal: controller.signal,
+        });
+        setLikedData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLikedData();
+    return () => controller.abort();
+  }, [userid]);
+
+  useEffect(() => {
+    const likedSongIds = likedData.map((data) => data.songID);
+    const filteredLikedSongs = allSongs?.filter((song) =>
+      likedSongIds.includes(song.songID)
+    );
+
+    dispatch({
+      type: actionType.SET_LIKED_SONGS,
+      likedSongs: filteredLikedSongs,
+    });
+    setLikedSongs(filteredLikedSongs);
+  }, [allSongs, likedData, dispatch]);
+
+  useEffect(() => {
     if (!isLoggedIN()) return;
 
-    getCurrentUserDetail();
-    const id = getCurrentUserDetail().user.id;
+    const {
+      user: { id },
+      token,
+    } = getCurrentUserDetail();
     setUserid(id);
-    setToken(getCurrentUserDetail().token);
-  }, []);
+    setToken(token);
+  }, [getCurrentUserDetail]);
 
   if (isLoading) return <p>Loading...</p>;
 

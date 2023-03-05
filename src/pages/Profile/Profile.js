@@ -62,40 +62,14 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="bottom-portion">
-          <ProfileTabs />
-
-          {/* <Container>
-            <div className="tabs">
-              <Button
-                className={currentTab === "songs" ? "active" : ""}
-                onClick={() => handleTabChange("songs")}
-              >
-                <AddCircleIcon />
-                Liked Songs
-              </Button>
-              <Button
-                className={currentTab === "subscriptions" ? "active" : ""}
-                onClick={() => handleTabChange("subscriptions")}
-              >
-                <SubscriptionsIcon />
-                Subscriptions
-              </Button>
+        {getCurrentUserDetail().user.role ===
+          "normal" ? (
+            <div className="bottom-portion">
+              <ProfileTabs />
             </div>
-            <div className="tab-content">
-              {currentTab === "songs" && (
-                <div>
-                  <AddSongs />
-                </div>
-              )}
-              {currentTab === "subscriptions" && (
-                <div>
-                  <Subscribe />
-                </div>
-              )}
-            </div>
-          </Container> */}
-        </div>
+          ):(
+            <div></div>
+          )}
       </div>
     </div>
   );

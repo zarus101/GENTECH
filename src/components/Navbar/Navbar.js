@@ -26,13 +26,14 @@ import { useEffect, useState } from "react";
 import { getAllArtists } from "../../connection/ArtistService";
 import { getAllMusic } from "../../connection/MusicService";
 import { useStateValue } from "../../context/StateProvider";
-const Navbar = ({ theme, setTheme }) => {
+import { actionType } from "../../context/reducer";
+const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [artists, setArtists] = useState("");
   const [searchItem, setSearchItem] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [songs, setSongs] = useState("");
-const [{user}, dispatch]= useStateValue();
+const [{user, background}, dispatch]= useStateValue();
 
   const handleChange = (event) => {
     setSearchItem(event.target.value);
@@ -78,6 +79,19 @@ const [{user}, dispatch]= useStateValue();
     e.preventDefault();
     navigate(`/artist/${artistID}`);
   };
+
+  const lightButtonClick=()=>{
+    dispatch({
+      type: actionType.SET_BACKGROUND,
+      background:"dark"
+    })
+  }
+  const darkButtonClick=()=>{
+    dispatch({
+      type: actionType.SET_BACKGROUND,
+      background:"light"
+    })
+  }
   return (
     <Box className="box" display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
@@ -220,7 +234,7 @@ const [{user}, dispatch]= useStateValue();
                 sx={{ display: { xs: "none", md: "block" } }}
               >
                 <span className="wel">Welcome, </span>
-                {user?.user?.name}
+                {getCurrentUserDetail().user?.name}
               </Typography>
             </IconButton>
 
@@ -259,14 +273,16 @@ const [{user}, dispatch]= useStateValue();
         )}
 
         <IconButton
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+
+       
+          // onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          {theme === "dark" ? (
-            <DarkModeOutlinedIcon id="text" />
+          {background === "dark" ? (
+            <DarkModeOutlinedIcon id="text"  onClick ={()=> darkButtonClick()} />
           ) : (
-            <LightModeOutlinedIcon id="text" />
+            <LightModeOutlinedIcon id="text"  onClick ={()=> lightButtonClick()} />
           )}
-        </IconButton>
+        </IconButton> 
       </Box>
     </Box>
   );

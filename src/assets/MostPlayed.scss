@@ -86,22 +86,9 @@
       align-items: center;
       width: 60%;
 
-      // & > * {
-      //   margin-inline: 10px;
-      // }
-
-      .audio {
-        width: 100%;
-
-        audio {
-          filter: sepia(30%) saturate(80%) grayscale(1) contrast(99%)
-            invert(12%);
-          background-color: white;
-        }
-      }
-
       img {
-        display: none;
+        height: 50px;
+        width: 100%;
       }
     }
   }

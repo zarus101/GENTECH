@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
+import { motion } from "framer-motion";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -102,22 +102,30 @@ function BrowseArtists({ theme, searchItem }) {
               return item;
             }
           })
-          .map((item) => {
+          .map((item, index) => {
             return (
               <SwiperSlide
                 key={item.artistID}
                 onClick={(e) => handleClick(item.artistID, e)}
               >
-                <div className="artist_image">
-                  <img
-                    src={`/public/img/artist/${item.artistPhoto}`}
-                    alt="Artist"
-                  />
-                </div>
-                <div className="artist_info">
-                  <h5 id="text">{item.artistName}</h5>
-                  {/* <h6>{artist.name}</h6> */}
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, translateX: -50 }}
+                  animate={{ opacity: 1, translateX: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="top_songs_play"
+                  key={index}
+                >
+                  <div className="artist_image">
+                    <img
+                      src={`/public/img/artist/${item.artistPhoto}`}
+                      alt="Artist"
+                    />
+                  </div>
+                  <div className="artist_info">
+                    <h5 id="text">{item.artistName}</h5>
+                    {/* <h6>{artist.name}</h6> */}
+                  </div>
+                </motion.div>
               </SwiperSlide>
             );
           })}

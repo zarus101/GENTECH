@@ -59,4 +59,25 @@ tfoot td {
       }
     }
   }
+  .text_div{
+    width: max-content;
+  }
+
+  .card_buttons {
+    width: 100%;
+
+    .delete_button {
+      border: 1px solid red;
+      svg {
+        color: red;
+      }
+    }
+    .edit_button {
+      border: 1px solid green;
+      margin-left: 3px;
+      svg {
+        color: green;
+      }
+    }
+  }
 }

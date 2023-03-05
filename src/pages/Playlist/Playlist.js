@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../../assets/Playlist.scss";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Delete, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
 import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
-import { getAllMusic } from "../../connection/MusicService";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { useStateValue } from "../../context/StateProvider";
+import { actionType } from "../../context/reducer";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 
 const style = {
   position: "absolute",
@@ -26,9 +28,17 @@ const Playlist = ({ theme, searchItem }) => {
   const [playlistSongs, setPlaylistSongs] = useState([]);
   const [playlistName, setPlaylistName] = useState("");
   const [updateName, setUpdateName] = useState("");
-  // const [songs, setSongs] = useState([]);
-  // const [error, setError] = useState();
-  // const [isLoading, setIsLoading] = useState(false);
+  const [
+    {
+      currentlyPlayingSong,
+      Playing,
+      allSongs,
+      likedSongs,
+      song,
+      isSongPlaying,
+    },
+    dispatch,
+  ] = useStateValue();
   const [token, setToken] = useState();
   const [userid, setUserid] = useState();
   const [open, setOpen] = useState(false);
@@ -36,17 +46,6 @@ const Playlist = ({ theme, searchItem }) => {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-
-  // useEffect(() => {
-  //   getAllMusic()
-  //     .then((data) => {
-  //       setSongs(data);
-  //       // console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
 
   useEffect(() => {
     let controller = new AbortController();
@@ -127,6 +126,42 @@ const Playlist = ({ theme, searchItem }) => {
     setUpdateName("");
   };
 
+  const addSongToContext = (index, currentsong) => {
+    if (!isSongPlaying) {
+      dispatch({
+        type: actionType.SET_SONG_PLAYING,
+        isSongPlaying: true,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentsong,
+      });
+      try {
+        const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (song !== index) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: index,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentsong,
+      });
+      try {
+        const response = axios.put(`v1/updateplay/${currentsong?.songID}`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    console.log(currentsong);
+  };
+
   // if (isLoading) return <p>Loading...</p>;
 
   return (
@@ -192,18 +227,47 @@ const Playlist = ({ theme, searchItem }) => {
         <div className="content">
           {playlistSongs &&
             playlistSongs.map((song, index) => (
-              <div className="song" id="text" key={index}>
-                <div className="song-left">
-                  <PlayArrowIcon sx={{ mr: "10px" }} />
-                  {song.songName}
-                </div>
-                <audio controls src={`/public/songs/${song.song}`}></audio>
-                <span>
-                  <Delete
-                    className="delete-icon"
-                    onClick={() => handleDelete(song.playlistID, song.song)}
+              <div
+                className="song"
+                id="text"
+                key={index}
+                onClick={() => addSongToContext(song.songID, song)}
+              >
+                <div className="left">
+                  <img
+                    src={
+                      song.coverphoto
+                        ? `/public/img/coverphoto/${song.coverphoto}`
+                        : "../images/download.jfif"
+                    }
+                    style={{ height: "50px" }}
+                    alt="artists"
                   />
-                </span>
+
+                  {Playing && currentlyPlayingSong?.songID === song.songID ? (
+                    <PauseCircleIcon
+                      className="grey_text"
+                    />
+                  ) : (
+                    <PlayCircleIcon className="grey_text" />
+                  )}
+
+                  <span className="primary_text_color">{song.songName}</span>
+                </div>
+
+                {Playing && currentlyPlayingSong?.songID === song.songID ? (
+                  <div className="right">
+                    <span>
+                      <img
+                        style={{ height: "40px" }}
+                        src="../images/visualizer.gif"
+                        alt=""
+                      />
+                    </span>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
             ))}
         </div>

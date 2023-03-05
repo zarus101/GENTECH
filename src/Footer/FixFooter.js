@@ -64,7 +64,7 @@ const FixFooter = () => {
   const [loginModelOpen, setLoginModelOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleLoginClose=()=> setLoginModelOpen(false);
+  const handleLoginClose = () => setLoginModelOpen(false);
 
   const [isPlaying, setIsPlaying] = useState();
   const audioPlayer = useRef();
@@ -120,7 +120,18 @@ const FixFooter = () => {
         if (currentlyPlayingSong?.song_type === "premium") {
           if (
             isLoggedIN() &&
-            getCurrentUserDetail().account_type === "normal"
+            getCurrentUserDetail().user.account_type === "premium"
+          ) {
+            audioPlayer.current.play();
+            console.log(getCurrentUserDetail());
+          } else if (
+            isLoggedIN() &&
+            getCurrentUserDetail().user.role === "admin"
+          ) {
+            audioPlayer.current.play();
+          } else if (
+            isLoggedIN() &&
+            getCurrentUserDetail().user.account_type === "normal"
           ) {
             dispatch({
               type: actionType.SET_PLAYING,
@@ -128,17 +139,12 @@ const FixFooter = () => {
             });
             toast.error("This song is premium and cannot be played.");
             setOpen(true);
+            console.log(isLoggedIN());
             return;
-          }
-
-          if (
-            isLoggedIN() &&
-            getCurrentUserDetail().account_type === "premium"
+          } else if (
+            !isLoggedIN() &&
+            currentlyPlayingSong?.song_type === "premium"
           ) {
-            audioPlayer.current.play();
-          }
-
-          if (!isLoggedIN() && currentlyPlayingSong?.song_type === "premium") {
             dispatch({
               type: actionType.SET_PLAYING,
               Playing: false,
@@ -224,10 +230,18 @@ const FixFooter = () => {
         type: actionType.SET_SONG,
         song: 0,
       });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: allSongs[song],
+      });
     } else {
       dispatch({
         type: actionType.SET_SONG,
         song: song + 1,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: allSongs[song + 1],
       });
     }
   };

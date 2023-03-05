@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
-import {motion} from 'framer-motion';
+import { motion } from "framer-motion";
 import "../../assets/MostPlayed.scss";
 import { useEffect } from "react";
 import { getAllMusic } from "../../connection/MusicService";
@@ -14,7 +15,10 @@ import axios from "axios";
 export default function MostPlayed({ theme }) {
   const [setIsActive] = useState(false);
   const [songs, setSongs] = useState([]);
-  const [{ currentlyPlayingSong,allSongs, song, isSongPlaying }, dispatch] = useStateValue();
+  const [
+    { currentlyPlayingSong, allSongs, Playing, song, isSongPlaying },
+    dispatch,
+  ] = useStateValue();
 
   const addSongToContext = (songID, currentSong) => {
     if (!isSongPlaying) {
@@ -103,16 +107,14 @@ export default function MostPlayed({ theme }) {
 
       {songs.slice(0, 5).map((song, index) => (
         <motion.div
-        initial={{ opacity: 0, translateY: -50 }}
-        animate={{ opacity: 1, translateY: 0 }}
-        transition={{ duration: 0.3, delay: index * 0.1 }}
+          initial={{ opacity: 0, translateY: -50 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
           className="mostplayed_element_play"
           onClick={() => addSongToContext(song.songID, song)}
           key={index}
         >
           <div className="left">
-            <span className="primary_text_color">{song.songID}</span>
-
             <img
               src={
                 song.coverphoto
@@ -123,7 +125,11 @@ export default function MostPlayed({ theme }) {
               alt="artists"
             />
 
-            <PlayArrowIcon className="grey_text" />
+            {Playing && currentlyPlayingSong?.songID === song.songID ? (
+              <PauseCircleIcon className="grey_text" onClick={handlePause} />
+            ) : (
+              <PlayCircleIcon className="grey_text" />
+            )}
 
             <span
               className="primary_text_color"
@@ -133,17 +139,21 @@ export default function MostPlayed({ theme }) {
             </span>
           </div>
 
-          <div className="right">
-           
+          {Playing && currentlyPlayingSong?.songID === song.songID ? (
+            <div className="right">
+              <span>
+                <img
+                  style={{ height: "40px" }}
+                  src="../images/visualizer.gif"
+                  alt=""
+                />
+              </span>
+            </div>
+          ) : (
+            <div></div>
+          )}
 
-            <span>
-              <img
-                style={{ height: "50px" }}
-                src="../images/visualizer.gif"
-                alt=""
-              />
-            </span>
-          </div>
+          
         </motion.div>
       ))}
     </div>

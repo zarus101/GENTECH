@@ -9,7 +9,7 @@ export const profileRoute = {
   path: "/profile",
   element: Profile,
   layout: (() => {
-    switch (isLoggedIN() && getCurrentUserDetail().user.role) {
+    switch (isLoggedIN() && getCurrentUserDetail()?.user.role) {
       case "admin":
         return AdminLayout;
       case "normal":

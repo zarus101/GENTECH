@@ -20,23 +20,19 @@
       margin-inline: 5px;
     }
   }
-
-
-
- 
 }
-#menu-appbar{
-    .remove_menu_item{
-        padding: 10px;
-        cursor: pointer;
-        color: black;
-    }
+#menu-appbar {
+  .remove_menu_item {
+    padding: 10px;
+    cursor: pointer;
+    color: black;
   }
-
-img {
-  width: 50px;
-  border-radius: 5px;
 }
+
+// img {
+//   width: 50px;
+//   border-radius: 5px;
+// }
 
 @media screen and (max-width: 480px) {
   .mostplayed {
