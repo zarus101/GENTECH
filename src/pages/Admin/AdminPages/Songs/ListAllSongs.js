@@ -104,7 +104,7 @@ const ListAllSongs = () => {
 
   return (
     <>
-      <Box m="20px" className="songlist-section">
+      <Box m="20px 20px 200px 20px" className="songlist-section">
         <main>
           <Box
             className="header"

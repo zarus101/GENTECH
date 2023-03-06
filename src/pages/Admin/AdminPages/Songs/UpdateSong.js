@@ -9,6 +9,7 @@ import { getCurrentUserDetail } from "../../../../connection/UserService";
 
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
+import { toast } from "react-hot-toast";
 
 const UpdateSong = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -149,13 +150,13 @@ const UpdateSong = () => {
       .put(`/v1/updateSong/${id}`, songData, config)
       .then((res) => console.log(res.data));
 
-    alert("Successful");
+    toast.success("Successful");
     Navigate("/songs");
   };
 
   return (
     <>
-      <Box m="20px">
+      <Box m="20px 20px 200px 20px">
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"

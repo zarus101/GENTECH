@@ -25,7 +25,7 @@ import "../../assets/Theme.scss";
 import { toast } from "react-hot-toast";
 import { useStateValue } from "../../context/StateProvider";
 import { actionType } from "../../context/reducer";
-import {motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 function BrowseSongs({ theme, searchItem }) {
   const [swiperRef, setSwiperRef] = useState(null);
@@ -95,6 +95,7 @@ function BrowseSongs({ theme, searchItem }) {
 
       const playlistData = {
         playlist_id: playlistId,
+        songID: songId,
         song: song,
         songName: songName,
       };
@@ -233,59 +234,57 @@ function BrowseSongs({ theme, searchItem }) {
             return (
               <SwiperSlide key={song.songID}>
                 <motion.div
-              initial={{ opacity: 0, translateX: -50 }}
-              animate={{ opacity: 1, translateX: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="top_songs_play"
-              onClick={() => addSongToContext(song.songID, song)}
-              key={index}
-            >
-                <div
-                  className="artist_image"
-                  onClick={() => handleMostPlayed(song.songID)}
+                  initial={{ opacity: 0, translateX: -50 }}
+                  animate={{ opacity: 1, translateX: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="top_songs_play"
+                  onClick={() => addSongToContext(song.songID, song)}
+                  key={index}
                 >
-
-                  <img src="./images/download.jfif" alt="" />
-                  <div className="audiopart">
-              
-                    <div className="buttons">
-                      <div className="likebutton">
-                        <FavoriteIcon />
-                      </div>
-                      <div className="addtoplaylist">
-                        <PlaylistAddIcon onClick={() => setShow(!show)} />
-                        {show && (
-                          <div className="playlist">
-                            <ul>
-                              {playlists.map((playlist) => (
-                                <li
-                                  key={playlist.playlistID}
-                                  id="text"
-                                  onClick={() =>
-                                    handleClick(
-                                      song.songID,
-                                      playlist.playlistID
-                                    )
-                                  }
-                                >
-                                  <div className="nav-item">
-                                    {playlist.name}
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                  <div
+                    className="artist_image"
+                    onClick={() => handleMostPlayed(song.songID)}
+                  >
+                    <img src="./images/download.jfif" alt="" />
+                    <div className="audiopart">
+                      <div className="buttons">
+                        <div className="likebutton">
+                          <FavoriteIcon />
+                        </div>
+                        <div className="addtoplaylist">
+                          <PlaylistAddIcon onClick={() => setShow(!show)} />
+                          {show && (
+                            <div className="playlist">
+                              <ul>
+                                {playlists.map((playlist) => (
+                                  <li
+                                    key={playlist.playlistID}
+                                    id="text"
+                                    onClick={() =>
+                                      handleClick(
+                                        song.songID,
+                                        playlist.playlistID
+                                      )
+                                    }
+                                  >
+                                    <div className="nav-item">
+                                      {playlist.name}
+                                    </div>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="artist_info">
-                  <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
-                    {song.songName}
-                  </h5>
-                  {/* <h6>{artist.name}</h6> */}
-                </div>
+                  <div className="artist_info">
+                    <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
+                      {song.songName}
+                    </h5>
+                    {/* <h6>{artist.name}</h6> */}
+                  </div>
                 </motion.div>
               </SwiperSlide>
             );

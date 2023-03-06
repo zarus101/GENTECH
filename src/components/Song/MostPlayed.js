@@ -71,7 +71,7 @@ export default function MostPlayed({ theme }) {
       }
     };
     fetchSongs();
-  }, []);
+  }, [songs]);
 
   const [setIsPlaying] = useState(false);
 
@@ -143,7 +143,7 @@ export default function MostPlayed({ theme }) {
             <div className="right">
               <span>
                 <img
-                  style={{ height: "40px" }}
+                  style={{ height: "20px" }}
                   src="../images/visualizer.gif"
                   alt=""
                 />
@@ -152,8 +152,6 @@ export default function MostPlayed({ theme }) {
           ) : (
             <div></div>
           )}
-
-          
         </motion.div>
       ))}
     </div>

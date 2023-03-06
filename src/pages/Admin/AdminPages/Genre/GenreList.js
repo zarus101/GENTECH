@@ -78,7 +78,7 @@ const GenreList = () => {
 
   return (
     <>
-      <Box m="20px">
+      <Box m="20px 20px 200px 20px">
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header title="All Genres" subtitle="All genres here" />
         </Box>

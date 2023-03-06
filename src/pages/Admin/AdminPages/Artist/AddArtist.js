@@ -5,6 +5,7 @@ import Alert from "@mui/material/Alert";
 
 import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
+import { toast } from "react-hot-toast";
 
 const AddArtist = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -55,7 +56,10 @@ const AddArtist = () => {
 
     axios
       .post("v1/createArtist", artistData, config)
-      .then((response) => setResponse(response.data))
+      .then((response) => {
+        setResponse(response.data);
+        toast.success("Successful");
+      })
       .catch((error) => setError(error));
 
     console.log(artistData);
@@ -72,7 +76,7 @@ const AddArtist = () => {
       ) : (
         ""
       )}
-      <Box m="20px">
+      <Box m="20px 20px 200px 20px">
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"

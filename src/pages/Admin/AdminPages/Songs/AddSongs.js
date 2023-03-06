@@ -14,11 +14,12 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { getAllArtists } from "../../../../connection/ArtistService";
 import { useStateValue } from "../../../../context/StateProvider";
+import { toast } from "react-hot-toast";
 
 const AddSongs = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const [{allArtists}, dispatch]= useStateValue();
+  const [{ allArtists }, dispatch] = useStateValue();
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState("");
   const [pic, setPic] = useState("");
@@ -58,6 +59,7 @@ const AddSongs = () => {
   useEffect(() => {
     const getData = async () => {
       const arr = [];
+      // console.log(allArtists);
       allArtists.map((artist) => {
         return arr.push({
           value: artist.artistID,
@@ -109,11 +111,11 @@ const AddSongs = () => {
 
   const loadOptions = (searchValue, callback) => {
     setTimeout(() => {
-      const filteredOptions = allArtists?.filter((artist) =>
+      const filteredOptions = artists?.filter((artist) =>
         artist.label.toLowerCase().includes(searchValue.toLowerCase())
       );
       callback(filteredOptions);
-    }, 2000);
+    }, 1000);
   };
 
   const config = {
@@ -145,7 +147,10 @@ const AddSongs = () => {
     };
     axios
       .post("/v1/addSong", songData, config)
-      .then((response) => setResponse(response))
+      .then((response) => {
+        setResponse(response);
+        toast.success("Successful");
+      })
       .catch((error) => setError(error));
 
     setInputs({});
@@ -156,14 +161,14 @@ const AddSongs = () => {
 
   return (
     <>
-      {showAlert ? (
+      {/* {showAlert ? (
         <Alert severity="success" onClose={() => setShowAlert(false)}>
           {error ? `${error}` : `${response}`}
         </Alert>
       ) : (
         ""
-      )}
-      <Box m="20px">
+      )} */}
+      <Box m="20px 20px 200px 20px">
         {/* <Header title="CREATE USER" subtitle="Create a New User Profile" /> */}
 
         <form onSubmit={handleSubmit}>

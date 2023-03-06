@@ -94,7 +94,7 @@ const ArtistList = () => {
 
   return (
     <>
-      <Box m="20px" className="artistlist-section">
+      <Box m="20px 20px 200px 20px" className="artistlist-section">
         <Box
           className="header"
           display="flex"

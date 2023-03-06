@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
+import { toast } from "react-hot-toast";
 
 const UpdateArtist = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -63,13 +64,13 @@ const UpdateArtist = () => {
       .put(`/v1/updateArtist/${id}`, artistData, config)
       .then((res) => console.log(res.data));
 
-    alert("Successful");
+    toast.success("Successful");
     Navigate("/artistsList");
   };
 
   return (
     <>
-      <Box m="20px">
+      <Box m="20px 20px 200px 20px">
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"

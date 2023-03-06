@@ -70,6 +70,7 @@ function TopSongs({ theme }) {
 
       const playlistData = {
         playlist_id: playlistId,
+        songID: songId,
         song: song,
         songName: songName,
       };
