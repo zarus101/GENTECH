@@ -14,13 +14,14 @@ import {
 } from "../../connection/UserService";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function EditDetails() {
   const navigate = useNavigate("");
   const [id, setId] = useState();
   const [open, setOpen] = React.useState(false);
   const [token, setToken] = useState();
-  const [loggedInUser, setLoggedInUser ]= useState();
+  const [loggedInUser, setLoggedInUser] = useState();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,14 +30,22 @@ export default function EditDetails() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const fetchData = () => {
+    return axios
+      .get(`/v1/singleuser/${id}`)
+      .then((response) => setLoggedInUser(response.data))
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
   useEffect(() => {
     getCurrentUserDetail();
     console.log(getCurrentUserDetail());
     setToken(getCurrentUserDetail().token);
-    setLoggedInUser(getCurrentUserDetail().user);
     console.log(token);
     setId(getCurrentUserDetail().user.id);
     console.log(id);
+    fetchData();
   }, []);
 
   const [data, setData] = useState({
@@ -57,12 +66,17 @@ export default function EditDetails() {
       .then((response) => {
         toast.success("successfully updated!!");
         navigate("/");
+        // update the data in local storage
+        const updatedData = {
+          ...JSON.parse(localStorage.getItem("data")),
+          ...data,
+        };
+        localStorage.setItem("data", JSON.stringify(updatedData));
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>

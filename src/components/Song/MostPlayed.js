@@ -10,15 +10,27 @@ import { useEffect } from "react";
 import { getAllMusic } from "../../connection/MusicService";
 import { actionType } from "../../context/reducer";
 import { useStateValue } from "../../context/StateProvider";
+import CommentIcon from "@mui/icons-material/Comment";
 import axios from "axios";
+import SongComments from "./SongComment";
 
 export default function MostPlayed({ theme }) {
   const [setIsActive] = useState(false);
   const [songs, setSongs] = useState([]);
+  const [selectedSongId, setSelectedSongId] = useState(null);
   const [
     { currentlyPlayingSong, allSongs, Playing, song, isSongPlaying },
     dispatch,
   ] = useStateValue();
+
+  const [open, setOpen] = useState(false);
+ 
+  const handleClose = () => setOpen(false);
+
+  const handleOpenComments = (songId) => {
+    setSelectedSongId(songId);
+    setOpen(true)
+  }
 
   const addSongToContext = (songID, currentSong) => {
     if (!isSongPlaying) {
@@ -45,21 +57,6 @@ export default function MostPlayed({ theme }) {
     console.log(songID);
   };
 
-  const handleClick = (index) => {
-    setIsActive((current) => !current);
-  };
-
-  // useEffect(() => {
-  //   getAllMusic()
-  //     .then((data) => {
-  //       setSongs(data);
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
   useEffect(() => {
     const fetchSongs = async () => {
       try {
@@ -74,10 +71,6 @@ export default function MostPlayed({ theme }) {
   }, []);
 
   const [setIsPlaying] = useState(false);
-
-  const handlePlay = () => {
-    setIsPlaying(true);
-  };
 
   const handleMostPlayed = async (id) => {
     try {
@@ -139,6 +132,14 @@ export default function MostPlayed({ theme }) {
             </span>
           </div>
 
+          <div className="middle">
+            <CommentIcon onClick={() => handleOpenComments(song.songID)} />
+          </div>
+
+          {open && (
+            <SongComments open={open} selectedSongId={selectedSongId} handleClose={handleClose}/>
+          )}
+
           {Playing && currentlyPlayingSong?.songID === song.songID ? (
             <div className="right">
               <span>
@@ -152,8 +153,6 @@ export default function MostPlayed({ theme }) {
           ) : (
             <div></div>
           )}
-
-          
         </motion.div>
       ))}
     </div>

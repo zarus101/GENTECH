@@ -225,7 +225,7 @@ const Playlist = ({ theme, searchItem }) => {
         {/* {console.log(playlistSongs[0].name)} */}
 
         <div className="content">
-          {playlistSongs &&
+          {
             playlistSongs.map((song, index) => (
               <div
                 className="song"

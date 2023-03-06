@@ -23,57 +23,55 @@ const MusicSlider = styled(Slider)(({ theme, ...props }) => ({
 }));
 
 const MusicPlayer = (props) => {
-  const [{ allSongs, song,Playing ,currentlyPlayingSong, }, dispatch] =
+  const [{ allSongs, song, Playing, currentlyPlayingSong }, dispatch] =
     useStateValue([]);
-    const audioPlayer= useRef();
+  const audioPlayer = useRef();
 
-    const nextTrack = () => {
-      if (song > allSongs.length) {
-        dispatch({
-          type: actionType.SET_SONG,
-          song: 0,
-        });
-        dispatch({
-          type: actionType.SET_CURRENT_SONG,
-          currentlyPlayingSong: allSongs[song],
-        });
-      } else {
-        dispatch({
-          type: actionType.SET_SONG,
-          song: song + 1,
-        });
-  
-        dispatch({
-          type: actionType.SET_CURRENT_SONG,
-          currentlyPlayingSong: allSongs[song + 1],
-        });
-      }
-    };
-  
-    const previousTrack = () => {
-      if (song === 0) {
-        dispatch({
-          type: actionType.SET_SONG,
-          song: 0,
-        });
-        dispatch({
-          type: actionType.SET_CURRENT_SONG,
-          currentlyPlayingSong: allSongs[song],
-        });
-      } else {
-        dispatch({
-          type: actionType.SET_SONG,
-          song: song - 1,
-        });
-  
-        dispatch({
-          type: actionType.SET_CURRENT_SONG,
-          currentlyPlayingSong: allSongs[song - 1],
-        });
-      }
-    };
-  
+  const nextTrack = () => {
+    if (song > allSongs.length) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: 0,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: allSongs[song],
+      });
+    } else {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: song + 1,
+      });
 
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: allSongs[song + 1],
+      });
+    }
+  };
+
+  const previousTrack = () => {
+    if (song === 0) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: 0,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: allSongs[song],
+      });
+    } else {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: song - 1,
+      });
+
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: allSongs[song - 1],
+      });
+    }
+  };
 
   return (
     <>
@@ -95,9 +93,8 @@ const MusicPlayer = (props) => {
             />
           </div>
 
-
           <div className="artist-info">
-          <h2>
+            <h2>
               {currentlyPlayingSong?.songName.length > 20
                 ? currentlyPlayingSong?.songName.slice(0, 20)
                 : currentlyPlayingSong?.songName}
@@ -121,22 +118,6 @@ const MusicPlayer = (props) => {
               <div className="next-button">
                 <SkipNextIcon className="icon" onClick={nextTrack} />
               </div>
-            </div>
-
-            <div className="audio-volume">
-              {/* <VolumeBtns />
-              <MusicSlider
-                min={0}
-                max={100}
-                value={props.volume}
-                onChange={(e, v) => props.setVolume(v)}
-                sx={{
-                  "& .MuiSlider-thumb": {
-                    width: 20,
-                    height: 20,
-                  },
-                }}
-              /> */}
             </div>
           </div>
         </div>

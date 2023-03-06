@@ -14,9 +14,7 @@ import {
 // import { toast } from "react-hot-toast";
 import { signUP } from "../../connection/UserService";
 import { useNavigate } from "react-router-dom";
-import { registerSchema } from "./registerSchema";
 import { toast } from "react-hot-toast";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 const Register = () => {
@@ -86,7 +84,7 @@ const Register = () => {
         })
         .catch((error) => {
           setError(true);
-          toast.error("error");
+          toast.error(error.response?.data.message);
         });
     }
   };
@@ -182,7 +180,7 @@ const Register = () => {
 
 
   return (
-    <form validationSchema={registerSchema} onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Paper elevation={10} className="register_wrapper">
         <Avatar src="../images/logo.jpg" className="form_logo" />
         <h2>Sign Up</h2>

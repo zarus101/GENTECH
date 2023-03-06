@@ -15,8 +15,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useNavigate } from "react-router-dom";
-import CancelIcon from '@mui/icons-material/Cancel';
-import {motion } from "framer-motion";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { motion } from "framer-motion";
 import {
   doLogout,
   getCurrentUserDetail,
@@ -27,13 +27,21 @@ import { getAllArtists } from "../../connection/ArtistService";
 import { getAllMusic } from "../../connection/MusicService";
 import { useStateValue } from "../../context/StateProvider";
 import { actionType } from "../../context/reducer";
+import SongComments from "../Song/SongComment";
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [artists, setArtists] = useState("");
   const [searchItem, setSearchItem] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [songs, setSongs] = useState("");
-const [{user, background}, dispatch]= useStateValue();
+  const [{ user, background }, dispatch] = useStateValue();
+  const [open, setOpen] = useState(false);
+  const [selectedSongId, setSelectedSongId] = useState(null);
+
+  const handleOpenComments = (songId) => {
+    setSelectedSongId(songId);
+    setOpen(true);
+  };
 
   const handleChange = (event) => {
     setSearchItem(event.target.value);
@@ -69,7 +77,8 @@ const [{user, background}, dispatch]= useStateValue();
 
   const handleClose = () => {
     setAnchorEl(null);
-    setSearchItem('');
+    setSearchItem("");
+    setOpen(false);
   };
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -80,18 +89,18 @@ const [{user, background}, dispatch]= useStateValue();
     navigate(`/artist/${artistID}`);
   };
 
-  const lightButtonClick=()=>{
+  const lightButtonClick = () => {
     dispatch({
       type: actionType.SET_BACKGROUND,
-      background:"dark"
-    })
-  }
-  const darkButtonClick=()=>{
+      background: "dark",
+    });
+  };
+  const darkButtonClick = () => {
     dispatch({
       type: actionType.SET_BACKGROUND,
-      background:"light"
-    })
-  }
+      background: "light",
+    });
+  };
   return (
     <Box className="box" display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
@@ -114,8 +123,7 @@ const [{user, background}, dispatch]= useStateValue();
         {showResults && searchItem && (
           <div className="search-box">
             <div className="cancel">
-            <CancelIcon onClick={handleClose}/>
-
+              <CancelIcon onClick={handleClose} />
             </div>
             <div className="artist-section">
               <div className="header">
@@ -136,9 +144,9 @@ const [{user, background}, dispatch]= useStateValue();
                 .map((value, index) => {
                   return (
                     <motion.div
-                    initial={{ opacity: 0, translateY: -50 }}
-                    animate={{ opacity: 1, translateY: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                      initial={{ opacity: 0, translateY: -50 }}
+                      animate={{ opacity: 1, translateY: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
                       className="artists"
                       onClick={(e) => handleClick(value.artistID, e)}
                     >
@@ -185,7 +193,7 @@ const [{user, background}, dispatch]= useStateValue();
                 })
                 .map((value) => {
                   return (
-                    <div className="songs">
+                    <div className="songs" onClick={() => handleOpenComments(value.songID)}>
                       <div className="songs-pic">
                         <img src={`/public/img/artist/${value.songPhoto}`} />
                       </div>
@@ -210,6 +218,13 @@ const [{user, background}, dispatch]= useStateValue();
               )}
             </div>
           </div>
+        )}
+        {open && (
+          <SongComments
+            open={open}
+            selectedSongId={selectedSongId}
+            handleClose={handleClose}
+          />
         )}
       </Box>
 
@@ -238,9 +253,11 @@ const [{user, background}, dispatch]= useStateValue();
               </Typography>
             </IconButton>
 
-            <IconButton>
-              <PersonOutlinedIcon id="text" />
-            </IconButton>
+            <NavLink to={"/profile"}>
+              <IconButton>
+                <PersonOutlinedIcon id="text" />
+              </IconButton>
+            </NavLink>
 
             <IconButton onClick={handleMenu} className="icon">
               <SettingsOutlinedIcon id="text" />
@@ -265,24 +282,22 @@ const [{user, background}, dispatch]= useStateValue();
               </NavLink>
               <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
-
-            <IconButton>
-              <NotificationsOutlinedIcon id="text" />
-            </IconButton>
           </>
         )}
 
         <IconButton
 
-       
-          // onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        // onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
           {background === "dark" ? (
-            <DarkModeOutlinedIcon id="text"  onClick ={()=> darkButtonClick()} />
+            <DarkModeOutlinedIcon id="text" onClick={() => darkButtonClick()} />
           ) : (
-            <LightModeOutlinedIcon id="text"  onClick ={()=> lightButtonClick()} />
+            <LightModeOutlinedIcon
+              id="text"
+              onClick={() => lightButtonClick()}
+            />
           )}
-        </IconButton> 
+        </IconButton>
       </Box>
     </Box>
   );

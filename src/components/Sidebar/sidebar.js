@@ -6,7 +6,7 @@ import "../../assets/NavbarSection.scss";
 import "../../assets/Theme.scss";
 
 import axios from "axios";
-
+import {motion} from "framer-motion";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -118,33 +118,9 @@ const SideNavbar = ({ children, setTheme, theme }) => {
     setPlaylistName("");
   };
 
-  // const handleUpdate = async (id) => {
-  //   const playlistData = {
-  //     playlistName: updateName,
-  //     userID: userid,
-  //   };
-
-  //   console.log(id);
-
-  //   try {
-  //     const response = await axios.put(
-  //       `/v1/updateplaylist/${id}`,
-  //       playlistData,
-  //       config
-  //     );
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setPlaylistName("");
-  //   setUpdateName("");
-  // };
-
   const handleClick = (id) => {
     navigate(`/playlist/${id}`);
   };
-
-  // if (isLoading) return <p>Loading...</p>;
 
   return (
     <section className="main-section" id={theme}>
@@ -218,8 +194,11 @@ const SideNavbar = ({ children, setTheme, theme }) => {
               </Box>
             </Modal>
             {isLoggedIN() &&
-              playlists.map((playlist) => (
-                <div
+              playlists.map((playlist, index) => (
+                <motion.div
+                initial={{ opacity: 0, translateY: -50 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
                   style={{ display: "flex", paddingRight: "4rem" }}
                   key={playlist.playlistID}
                 >
@@ -230,54 +209,13 @@ const SideNavbar = ({ children, setTheme, theme }) => {
                   >
                     <div className="playlist-item">{playlist.name}</div>
                   </li>
-                  {/* <span>
-                    <Edit
-                      sx={{
-                        border: "1px solid gray",
-                        borderRadius: "5px",
-                        marginLeft: "10px",
-                        cursor: "pointer",
-                      }}
-                      onClick={handleEditOpen}
-                    />
-                    <Modal
-                      open={onOpen}
-                      onClose={handleEditClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box sx={style}>
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
-                        >
-                          <TextField
-                            id="outlined-basic"
-                            label="Name your playlist"
-                            variant="outlined"
-                            name="playlistName"
-                            value={updateName}
-                            onChange={(e) => setUpdateName(e.target.value)}
-                          />
-                          <Button
-                            variant="contained"
-                            sx={{ height: "50px", mt: "2px", ml: "10px" }}
-                            onClick={() => handleUpdate(playlist.playlistID)}
-                          >
-                            Update
-                          </Button>
-                        </Typography>
-                      </Box>
-                    </Modal>
-                  </span> */}
                   <span>
                     <Delete
                       className="delete-icon"
                       onClick={() => handleDelete(playlist.playlistID)}
                     />
                   </span>
-                </div>
+                </motion.div>
               ))}
           </ul>
         </div>

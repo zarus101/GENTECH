@@ -92,19 +92,6 @@ export default function AddSongs() {
         axios.delete(`/v1/deleteLiked/${id}`, config).then((res) => {
           // Remove the entry from likedData
 
-          const newLikedData = likedData.filter((data) => data.songID !== id);
-
-          // Update the likedSongIds and likedSongs states
-          const newLikedSongIds = newLikedData.map((data) => data.songID);
-          const newFilteredLikedSongs = allSongs.filter((song) =>
-            newLikedSongIds.includes(song.songID)
-          );
-          dispatch({
-            type: actionType.SET_LIKED_SONGS,
-            likedSongs: newFilteredLikedSongs,
-          });
-          setLikedSongs(newFilteredLikedSongs);
-          setLikedData(newLikedData);
           setAnchorEl(null);
 
           toast.success("Successfully Removed From Liked List!!");

@@ -30,16 +30,6 @@ export const deleteAllSongs = (token) => {
   });
 };
 
-export const addSongToLikedList = (token, songID, userID) => {
-  return myAxios
-    .post("/register", songID, userID, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => response.data);
-};
-
 export const getLikedSongs = (userID, token) => {
   return myAxios
     .get(`/getAllLiked/${userID}`, {
@@ -50,4 +40,22 @@ export const getLikedSongs = (userID, token) => {
     .then((response) => {
       return response.data;
     });
+};
+
+export const postComment = (commentData, token) => {
+  return myAxios.post("/songs/postcomment", commentData, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getAllComments = (songID) => {
+  return myAxios.get(`getAllComments/${songID}`).then((response) => {
+    return response.data;
+  });
+};
+export const deleteComment = (data) => {
+  return myAxios.put(`/deletecomment/${data.commentID}`, data);
 };
