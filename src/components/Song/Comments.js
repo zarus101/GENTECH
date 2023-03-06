@@ -169,7 +169,7 @@ const Comments = ({ selectedSong }) => {
                           variant="body2"
                           color="text.primary"
                         >
-                          {commentWithUser.comment.comment}
+                          {commentWithUser.comment?.comment}
                         </Typography>
 
                     
@@ -177,7 +177,7 @@ const Comments = ({ selectedSong }) => {
                         commentWithUser.user?.id ? (
                           <Button
                             onClick={() =>
-                              handleDelete(commentWithUser.comment.commentID)
+                              handleDelete(commentWithUser.comment?.commentID)
                             }
                           >
                             <DeleteIcon />
