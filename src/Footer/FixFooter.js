@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../assets/fixfooter.scss";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
@@ -14,7 +14,19 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import FastForwardIcon from "@mui/icons-material/FastForward";
-import { styled, Slider, Modal, Typography, Button } from "@mui/material";
+import {
+  styled,
+  Slider,
+  Modal,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 
@@ -291,19 +303,7 @@ const FixFooter = () => {
     }
   };
 
-  const togglePlayer = () => {
-    if (miniPlayer) {
-      dispatch({
-        type: actionType.SET_MINI_PLAYER,
-        miniPlayer: false,
-      });
-    } else {
-      dispatch({
-        type: actionType.SET_MINI_PLAYER,
-        miniPlayer: true,
-      });
-    }
-  };
+ 
 
   const toggleSlide = () => {
     if (slideUp) {
@@ -353,13 +353,7 @@ const FixFooter = () => {
           </>
         )}
 
-        {miniPlayer && (
-          <div className="main-obj">
-            <div className="toggle_button" onClick={togglePlayer}>
-              <ArrowCircleRightIcon className="icon" />
-            </div>
-          </div>
-        )}
+     
 
         {slideUp && (
           <div className="audio-player-lg">
@@ -456,7 +450,10 @@ const FixFooter = () => {
                       ? currentlyPlayingSong?.songName.slice(0, 20)
                       : currentlyPlayingSong?.songName}
                   </h2>
-                  <h3>{currentlyPlayingSong?.artistName}</h3>
+                  <h3>
+                    {currentlyPlayingSong?.artistName}{" "}
+                    <span>({currentlyPlayingSong?.genreName})</span>
+                  </h3>
                 </div>
 
                 <motion.i
@@ -526,9 +523,7 @@ const FixFooter = () => {
               <div className="close-button" onClick={closeMusicPlayer}>
                 <CancelIcon className="icon" />
               </div>
-              <div className="toggle_button" onClick={togglePlayer}>
-                <ArrowCircleRightIcon className="icon" />
-              </div>
+       
             </div>
           </div>
         )}
@@ -582,7 +577,10 @@ export const LoginModel = ({ loginModelOpen, handleClose }) => {
 };
 
 export const PlayListCard = () => {
-  const [{ allSongs, song, isSongPlaying }, dispatch] = useStateValue();
+  const [
+    { allSongs, song, Playing, currentlyPlayingSong, isSongPlaying },
+    dispatch,
+  ] = useStateValue();
   useEffect(() => {
     if (!allSongs) {
       getAllMusic().then((data) => {
@@ -594,19 +592,29 @@ export const PlayListCard = () => {
     }
   }, []);
 
-  const setCurrentPlaySong = (songindex) => {
+  const addSongToContext = (songID, currentSong) => {
     if (!isSongPlaying) {
       dispatch({
         type: actionType.SET_SONG_PLAYING,
         isSongPlaying: true,
       });
-    }
-    if (song !== songindex) {
       dispatch({
-        type: actionType.SET_SONG,
-        song: songindex,
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentSong,
       });
     }
+    if (song !== songID) {
+      dispatch({
+        type: actionType.SET_SONG,
+        song: songID,
+      });
+      dispatch({
+        type: actionType.SET_CURRENT_SONG,
+        currentlyPlayingSong: currentSong,
+      });
+    }
+    console.log(currentSong);
+    console.log(songID);
   };
 
   return (
@@ -620,26 +628,43 @@ export const PlayListCard = () => {
             className={`group w-full p-4 hover:bg-card flex gap-3 items-center cursor-pointer ${
               music?._id === song._id ? "bg-card" : "bg-transparent"
             }`}
-            onClick={() => setCurrentPlaySong(index)}
           >
-            <QueueMusicIcon className="text-textColor group-hover:text-headingColor text-2xl cursor-pointer" />
-
-            <div className="flex items-start flex-col">
-              <p className="text-lg text-headingColor font-semibold">
-                {`${
-                  music?.songName.length > 20
-                    ? music?.songName.slice(0, 20)
-                    : music?.songName
-                }`}{" "}
-                <span className="text-base">({music?.Description})</span>
-              </p>
-              <p className="text-textColor">
-                {music?.artistID}{" "}
-                <span className="text-sm text-textColor font-semibold">
-                  ({music?.genreName})
-                </span>
-              </p>
-            </div>
+            <List
+              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+              onClick={() => addSongToContext(music.songID, music)}
+            >
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <QueueMusicIcon />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${
+                    music?.songName.length > 20
+                      ? music?.songName.slice(0, 20)
+                      : music?.songName
+                  }`}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {music?.artistName}
+                      </Typography>
+                      ({music?.genreName})
+                    </React.Fragment>
+                  }
+                />
+                {Playing && currentlyPlayingSong?.songID === music.songID ? (
+                  <PauseCircleIcon className="grey_text" />
+                ) : (
+                  <PlayCircleIcon className="grey_text" />
+                )}
+              </ListItem>
+              <Divider variant="inset" component="li" />
+            </List>
           </motion.div>
         ))
       ) : (

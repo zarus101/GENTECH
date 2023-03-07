@@ -144,7 +144,7 @@ export default function MostPlayed({ theme }) {
             <div className="right">
               <span>
                 <img
-                  style={{ height: "40px" }}
+                  style={{ height: "20px" }}
                   src="../images/visualizer.gif"
                   alt=""
                 />

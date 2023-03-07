@@ -7,10 +7,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { getAllMusic } from "../../connection/MusicService";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import axios from "axios";
 import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
@@ -70,6 +68,7 @@ function TopSongs({ theme }) {
 
       const playlistData = {
         playlist_id: playlistId,
+        songID: songId,
         song: song,
         songName: songName,
       };
@@ -188,11 +187,6 @@ function TopSongs({ theme }) {
           <h3 id="text">Top Songs</h3>
 
           <p>- Top 10</p>
-          <NavLink className="none_text_decoration" to={"/songs"}>
-            <p id="text">
-              See all <ArrowRightAltIcon className="see_all_arrow" />
-            </p>
-          </NavLink>
         </div>
         <div className="swiper_buttons">
           <button onClick={prevHandler}>
@@ -291,9 +285,9 @@ function TopSongs({ theme }) {
               </div>
               <div className="artist_info">
                 <h5 id="text" onClick={() => handleMostPlayed(song.songID)}>
-                  {song.songName}
+                  {song.songName} 
                 </h5>
-                <h6>{song.artistName}</h6>
+                <h6>{song.artistName} <span>({song.likes} likes)</span></h6>
               </div>
             </motion.div>
           </SwiperSlide>

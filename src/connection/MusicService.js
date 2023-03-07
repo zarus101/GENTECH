@@ -59,3 +59,9 @@ export const getAllComments = (songID) => {
 export const deleteComment = (data) => {
   return myAxios.put(`/deletecomment/${data.commentID}`, data);
 };
+
+export const getLikedData = (userid) => {
+  return myAxios.get(`/getAllLiked/${userid}`).then((response) => {
+    return response.data;
+  });
+};

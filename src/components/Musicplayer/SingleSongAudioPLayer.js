@@ -9,17 +9,32 @@ import "../../assets/HomePageMusicPLayer.scss";
 import { actionType } from "../../context/reducer";
 import { useStateValue } from "../../context/StateProvider";
 
-const SingleSongAudioPLayer = ({selectedSong}) => {
+const SingleSongAudioPLayer = ({ selectedSong }) => {
   const [{ allSongs, song, Playing, currentlyPlayingSong }, dispatch] =
     useStateValue([]);
   const audioPlayer = useRef();
 
+  const handlePlay = (song) => {
+    dispatch({
+      type: actionType.SET_PLAYING,
+      Playing: true,
+    });
 
+    dispatch({
+      type: actionType.SET_CURRENT_SONG,
+      currentlyPlayingSong: song,
+    });
+  };
+
+  const handlePause = () => {
+    dispatch({
+      type: actionType.SET_PLAYING,
+      Playing: false,
+    });
+  };
 
   return (
     <>
-  
-
       <div className="home-music-section">
         <div className="audio-player-lg">
           <div className="left-side">
@@ -43,16 +58,16 @@ const SingleSongAudioPLayer = ({selectedSong}) => {
 
             <div className="audio-control-buttons">
               <div className="audio-controls">
-               
                 <div className="play-button">
-                  {Playing && currentlyPlayingSong?.songID === selectedSong?.songID  ? (
-                    <PauseCircleIcon className="icon " />
+                  {Playing ? (
+                    <PauseCircleIcon
+                      className="icon "
+                      onClick={() => handlePlay(selectedSong)}
+                    />
                   ) : (
-                    <PlayCircleIcon className="icon " />
+                    <PlayCircleIcon className="icon " onClick={handlePause} />
                   )}
                 </div>
-
-                
               </div>
             </div>
           </div>

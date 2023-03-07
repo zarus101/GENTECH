@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import { Delete, Edit } from "@mui/icons-material";
 import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
 import { toast } from "react-hot-toast";
+import { useStateValue } from "../../context/StateProvider";
 
 const style = {
   position: "absolute",
@@ -34,6 +35,7 @@ const SideNavbar = ({ children, setTheme, theme }) => {
   // const toggle = () => {
   //   setIsOpen(!isOpen);
   // };
+  const [{background}, dispatch]= useStateValue();
 
   const navigate = useNavigate();
   const [token, setToken] = useState();
@@ -123,7 +125,7 @@ const SideNavbar = ({ children, setTheme, theme }) => {
   };
 
   return (
-    <section className="main-section" id={theme}>
+    <section className="main-section" id={background}>
       <div className=" main-navbar" id="background">
         <div className="top-navbar">
           <ul>

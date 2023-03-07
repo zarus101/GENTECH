@@ -11,9 +11,18 @@ import { motion } from "framer-motion";
 import { actionType } from "../../context/reducer";
 import { useStateValue } from "../../context/StateProvider";
 
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import { toast } from "react-hot-toast";
+import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+
 export default function ListofSongs({ theme }) {
   const { artistID, genreName } = useParams();
   const [artist, setArtist] = useState("");
+  const [userid, setUserid] = useState();
+  const [playlists, setPlaylists] = useState([]);
+
   const [
     {
       currentlyPlayingSong,
@@ -25,8 +34,38 @@ export default function ListofSongs({ theme }) {
     },
     dispatch,
   ] = useStateValue();
+  const [token, setToken] = useState();
+  const [show, setShow] = useState(false);
 
   const [songs, setSongs] = useState([]);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    let controller = new AbortController();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/v1/getAllPlaylist/${userid}`, {
+          signal: controller.signal,
+        });
+        setPlaylists(response.data);
+        controller = null;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (!isLoggedIN()) return;
+
+    getCurrentUserDetail();
+    setToken(getCurrentUserDetail().token);
+    setUserid(getCurrentUserDetail().user.id);
+    fetchData();
+    return () => controller?.abort();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +98,7 @@ export default function ListofSongs({ theme }) {
     return () => {
       setSongs([]);
     };
-  }, [artistID, genreName]);
+  }, []);
 
   useEffect(() => {
     const fetchArtist = async () => {
@@ -72,6 +111,34 @@ export default function ListofSongs({ theme }) {
     };
     fetchArtist();
   }, [artistID]);
+
+  const handleClick = async (songId, playlistId) => {
+    try {
+      const response = await axios.get(`/v1/getSingleSong/${songId}`);
+      const song = response.data[0].song;
+      const songName = response.data[0].songName;
+      console.log(song);
+
+      const playlistData = {
+        playlist_id: playlistId,
+        songID: songId,
+        song: song,
+        songName: songName,
+      };
+
+      const res = await axios.post(
+        `v1/addSongsToPlaylist/${playlistId}`,
+        playlistData,
+        config
+      );
+      console.log(res.data);
+      toast.success("Song added!!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Please Try Again!");
+    }
+    setShow(false);
+  };
 
   const handleMostPlayed = async (id) => {
     try {
@@ -120,6 +187,41 @@ export default function ListofSongs({ theme }) {
     }
     console.log(currentsong);
   };
+
+  const handleLikeClicked = async (songId) => {
+    if (isLoggedIN()) {
+      try {
+        const likedData = {
+          songID: songId,
+          userID: userid,
+        };
+
+        const res = await axios.post(`v1/songs/like`, likedData, config);
+        console.log(res);
+        if (res.status === 201) {
+          return;
+        } else {
+          toast.success("Song added!!");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error);
+      }
+    } else {
+      toast.error("Please login to like the song");
+    }
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div className="songlist" id={theme}>
       <div className="songlist-header">
@@ -181,6 +283,39 @@ export default function ListofSongs({ theme }) {
             ) : (
               <div></div>
             )}
+            <FavoriteIcon onClick={() => handleLikeClicked(song.songID)} />
+            <IconButton  onClick={handleMenu}>
+              <PlaylistAddIcon  />
+            </IconButton>
+         
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {playlists.map((playlist) => (
+                  <MenuItem
+                    key={playlist.playlistID}
+                    id="text"
+                    onClick={() =>
+                      handleClick(song.songID, playlist.playlistID)
+                    }
+                  >
+                    {playlist.name}
+                  </MenuItem>
+                ))}
+              </Menu>
+          
           </motion.div>
         ))
       )}

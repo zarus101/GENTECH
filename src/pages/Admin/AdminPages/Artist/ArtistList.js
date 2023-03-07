@@ -10,7 +10,7 @@ import Edit from "@mui/icons-material/Edit";
 import { red } from "@mui/material/colors";
 import ClearIcon from "@mui/icons-material/Clear";
 import Alert from "@mui/material/Alert";
-
+import { motion } from "framer-motion";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
 import { deleteArtistById } from "../../../../connection/ArtistService";
 import { toast } from "react-hot-toast";
@@ -94,7 +94,7 @@ const ArtistList = () => {
 
   return (
     <>
-      <Box m="20px" className="artistlist-section">
+      <Box m="20px 20px 200px 20px" className="artistlist-section">
         <Box
           className="header"
           display="flex"
@@ -146,72 +146,81 @@ const ArtistList = () => {
                 })
                 .map((value, index) => (
                   <Grid key={index} item>
-                    <Paper
+                    <motion.div
+                      initial={{ opacity: 0, translateX: -50 }}
+                      animate={{ opacity: 1, translateX: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
                       sx={{
                         p: 2,
                         margin: "auto",
                         maxWidth: 500,
                         flexGrow: 1,
-                        backgroundColor: (theme) =>
-                          theme.palette.mode === "dark" ? "#1A2027" : "#fff",
                       }}
                     >
-                      <Grid container spacing={2}>
-                        <Grid item>
-                          <ButtonBase sx={{ width: 128, height: 128 }}>
-                            <Img
-                              alt="complex"
-                              src={`/public/img/artist/${value.artistPhoto}`}
-                            />
-                          </ButtonBase>
-                        </Grid>
-                        <Grid item xs={12} sm container>
-                          <Grid
-                            item
-                            xs
-                            container
-                            direction="column"
-                            spacing={2}
-                          >
-                            <Grid item xs>
-                              <Typography
-                                gutterBottom
-                                variant="subtitle1"
-                                component="div"
-                                className="text_div"
-
-                              >
-                                <b>Artist Name:</b>  <span>{value.artistName}</span>
-                               
-                              </Typography>
-                              <Typography variant="body2" gutterBottom>
-                                Year : <span>{value.year}</span>
-                              </Typography>
-                              <Typography variant="body2" gutterBottom>
-                                Status : <span>{value.status}</span>
-                              </Typography>
-
-                              <Grid item className="card_buttons" spacing={1}>
-                                <Button
-                                  className="delete_button"
-                                  onClick={() => deleteArtist(value)}
+                      <Paper
+                        sx={{
+                          p: 2,
+                          margin: "auto",
+                          maxWidth: 500,
+                          flexGrow: 1,
+                        }}
+                      >
+                        <Grid container spacing={2}>
+                          <Grid item>
+                            <ButtonBase sx={{ width: 128, height: 128 }}>
+                              <Img
+                                alt="complex"
+                                src={`/public/img/artist/${value.artistPhoto}`}
+                              />
+                            </ButtonBase>
+                          </Grid>
+                          <Grid item xs={12} sm container>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
+                            >
+                              <Grid item xs>
+                                <Typography
+                                  gutterBottom
+                                  variant="subtitle1"
+                                  component="div"
+                                  className="text_div"
                                 >
-                                  <Delete />
-                                </Button>
-                                <Button
-                                  className="edit_button"
-                                  onClick={(e) =>
-                                    handleUpdate(value.artistID, e)
-                                  }
-                                >
-                                  <Edit />
-                                </Button>
+                                  <b>Artist Name:</b>{" "}
+                                  <span>{value.artistName}</span>
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                  Year : <span>{value.year}</span>
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                  Status : <span>{value.status}</span>
+                                </Typography>
+
+                                <Grid item className="card_buttons" spacing={1}>
+                                  <Button
+                                    className="delete_button"
+                                    onClick={() => deleteArtist(value)}
+                                  >
+                                    <Delete />
+                                  </Button>
+                                  <Button
+                                    className="edit_button"
+                                    onClick={(e) =>
+                                      handleUpdate(value.artistID, e)
+                                    }
+                                  >
+                                    <Edit />
+                                  </Button>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                    </Paper>
+                      </Paper>
+                    </motion.div>
                   </Grid>
                 ))}
             </Grid>

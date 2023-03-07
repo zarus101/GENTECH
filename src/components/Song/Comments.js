@@ -119,7 +119,12 @@ const Comments = ({ selectedSong }) => {
       .then((response) => {
         getAllComments(selectedSong?.songID)
           .then((results) => {
-            setData(results);
+            if (results.length === 0) {
+              setData(null)
+            } else {
+              setData(results);
+            }
+
             console.log(results);
           })
           .catch((error) => {
@@ -172,9 +177,9 @@ const Comments = ({ selectedSong }) => {
                           {commentWithUser.comment?.comment}
                         </Typography>
 
-                    
-                        {!isLoggedIN() && getCurrentUserDetail().user.id ===
-                        commentWithUser.user?.id ? (
+                        {isLoggedIN() &&
+                        getCurrentUserDetail().user.id ===
+                          commentWithUser.user?.id ? (
                           <Button
                             onClick={() =>
                               handleDelete(commentWithUser.comment?.commentID)
@@ -190,8 +195,6 @@ const Comments = ({ selectedSong }) => {
                   />
                 </ListItem>
               </List>
-
-          
             </>
           ))
         )}

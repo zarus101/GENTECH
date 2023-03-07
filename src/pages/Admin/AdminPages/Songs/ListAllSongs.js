@@ -20,6 +20,7 @@ import { useStateValue } from "../../../../context/StateProvider";
 import { actionType } from "../../../../context/reducer";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import {motion} from 'framer-motion'
 
 const Img = styled("img")({
   margin: "auto",
@@ -104,7 +105,7 @@ const ListAllSongs = () => {
 
   return (
     <>
-      <Box m="20px" className="songlist-section">
+      <Box m="20px 20px 200px 20px" className="songlist-section">
         <main>
           <Box
             className="header"
@@ -148,8 +149,19 @@ const ListAllSongs = () => {
                     return value;
                   }
                 })
-                .map((value) => (
-                  <Grid key={value} item>
+                .map((value, index) => (
+                  <Grid key={index} item>
+                    <motion.div
+                      initial={{ opacity: 0, translateX: -50 }}
+                      animate={{ opacity: 1, translateX: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      sx={{
+                        p: 2,
+                        margin: "auto",
+                        maxWidth: 500,
+                        flexGrow: 1,
+                      }}
+                    >
                     <Paper
                       sx={{
                         p: 2,
@@ -244,6 +256,7 @@ const ListAllSongs = () => {
                         </Grid>
                       </Grid>
                     </Paper>
+                    </motion.div>
                   </Grid>
                 ))}
             </Grid>

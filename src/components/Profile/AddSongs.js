@@ -10,6 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MenuItem } from "react-pro-sidebar";
 import { Menu } from "@mui/material";
 import { toast } from "react-hot-toast";
+import { getLikedData } from "../../connection/MusicService";
 
 export default function AddSongs() {
   const [token, setToken] = useState();
@@ -22,19 +23,17 @@ export default function AddSongs() {
 
   useEffect(() => {
     let controller = new AbortController();
-    const getLikedData = async () => {
-      try {
-        const response = await axios.get(`/v1/getAllLiked/${userid}`, {
-          signal: controller.signal,
-        });
-        setLikedData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getLikedData();
+    getLikedData(userid)
+            .then((data) => {
+              setLikedData(data);
+
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
     return () => controller?.abort();
-  }, [userid, likedSong]);
+  }, [userid]);
 
   useEffect(() => {
     if (!isLoggedIN()) return;
@@ -92,6 +91,15 @@ export default function AddSongs() {
         axios.delete(`/v1/deleteLiked/${id}`, config).then((res) => {
           // Remove the entry from likedData
 
+          getLikedData(userid)
+            .then((data) => {
+              setLikedData(data);
+
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
           setAnchorEl(null);
 
           toast.success("Successfully Removed From Liked List!!");

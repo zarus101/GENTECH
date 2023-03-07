@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
+import { toast } from "react-hot-toast";
 
 const UpdateGenre = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -52,13 +53,13 @@ const UpdateGenre = () => {
       .put(`/v1/updateGenre/${id}`, genreData, config)
       .then((res) => console.log(res.data));
 
-    alert("Successful");
+    toast.success("Successful");
     Navigate("/genrelist");
   };
 
   return (
     <>
-      <Box m="20px">
+      <Box m="20px 20px 200px 20px">
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"

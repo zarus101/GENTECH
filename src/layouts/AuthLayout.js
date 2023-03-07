@@ -20,13 +20,14 @@ import { useStateValue } from "../context/StateProvider";
 
 const AuthLayout = ({ children }) => {
   const [login, setLogin] = useState("");
-  const [theme, setTheme] = useState("light");
+  const [{ allSongs, isSongPlaying, loggedIN, background }, dispatch] = useStateValue([]);
+
+  const [theme, setTheme] = useState(background);
 
   useEffect(() => {
     setLogin(isLoggedIN());
   }, [login]);
 
-  const [{ allSongs, isSongPlaying, loggedIN }, dispatch] = useStateValue([]);
   const [isLoading, setIsLoading] = useState(true);
   const [songs, setSongs] = useState([]);
   const [token, setToken] = useState();

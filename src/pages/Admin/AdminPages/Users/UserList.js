@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { styled } from "@mui/material/styles";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-
+import {motion} from "framer-motion"
 import {
   deleteUserById,
   getAllUsers,
@@ -103,8 +103,19 @@ const UserList = () => {
                     return value;
                   }
                 })
-                .map((value) => (
-                  <Grid key={value} item>
+                .map((value, index) => (
+                  <Grid key={index} item>
+                     <motion.div
+                      initial={{ opacity: 0, translateX: -50 }}
+                      animate={{ opacity: 1, translateX: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      sx={{
+                        p: 2,
+                        margin: "auto",
+                        maxWidth: 500,
+                        flexGrow: 1,
+                      }}
+                    >
                     <Paper
                       sx={{
                         p: 2,
@@ -180,6 +191,7 @@ const UserList = () => {
                         </Grid>
                       </Grid>
                     </Paper>
+                    </motion.div>
                   </Grid>
                 ))}
             </Grid>

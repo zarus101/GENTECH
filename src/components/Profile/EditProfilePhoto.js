@@ -32,11 +32,10 @@ export default function EditProfilePhoto() {
   const changeDetails = (e) => {
     e.preventDefault();
     const userData = {
-      userId: userId,
       userProfilePhoto: file,
     };
 
-    updateProfilePhoto(userData, token)
+    updateProfilePhoto(userData,userId, token)
       .then((response) => {
         console.log(userData);
 

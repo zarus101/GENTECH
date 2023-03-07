@@ -39,15 +39,22 @@ const Profile = () => {
             <div className="user-profile-image">
               <img
                 id="pp-img"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkkVsRNVJ7O7xNGK7IXtRwchi4NsKzUUdPMMcmIdbDKH_x6DKXR2EQGWrBiM8KKga7Ey0&usqp=CAU"
+
+                src={
+                  user.userProfilePhoto
+                    ? `/public/img/user/${user.userProfilePhoto}`
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkkVsRNVJ7O7xNGK7IXtRwchi4NsKzUUdPMMcmIdbDKH_x6DKXR2EQGWrBiM8KKga7Ey0&usqp=CAU"
+                }
                 alt=""
                 srcSet=""
               />
+
+              
               <EditProfilePhoto />
             </div>
 
             <div className="detail-portion">
-              <div className="left-side">
+              <div className="left-side" id="text">
                 <p>Name: {user.name}</p>
                 <p>Email: {user.email}</p>
               </div>

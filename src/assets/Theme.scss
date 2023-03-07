@@ -7,15 +7,15 @@ body {
 
 #light {
   #text {
-    color: $primary-text-color;
+    color: $primary-text-color !important;
   }
   #background {
-    background: $primary-background;
+    background: $primary-background !important;
   }
 
   #content {
     // background: -webkit-linear-gradient(rgb(234, 203, 149),rgb(228, 224, 224), rgb(104, 86, 158));
-    background: rgb(246, 221, 216);
+    background: rgb(246, 221, 216) ;
     background: linear-gradient(
       180deg,
       rgba(246, 221, 216, 1) 0%,

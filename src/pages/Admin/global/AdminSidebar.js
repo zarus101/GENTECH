@@ -13,6 +13,7 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import "../../../assets/AdminAssests/AdminSidebar.scss";
+import { useStateValue } from "../../../context/StateProvider";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   return (
@@ -30,16 +31,17 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const AdminSidebar = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const [{background}, dispatch]= useStateValue();
 
   return (
     <>
-      <section className="main-section">
+      <section className="main-section" id={background}>
         <div
           className=" main-navbar"
           style={{ width: isCollapsed ? "10%" : "25%" }}
-          id="background"
+         
         >
-          <Box className="main-box">
+          <Box className="main-box"  id="background">
             <ProSidebar collapsed={isCollapsed}>
               <Menu iconShape="square">
                 {/* LOGO AND MENU ICON */}
@@ -54,9 +56,9 @@ const AdminSidebar = ({ children }) => {
                       alignItems="center"
                       ml="15px"
                     >
-                      <Typography variant="h5">ADMIN</Typography>
+                      <Typography variant="h5"   id="text">ADMIN</Typography>
                       <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                        <MenuOutlinedIcon />
+                        <MenuOutlinedIcon id='text' />
                       </IconButton>
                     </Box>
                   )}
@@ -68,9 +70,10 @@ const AdminSidebar = ({ children }) => {
                   <Item
                     title="Dashboard"
                     to="/admin/dashboard"
-                    icon={<HomeOutlinedIcon />}
+                    icon={<HomeOutlinedIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
+                  
                   />
 
                   <Typography
@@ -80,27 +83,28 @@ const AdminSidebar = ({ children }) => {
                       fontSize: isCollapsed ? "10px" : "20px",
                       paddingRight: isCollapsed ? "20px" : "0px",
                     }}
+                    id="text"
                   >
                     Data
                   </Typography>
                   <Item
                     title="Manage Artists"
                     to="/artistslist"
-                    icon={<PeopleOutlinedIcon />}
+                    icon={<PeopleOutlinedIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
                   />
                   <Item
                     title="Manage Users"
                     to="/userlist"
-                    icon={<ContactsOutlinedIcon />}
+                    icon={<ContactsOutlinedIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
                   />
                   <Item
                     title="Manage Songs"
                     to="/songs"
-                    icon={<MusicNoteIcon />}
+                    icon={<MusicNoteIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -108,7 +112,7 @@ const AdminSidebar = ({ children }) => {
                   <Item
                     title="Manage Genres"
                     to="/genrelist"
-                    icon={<LyricsIcon />}
+                    icon={<LyricsIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -120,13 +124,14 @@ const AdminSidebar = ({ children }) => {
                       fontSize: isCollapsed ? "10px" : "20px",
                       paddingRight: isCollapsed ? "20px" : "0px",
                     }}
+                    id="text"
                   >
                     Pages
                   </Typography>
                   <Item
                     title="Add Artist"
                     to="/addartist"
-                    icon={<PersonOutlinedIcon />}
+                    icon={<PersonOutlinedIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -134,7 +139,7 @@ const AdminSidebar = ({ children }) => {
                   <Item
                     title="Add Songs"
                     to="/addsongs"
-                    icon={<LibraryMusicIcon />}
+                    icon={<LibraryMusicIcon   id="text"/>}
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -142,14 +147,14 @@ const AdminSidebar = ({ children }) => {
                   <Item
                     title="Add Genres"
                     to="/addgenre"
-                    icon={<LyricsIcon />}
+                    icon={<LyricsIcon   id="text"/>}
                     selected={selected}
                     setSelected={setSelected}
                   />
                   <Item
                     title="Calendar"
                     to="/calendar"
-                    icon={<CalendarTodayOutlinedIcon />}
+                    icon={<CalendarTodayOutlinedIcon  id="text" />}
                     selected={selected}
                     setSelected={setSelected}
                   />

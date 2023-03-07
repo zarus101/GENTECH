@@ -55,8 +55,13 @@ export default function ChangePassword() {
     console.log(data);
     userChangePassword(data, token)
       .then((response) => {
-        toast.success("successfully updated!!");
-        navigate("/");
+        console.log(response.data)
+        if(response.data.status==="failed"){
+          toast.error(response.data.message)
+        } else if(response.data.status==="success"){
+          toast.success(response.data.message)
+        }
+
       })
       .catch((error) => {
         console.log(error);

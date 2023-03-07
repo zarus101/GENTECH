@@ -8,14 +8,14 @@ import LyricsIcon from "@mui/icons-material/Lyrics";
 
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import { useNavigate } from "react-router-dom";
-import "../../../../assets/AdminAssests/Dashboard.scss"
+import "../../../../assets/AdminAssests/Dashboard.scss";
 
 import { getAllMusic } from "../../../../connection/MusicService";
 import { getAllArtists } from "../../../../connection/ArtistService";
 import { getAllUsers } from "../../../../connection/UserService";
 import { useStateValue } from "../../../../context/StateProvider";
 import { actionType } from "../../../../context/reducer";
-
+import { motion } from "framer-motion";
 export const DashnoardCard = ({ icon, name, count }) => {
   return (
     <div className="dashboard_card">
@@ -28,36 +28,8 @@ export const DashnoardCard = ({ icon, name, count }) => {
 
 const Dashboard = () => {
   const navigate = useNavigate("");
-
-  // const [songs, setSongs] = useState([]);
-  // const [artists, setArtists] = useState([]);
-  // const [users, setUsers] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData1 = async () => {
-  //     await getAllMusic()
-  //       .then((data) => setSongs(data))
-  //       .catch((error) => console.error(`Error: ${error}`));
-  //   };
-
-  //   const fetchData2 = async () => {
-  //     await getAllArtists()
-  //       .then((data) => setArtists(data))
-  //       .catch((error) => console.error(`Error: ${error}`));
-  //   };
-
-  //   const fetchData3 = async () => {
-  //     await getAllUsers()
-  //       .then((data) => setUsers(data))
-  //       .catch((error) => console.error(`Error: ${error}`));
-  //   };
-
-  //   fetchData1();
-  //   fetchData2();
-  //   fetchData3();
-  // }, []);
-
-  const [{ allUsers, allSongs, allArtists }, dispatch] = useStateValue([]);
+  const [{ allUsers, allSongs, allArtists, background }, dispatch] =
+    useStateValue([]);
 
   useEffect(() => {
     if (!allUsers) {
@@ -93,17 +65,36 @@ const Dashboard = () => {
 
   return (
     <>
-      <Box className="main-box" m="20px">
+      <Box className="main-box" m="20px" id={background}>
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
         </Box>
-
-        <div className="main-div">
-          <DashnoardCard icon={<PeopleOutlinedIcon/>} name={"Users"} count={allUsers && allUsers.length > 0 ? allUsers.length : 0}/>
-          <DashnoardCard icon={<PeopleOutlinedIcon className="text-3xl text-textColor"/>} name={"Artists"} count={allArtists && allArtists.length > 0 ? allArtists.length : 0}/>
-          <DashnoardCard icon={<LyricsIcon/>} name={"Songs"} count={allSongs && allSongs.length > 0 ? allSongs.length : 0} />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, translateX: -50 }}
+          animate={{ opacity: 1, translateX: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="main-div">
+            <DashnoardCard
+              icon={<PeopleOutlinedIcon />}
+              name={"Users"}
+              count={allUsers && allUsers.length > 0 ? allUsers.length : 0}
+            />
+            <DashnoardCard
+              icon={<PeopleOutlinedIcon className="text-3xl text-textColor" />}
+              name={"Artists"}
+              count={
+                allArtists && allArtists.length > 0 ? allArtists.length : 0
+              }
+            />
+            <DashnoardCard
+              icon={<LyricsIcon />}
+              name={"Songs"}
+              count={allSongs && allSongs.length > 0 ? allSongs.length : 0}
+            />
+          </div>
+        </motion.div>
       </Box>
     </>
   );

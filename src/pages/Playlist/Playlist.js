@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../../assets/Playlist.scss";
-import { Edit } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
 import { getCurrentUserDetail, isLoggedIN } from "../../connection/UserService";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
@@ -223,9 +223,11 @@ const Playlist = ({ theme, searchItem }) => {
           </div>
         </div>
         {/* {console.log(playlistSongs[0].name)} */}
-
-        <div className="content">
-          {
+        {/* {playlistSongs.map((item) => (
+          <div>{item.songName}</div>
+        ))} */}
+        <div className="body">
+          {playlistSongs &&
             playlistSongs.map((song, index) => (
               <div
                 className="song"
@@ -233,21 +235,19 @@ const Playlist = ({ theme, searchItem }) => {
                 key={index}
                 onClick={() => addSongToContext(song.songID, song)}
               >
-                <div className="left">
+                <div className="song-left">
                   <img
                     src={
                       song.coverphoto
                         ? `/public/img/coverphoto/${song.coverphoto}`
                         : "../images/download.jfif"
                     }
-                    style={{ height: "50px" }}
+                    style={{ height: "50px", borderRadius: "5px" }}
                     alt="artists"
                   />
 
                   {Playing && currentlyPlayingSong?.songID === song.songID ? (
-                    <PauseCircleIcon
-                      className="grey_text"
-                    />
+                    <PauseCircleIcon className="grey_text" />
                   ) : (
                     <PlayCircleIcon className="grey_text" />
                   )}
@@ -259,7 +259,7 @@ const Playlist = ({ theme, searchItem }) => {
                   <div className="right">
                     <span>
                       <img
-                        style={{ height: "40px" }}
+                        style={{ height: "20px" }}
                         src="../images/visualizer.gif"
                         alt=""
                       />
@@ -268,6 +268,12 @@ const Playlist = ({ theme, searchItem }) => {
                 ) : (
                   <div></div>
                 )}
+                <span>
+                  <Delete
+                    className="delete-icon"
+                    onClick={() => handleDelete(song.playlistID, song.song)}
+                  />
+                </span>
               </div>
             ))}
         </div>

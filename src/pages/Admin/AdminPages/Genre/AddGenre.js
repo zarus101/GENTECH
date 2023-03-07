@@ -4,6 +4,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { getCurrentUserDetail } from "../../../../connection/UserService";
 
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const AddGenre = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -44,8 +45,11 @@ const AddGenre = () => {
 
     axios
       .post("/v1/addGenre", genreData, config)
-      .then((response) => setResponse(response))
-      .catch((error) => setError(error));
+      .then((response) => {
+        setResponse(response);
+        toast.success(" Genre added successfully!!");
+      })
+      .catch((error) => toast.error("Error!!"));
 
     setInputs({});
     setShowAlert(true);
@@ -53,14 +57,14 @@ const AddGenre = () => {
 
   return (
     <>
-      {showAlert ? (
+      {/* {showAlert ? (
         <Alert severity="success" onClose={() => setShowAlert(false)}>
           {error ? `${error}` : `${response}`}
         </Alert>
       ) : (
         ""
-      )}
-      <Box m="20px">
+      )} */}
+      <Box m="20px 20px 200px 20px">
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"

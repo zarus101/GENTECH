@@ -290,9 +290,9 @@ const Navbar = () => {
         // onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
           {background === "dark" ? (
-            <DarkModeOutlinedIcon id="text" onClick={() => darkButtonClick()} />
+            < LightModeOutlinedIcon id="text" onClick={() => darkButtonClick()} />
           ) : (
-            <LightModeOutlinedIcon
+            <DarkModeOutlinedIcon
               id="text"
               onClick={() => lightButtonClick()}
             />

@@ -9,6 +9,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { doLogout, getCurrentUserDetail } from "../../connection/UserService";
 import { toast } from "react-hot-toast";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const plans = [
   {
@@ -24,8 +25,10 @@ const plans = [
 ];
 
 export default function SubscriptionModal({ open, handleClose }) {
+const [modelOpen, setModelOpen]= useState(open)
   const [amount, setAmount] = useState(100);
   const [usertoken, setToken] = useState();
+  const navigate = useNavigate("");
 
   useEffect(() => {
     getCurrentUserDetail();
@@ -65,6 +68,16 @@ export default function SubscriptionModal({ open, handleClose }) {
           .then((response) => {
             console.log(response.data);
             toast.success("payment successfull");
+            setModelOpen(false)
+
+            doLogout(() => {
+              navigate("/");
+            });
+            toast.success("Login Again To play your premium songs");
+
+
+
+          
           })
           .catch((error) => {
             console.log(error);
@@ -93,7 +106,7 @@ export default function SubscriptionModal({ open, handleClose }) {
 
   return (
     <Modal
-      open={open}
+      open={modelOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

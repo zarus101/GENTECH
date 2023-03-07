@@ -10,7 +10,7 @@ import { actionType } from "../context/reducer";
 import FixFooter from "../Footer/FixFooter";
 
 const AdminLayout = ({ children }) => {
-  const [{isSongPlaying }, dispatch] = useStateValue();
+  const [{isSongPlaying, background }, dispatch] = useStateValue();
   const [theme, setTheme] = useState("light");
   const [isSidebar] = useState(true);
 
@@ -24,7 +24,7 @@ const AdminLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="app">
+    <div className="app" id='background'>
       <AdminSidebar theme={theme} setTheme={setTheme} isSidebar={isSidebar}>
         <Navbar theme={theme} setTheme={setTheme} />
         {children}

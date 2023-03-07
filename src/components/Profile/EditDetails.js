@@ -64,19 +64,25 @@ export default function EditDetails() {
     console.log(data);
     updateUserDetails(data, token)
       .then((response) => {
+        // update the data in local storage
+        const currentData = JSON.parse(localStorage.getItem("data"));
+        const updatedUser = {
+          ...currentData.user,
+          name: data.name,
+          email: data.email,
+        };
+        const updatedData = { ...currentData, user: updatedUser };
+
+        localStorage.setItem("data", JSON.stringify(updatedData));
+        console.log(updatedData);
         toast.success("successfully updated!!");
         navigate("/");
-        // update the data in local storage
-        const updatedData = {
-          ...JSON.parse(localStorage.getItem("data")),
-          ...data,
-        };
-        localStorage.setItem("data", JSON.stringify(updatedData));
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
